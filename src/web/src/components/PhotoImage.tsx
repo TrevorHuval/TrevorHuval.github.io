@@ -12,6 +12,7 @@ import { ImageIcon } from './Icons'
  */
 export default function PhotoImage({
   src,
+  avif = null,
   alt,
   width,
   height,
@@ -21,6 +22,13 @@ export default function PhotoImage({
   crop = false,
 }: {
   src: string
+  /**
+   * AVIF twin of `src`, roughly 40% of the bytes. Offered as a `<source>` only
+   * when the pipeline actually wrote one: `<picture>` does not fall back to the
+   * `<img>` if a source it accepts fails to load, so guessing here would be a
+   * broken image rather than a big one.
+   */
+  avif?: string | null
   alt: string
   width: number
   height: number
@@ -55,7 +63,7 @@ export default function PhotoImage({
     )
   }
 
-  return (
+  const image = (
     <img
       src={src}
       alt={alt}
@@ -63,6 +71,9 @@ export default function PhotoImage({
       height={height}
       sizes={sizes}
       loading={eager ? 'eager' : 'lazy'}
+      // The first thing a visitor sees on the Photos page should not wait in
+      // the queue behind six lazy thumbnails.
+      fetchPriority={eager ? 'high' : undefined}
       decoding="async"
       data-loaded={status === 'loaded'}
       onLoad={() => setStatus('loaded')}
@@ -70,5 +81,16 @@ export default function PhotoImage({
       className={`photo-fade bg-inset image-edge ${className}`}
       style={reserveSpace}
     />
+  )
+
+  if (avif === null) return image
+
+  return (
+    // `display: contents` so the wrapper is invisible to layout and the <img>
+    // stays a direct child of whatever box the caller built for it.
+    <picture className="contents">
+      <source type="image/avif" srcSet={avif} sizes={sizes} />
+      {image}
+    </picture>
   )
 }

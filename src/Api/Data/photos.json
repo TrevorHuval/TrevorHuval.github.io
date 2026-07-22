@@ -2,7 +2,9 @@
   {
     "id": "japan-alley",
     "src": "/photos/japan-alley.jpg",
+    "srcAvif": "/photos/japan-alley.avif",
     "thumbnail": "/photos/thumbs/japan-alley.jpg",
+    "thumbnailAvif": "/photos/thumbs/japan-alley.avif",
     "caption": "A lantern-lit alley, still wet from the rain",
     "location": "Japan",
     "date": null,
@@ -13,7 +15,9 @@
   {
     "id": "grand-canyon",
     "src": "/photos/grand-canyon.jpg",
+    "srcAvif": "/photos/grand-canyon.avif",
     "thumbnail": "/photos/thumbs/grand-canyon.jpg",
+    "thumbnailAvif": "/photos/thumbs/grand-canyon.avif",
     "caption": "Storm light coming across the canyon",
     "location": "Grand Canyon, Arizona",
     "date": null,
@@ -24,7 +28,9 @@
   {
     "id": "colorado",
     "src": "/photos/colorado.jpg",
+    "srcAvif": "/photos/colorado.avif",
     "thumbnail": "/photos/thumbs/colorado.jpg",
+    "thumbnailAvif": "/photos/thumbs/colorado.avif",
     "caption": "Above a snowed-in mountain town",
     "location": "Colorado",
     "date": null,
@@ -35,7 +41,9 @@
   {
     "id": "manhattan",
     "src": "/photos/manhattan.jpg",
+    "srcAvif": "/photos/manhattan.avif",
     "thumbnail": "/photos/thumbs/manhattan.jpg",
+    "thumbnailAvif": "/photos/thumbs/manhattan.avif",
     "caption": "Looking north over Central Park",
     "location": "New York, New York",
     "date": null,
@@ -46,7 +54,9 @@
   {
     "id": "tiny-planet-steps",
     "src": "/photos/tiny-planet-steps.jpg",
+    "srcAvif": "/photos/tiny-planet-steps.avif",
     "thumbnail": "/photos/thumbs/tiny-planet-steps.jpg",
+    "thumbnailAvif": "/photos/thumbs/tiny-planet-steps.avif",
     "caption": "A tiny-planet look back down a long flight of stone steps",
     "location": null,
     "date": null,
@@ -57,7 +67,9 @@
   {
     "id": "lsu-graduation",
     "src": "/photos/lsu-graduation.jpg",
+    "srcAvif": "/photos/lsu-graduation.avif",
     "thumbnail": "/photos/thumbs/lsu-graduation.jpg",
+    "thumbnailAvif": "/photos/thumbs/lsu-graduation.avif",
     "caption": "Cap and gown outside Tiger Stadium",
     "location": "Baton Rouge, Louisiana",
     "date": null,

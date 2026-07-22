@@ -80,6 +80,13 @@ export interface Photo {
   id: string
   src: string
   thumbnail: string
+  /**
+   * AVIF twins written by the image pipeline. `null` when only the JPEG exists:
+   * a `<picture>` will not fall back if a `<source>` it accepts turns out to be
+   * missing, so these are offered only when the pipeline really produced them.
+   */
+  srcAvif: string | null
+  thumbnailAvif: string | null
   caption: string
   location: string | null
   date: string | null

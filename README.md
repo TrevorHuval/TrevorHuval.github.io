@@ -98,13 +98,55 @@ dotnet test
 The tests deserialize the real content files, so a malformed or incomplete one
 fails the build rather than the deployed site.
 
+## Media
+
+Gallery images and the social card are generated, not hand-made. Both scripts
+are authoring steps — their output is committed, so a normal build never runs
+them.
+
+```bash
+npm run photos --prefix src/web   # resize originals, refresh photos.json
+npm run og --prefix src/web       # og.png, apple-touch-icon.png, site.webmanifest
+```
+
+See [the content README](src/Api/Data/README.md) for what `npm run photos`
+takes as input and what it writes.
+
 ## Building
 
 ```bash
-npm run build --prefix src/web
-dotnet build
+dotnet publish src/Api -c Release -o out
 ```
 
-In production the frontend build output is served from the API's `wwwroot`, with
-`/api/*` routes taking priority and everything else falling back to
-`index.html` for client-side routing.
+That is the whole build: an MSBuild target in `src/Api/Api.csproj` runs
+`npm ci` (when needed) and `npm run build`, which writes the frontend into
+`src/Api/wwwroot`, and the published app then serves the API and the site
+together on one port.
+
+```bash
+dotnet out/Api.dll     # http://localhost:5000 — the whole site
+```
+
+`/api/*` routes take priority and everything else falls back to `index.html`
+for client-side routing. Hashed assets under `/assets` are cached for a year
+and marked `immutable`; `index.html` always revalidates, so a deploy is picked
+up immediately. Responses are compressed by the app itself, since nothing in
+front of it will be.
+
+Set `SITE_URL` before building to bake absolute Open Graph URLs and emit a
+`sitemap.xml`:
+
+```bash
+SITE_URL=https://example.com dotnet publish src/Api -c Release -o out
+```
+
+Without it the build still succeeds — Open Graph paths stay root-relative and
+no sitemap is written.
+
+To build the frontend alone (for a Docker stage that has node but not the SDK,
+or just to iterate):
+
+```bash
+npm run build --prefix src/web
+dotnet publish src/Api -c Release -o out -p:SkipSpaBuild=true
+```

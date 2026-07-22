@@ -24,11 +24,13 @@ export default function PhotoGrid({
         <li key={photo.id} className="break-inside-avoid">
           <button
             type="button"
+            aria-haspopup="dialog"
             onClick={() => onSelect(index)}
             className="group relative block w-full overflow-hidden rounded-card transition-[transform,box-shadow] duration-200 ease-out-quint hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift-high)]"
           >
             <PhotoImage
               src={photo.thumbnail}
+              avif={photo.thumbnailAvif}
               alt={photo.caption}
               width={photo.width}
               height={photo.height}

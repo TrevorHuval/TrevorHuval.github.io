@@ -3,12 +3,15 @@ import { usePhotos } from '../api/hooks'
 import Lightbox from '../components/Lightbox'
 import PhotoGrid from '../components/PhotoGrid'
 import { EmptyPanel, ErrorPanel, LoadingPanel } from '../components/States'
-import { useDocumentTitle } from '../lib/useDocumentTitle'
+import { usePageMeta } from '../lib/usePageMeta'
 
 const ALL = 'All'
 
 export default function Photos() {
-  useDocumentTitle('Photos')
+  usePageMeta({
+    title: 'Photos',
+    description: 'A gallery of photographs from travels and from home.',
+  })
 
   const { data, error, loading, reload } = usePhotos()
   const [album, setAlbum] = useState(ALL)

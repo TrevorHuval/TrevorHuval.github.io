@@ -6,7 +6,7 @@ import { ArrowUpRightIcon, ForkIcon, StarIcon } from '../components/Icons'
 import { EmptyPanel, ErrorPanel, LoadingPanel } from '../components/States'
 import { Section } from '../components/Ui'
 import { formatRelative } from '../lib/dates'
-import { useDocumentTitle } from '../lib/useDocumentTitle'
+import { usePageMeta } from '../lib/usePageMeta'
 
 /**
  * Curated projects first, live GitHub second.
@@ -17,7 +17,10 @@ import { useDocumentTitle } from '../lib/useDocumentTitle'
  * error when GitHub is unreachable.
  */
 export default function Projects() {
-  useDocumentTitle('Projects')
+  usePageMeta({
+    title: 'Projects',
+    description: 'Selected projects, with live repository stats where the source is public.',
+  })
 
   const projects = useProjects()
   const repos = useGitHubRepos()

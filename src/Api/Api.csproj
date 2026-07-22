@@ -23,4 +23,54 @@
     </Content>
   </ItemGroup>
 
+  <PropertyGroup>
+    <SpaRoot>$(MSBuildProjectDirectory)\..\web\</SpaRoot>
+    <!--
+      Static web assets take their inventory of wwwroot when MSBuild evaluates
+      the project — before BuildSpa below has regenerated it. Publishing then
+      tries to copy the *previous* build's hashed filenames and fails outright
+      the moment a source change gives them new hashes.
+
+      Nothing here needs that machinery: there are no Razor class libraries to
+      compose assets from, and the SPA output is handed to the publish list
+      explicitly. Turning it off also drops its build-time precompression,
+      which was compressing the same stale inventory; the app compresses at run
+      time instead (see Program.cs).
+    -->
+    <StaticWebAssetsEnabled>false</StaticWebAssetsEnabled>
+    <!-- Set to true to publish whatever is already in wwwroot — useful in a
+         Docker build that has run the frontend in an earlier, node-based
+         stage and has no npm in the final one. -->
+    <SkipSpaBuild Condition="'$(SkipSpaBuild)' == ''">false</SkipSpaBuild>
+  </PropertyGroup>
+
+  <!--
+    Publish is where the two halves of this repo become one application: the
+    React build writes into wwwroot (see vite.config.ts) and the result is
+    served by this app on a single port.
+
+    It only runs on publish. `dotnet build` and `dotnet watch` leave it alone
+    because in development the Vite dev server owns the frontend, and building
+    it on every rebuild would cost seconds for output nothing reads.
+
+    wwwroot is empty when MSBuild evaluates its globs, so the generated files
+    cannot come in as ordinary Content — they are handed to the publish list
+    here, after they exist.
+  -->
+  <Target Name="BuildSpa" BeforeTargets="ComputeResolvedFilesToPublishList" Condition="'$(SkipSpaBuild)' != 'true'">
+    <Message Importance="high" Text="Building the frontend into $(MSBuildProjectDirectory)\wwwroot ..." />
+
+    <Exec Command="npm ci" WorkingDirectory="$(SpaRoot)" Condition="!Exists('$(SpaRoot)node_modules')" />
+    <Exec Command="npm run build" WorkingDirectory="$(SpaRoot)" />
+
+    <ItemGroup>
+      <_SpaOutput Include="$(MSBuildProjectDirectory)\wwwroot\**\*" />
+      <ResolvedFileToPublish Include="@(_SpaOutput)">
+        <RelativePath>wwwroot\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
 </Project>

@@ -19,9 +19,16 @@ export default function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       <AmbientBackground />
+      <SkipLink />
       <NavWithProfile />
 
-      <main id="content" className="mx-auto w-full max-w-[68rem] flex-1 px-5 pt-28 pb-24 sm:px-8">
+      {/* tabIndex -1 so the skip link actually lands focus here rather than
+          only moving the scroll position. */}
+      <main
+        id="content"
+        tabIndex={-1}
+        className="mx-auto w-full max-w-[68rem] flex-1 px-5 pt-28 pb-24 sm:px-8"
+      >
         <Outlet />
       </main>
 
@@ -42,6 +49,26 @@ function useScrollToTopOnNavigate() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [pathname])
+}
+
+/**
+ * The first stop on a keyboard tab through the site. It parks off-screen rather
+ * than being display:none, so it stays focusable; landing focus drops it into
+ * place as the same glass pill the nav is made of.
+ *
+ * Keyed to `:focus` rather than `:focus-visible`: parked off-screen it can only
+ * ever be reached by keyboard, and the one keyboard affordance on the page is
+ * not worth betting on a heuristic.
+ */
+function SkipLink() {
+  return (
+    <a
+      href="#content"
+      className="glass-high fixed top-4 left-4 z-50 -translate-y-24 rounded-full px-5 py-2.5 text-meta font-medium text-ink transition-transform duration-200 ease-out-quint focus:translate-y-0"
+    >
+      Skip to content
+    </a>
+  )
 }
 
 function NavWithProfile() {

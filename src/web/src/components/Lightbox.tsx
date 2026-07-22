@@ -13,6 +13,15 @@ import PhotoImage from './PhotoImage'
  * navigation, body scroll lock (the backdrop does not stop the page behind it
  * scrolling), and click-outside-to-close.
  */
+/** How much of the viewport a photo may take, leaving room for the caption bar
+ *  and the dialog's own padding. */
+const MAX_HEIGHT = '68dvh'
+
+/** Below this the caption has nowhere to go, so a very tall photo in a very
+ *  short window gets a caption bar wider than itself rather than an unreadable
+ *  one the same width. */
+const MIN_CAPTION_WIDTH = '21rem'
+
 export default function Lightbox({
   photos,
   index,
@@ -90,6 +99,7 @@ export default function Lightbox({
 
   const meta = [photo.location, formatDay(photo.date)].filter(Boolean).join(' · ')
   const hasSiblings = photos.length > 1
+  const frameWidth = `calc(${MAX_HEIGHT} * ${photo.width} / ${photo.height})`
 
   return (
     <dialog
@@ -131,31 +141,43 @@ export default function Lightbox({
         const delta = (event.changedTouches[0]?.clientX ?? start) - start
         if (Math.abs(delta) > 50) onNavigate(delta < 0 ? 1 : -1)
       }}
-      className="m-0 h-dvh max-h-none w-dvw max-w-none bg-transparent p-4 backdrop:bg-black/50 backdrop:backdrop-blur-2xl sm:p-8"
+      className="m-0 h-dvh max-h-none w-dvw max-w-none bg-transparent p-4 backdrop:bg-scrim backdrop:backdrop-blur-2xl sm:p-8"
     >
       <div className="pointer-events-none flex h-full w-full items-center justify-center">
-        {/* `w-fit` so the frame and the caption bar hug the photo instead of
-            stranding it in a wide slab of glass — a portrait shot and a
-            panorama each get chrome cut to their own shape. */}
+        {/* The frame and the caption bar hug the photo instead of stranding it
+            in a wide slab of glass — a portrait shot and a panorama each get
+            chrome cut to their own shape.
+
+            The width is computed rather than left to `w-fit`, because
+            shrink-to-fit sizes a replaced element from its intrinsic width and
+            never hears about the height cap: a tall photo in a short viewport
+            would leave the frame at full width with the picture stranded down
+            one edge. Deriving the width from the height cap and the photo's own
+            ratio is the same answer in both directions. */}
         <figure
-          className="pointer-events-auto flex max-h-full w-fit max-w-full flex-col gap-3"
+          style={{ width: `min(100%, max(${MIN_CAPTION_WIDTH}, ${frameWidth}))` }}
+          className="pointer-events-auto flex max-h-full flex-col items-center gap-3"
           onClick={(event) => {
             event.stopPropagation()
           }}
         >
-          <div className="glass-high overflow-hidden rounded-panel p-2">
+          <div
+            style={{ width: `min(100%, ${frameWidth})` }}
+            className="glass-high overflow-hidden rounded-panel p-2"
+          >
             <PhotoImage
               key={photo.id}
               src={photo.src}
+              avif={photo.srcAvif}
               alt={photo.caption}
               width={photo.width}
               height={photo.height}
               eager
-              className="max-h-[68dvh] w-auto max-w-full rounded-[0.75rem] object-contain"
+              className="w-full rounded-[0.75rem]"
             />
           </div>
 
-          <figcaption className="glass-high flex items-center gap-4 rounded-full py-2.5 pr-2.5 pl-5">
+          <figcaption className="glass-high flex w-full items-center gap-4 rounded-full py-2.5 pr-2.5 pl-5">
             <div className="min-w-0 flex-1">
               <p className="truncate text-meta font-medium text-ink">{photo.caption}</p>
               {meta && <p className="gutter-date mt-0.5 truncate">{meta}</p>}

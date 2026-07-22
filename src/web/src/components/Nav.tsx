@@ -33,7 +33,9 @@ export default function Nav({ links }: { links: ProfileLinks | null }) {
                 end={page.to === '/'}
                 className={({ isActive }) =>
                   [
-                    'flex h-9 items-center rounded-full px-3.5 text-meta font-medium',
+                    // 40px, the same height as the site's buttons — the pill is
+                    // quiet, but it is still the primary control on a phone.
+                    'flex h-10 items-center rounded-full px-3.5 text-meta font-medium',
                     'transition-[color,background-color] duration-200 ease-out-quint',
                     isActive
                       ? 'bg-ember-soft text-ember'
@@ -84,7 +86,7 @@ function SocialLink({
         aria-label={label}
         target="_blank"
         rel="me noreferrer"
-        className="flex size-9 items-center justify-center rounded-full text-ink-soft transition-[color,background-color] duration-200 ease-out-quint hover:bg-inset hover:text-ink active:scale-[0.97]"
+        className="flex size-10 items-center justify-center rounded-full text-ink-soft transition-[color,background-color] duration-200 ease-out-quint hover:bg-inset hover:text-ink active:scale-[0.97]"
       >
         {children}
       </a>

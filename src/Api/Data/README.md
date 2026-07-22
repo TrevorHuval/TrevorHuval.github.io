@@ -32,15 +32,30 @@ real content. Search the folder for `TODO:` to find what's left.
 
 ## Photos
 
-`src` and `thumbnail` are web-root-relative paths, so the files belong in
-`src/web/public/photos/` (and `src/web/public/photos/thumbs/`) — Vite serves
-that folder at `/` in dev and it is copied into `wwwroot` for production. The
-four entries here point at placeholder filenames that do not exist yet; drop
-real images in with matching names, or rename the entries to match the images.
+`src`, `srcAvif`, `thumbnail`, `thumbnailAvif`, `width` and `height` are all
+**generated** — do not hand-edit them. The pipeline owns the files, you own the
+words (`caption`, `location`, `date`, `album`):
+
+```bash
+npm run photos --prefix src/web
+```
+
+It reads the originals named in `src/web/scripts/photo-sources.json` (from
+`~/Pictures/personalSitePics`, or wherever `PHOTOS_SRC` points), writes a
+2000px JPEG and AVIF plus an 800px thumbnail of each into
+`src/web/public/photos/`, and updates the six generated fields here to match.
+Adding a photo means adding an entry with the words filled in, mapping its id to
+a source file in `photo-sources.json`, and running the script. Anything with no
+mapping is left alone, so a hand-added photo keeps working.
 
 `width` and `height` are the intrinsic pixel dimensions of the **full-size**
-image. The gallery uses them to reserve space before the image loads, so wrong
-values mean layout shift.
+image; the gallery reserves space from them before the image loads, so a wrong
+value means layout shift. `npm run photos -- --check` verifies them against
+what is actually on disk without re-encoding anything.
+
+The AVIF paths must lead to real files: a `<picture>` does **not** fall back to
+its `<img>` when a source it accepts fails to load. Set them to `null` for a
+photo the pipeline did not produce, and it will serve the JPEG alone.
 
 ## Projects and GitHub
 

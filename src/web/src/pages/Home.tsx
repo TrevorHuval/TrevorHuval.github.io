@@ -7,7 +7,7 @@ import Timeline from '../components/Timeline'
 import { ArrowUpRightIcon, DownloadIcon, MailIcon } from '../components/Icons'
 import { ErrorPanel, LoadingPanel, Skeleton } from '../components/States'
 import { ActionLink, Section } from '../components/Ui'
-import { useDocumentTitle } from '../lib/useDocumentTitle'
+import { usePageMeta } from '../lib/usePageMeta'
 
 /**
  * The one page most visitors will read all of, so it carries the whole story in
@@ -16,7 +16,9 @@ import { useDocumentTitle } from '../lib/useDocumentTitle'
  * stop the bio rendering.
  */
 export default function Home() {
-  useDocumentTitle()
+  // No override: the home page is what index.html's build-time title and
+  // description were written for.
+  usePageMeta()
 
   return (
     <div className="flex flex-col gap-20 sm:gap-24">
@@ -154,6 +156,7 @@ function PhotoTeaser() {
                   and the real aspect ratios get their moment on /photos. */}
               <PhotoImage
                 src={photo.thumbnail}
+                avif={photo.thumbnailAvif}
                 alt={photo.caption}
                 width={photo.width}
                 height={photo.height}

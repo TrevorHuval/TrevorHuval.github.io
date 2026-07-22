@@ -1,0 +1,20 @@
+{
+  "name": "Trevor Huval",
+  "short_name": "Trevor",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ],
+  "theme_color": "#1c1f26",
+  "background_color": "#1c1f26",
+  "display": "standalone",
+  "start_url": "/"
+}

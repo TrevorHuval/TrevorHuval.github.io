@@ -6,7 +6,7 @@ import { ArrowUpRightIcon, DownloadIcon } from '../components/Icons'
 import { ErrorPanel, LoadingPanel, Skeleton } from '../components/States'
 import { ActionLink, Section } from '../components/Ui'
 import { formatMonth, formatRange } from '../lib/dates'
-import { useDocumentTitle } from '../lib/useDocumentTitle'
+import { usePageMeta } from '../lib/usePageMeta'
 
 /**
  * The résumé as a web page, with the PDF one click away for anyone who needs to
@@ -14,7 +14,11 @@ import { useDocumentTitle } from '../lib/useDocumentTitle'
  * gets read, linked and indexed.
  */
 export default function ResumePage() {
-  useDocumentTitle('Resume')
+  usePageMeta({
+    title: 'Resume',
+    description:
+      'Work experience, education and certifications, with the printable PDF a click away.',
+  })
 
   const { data: resume, error, loading, reload } = useResume()
   const skills = useSkills()

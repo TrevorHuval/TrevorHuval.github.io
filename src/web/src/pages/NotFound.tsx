@@ -1,8 +1,11 @@
 import { ActionLink } from '../components/Ui'
-import { useDocumentTitle } from '../lib/useDocumentTitle'
+import { usePageMeta } from '../lib/usePageMeta'
 
 export default function NotFound() {
-  useDocumentTitle('Page not found')
+  usePageMeta({
+    title: 'Page not found',
+    description: 'That address does not lead anywhere on this site.',
+  })
 
   return (
     <div className="flex min-h-[50vh] flex-col items-start justify-center gap-5">

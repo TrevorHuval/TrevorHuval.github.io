@@ -51,11 +51,24 @@
   --color-veil-high: oklch(1 0 0 / 0.78);
   --color-inset: oklch(0.24 0.015 258 / 0.045);
 
-  /* Text — four levels: default, supporting, metadata, disabled. */
+  /* What the lightbox lays over the page. It is not decoration: the caption
+     bar's backdrop-filter samples straight through it, and on dark mode the
+     veil is only 10% white — so without a strong scrim the chrome takes its
+     colour from whatever photograph happens to be behind it and a lantern-lit
+     alley turns the caption orange. Dark mode needs more of it because its
+     text is light and the veil hides less. */
+  --color-scrim: oklch(0 0 0 / 0.5);
+
+  /* Text — four levels: default, supporting, metadata, quietest.
+     The bottom of the ladder still carries real content (every date on the
+     site is a gutter-date in ink-faint), so all four are held above 4.5:1
+     against the canvas *and* against both glass levels, which sit lighter than
+     the canvas in dark mode and so are the binding case there. Measured:
+     15.8 / 8.8 / 6.5 / 4.9 light, 13.5 / 8.0 / 6.0 / 4.6 on dark glass-high. */
   --color-ink: oklch(0.24 0.017 258);
-  --color-ink-muted: oklch(0.44 0.013 258);
-  --color-ink-soft: oklch(0.56 0.011 258);
-  --color-ink-faint: oklch(0.68 0.009 258);
+  --color-ink-muted: oklch(0.4 0.014 258);
+  --color-ink-soft: oklch(0.47 0.013 258);
+  --color-ink-faint: oklch(0.538 0.012 258);
 
   /* Hairlines. Low-alpha so they define an edge without being seen. */
   --color-hairline: oklch(0.24 0.017 258 / 0.1);
@@ -96,11 +109,12 @@
     --color-veil: oklch(0.96 0.01 262 / 0.06);
     --color-veil-high: oklch(0.96 0.01 262 / 0.1);
     --color-inset: oklch(0 0 0 / 0.22);
+    --color-scrim: oklch(0 0 0 / 0.74);
 
     --color-ink: oklch(0.965 0.004 262);
-    --color-ink-muted: oklch(0.77 0.011 262);
-    --color-ink-soft: oklch(0.645 0.013 262);
-    --color-ink-faint: oklch(0.51 0.013 262);
+    --color-ink-muted: oklch(0.8 0.012 262);
+    --color-ink-soft: oklch(0.72 0.013 262);
+    --color-ink-faint: oklch(0.648 0.013 262);
 
     --color-hairline: oklch(1 0 0 / 0.09);
     --color-hairline-strong: oklch(1 0 0 / 0.16);

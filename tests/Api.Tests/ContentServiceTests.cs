@@ -138,6 +138,33 @@ public sealed class ContentServiceTests
         });
     }
 
+    /// <summary>
+    /// A &lt;picture&gt; will not fall back to its &lt;img&gt; when a source it
+    /// accepts fails to load, so an AVIF path that does not lead to a real file
+    /// is a broken photo rather than a slow one. The pipeline writes these in
+    /// lockstep with the JPEGs; this catches a hand edit that breaks the pair.
+    /// </summary>
+    [Fact]
+    public void PhotoAvifPathsMirrorTheirJpegs()
+    {
+        foreach (var photo in Content.Photos)
+        {
+            AssertMirrors(photo.Src, photo.SrcAvif, photo.Id);
+            AssertMirrors(photo.Thumbnail, photo.ThumbnailAvif, photo.Id);
+        }
+
+        static void AssertMirrors(string jpeg, string? avif, string id)
+        {
+            if (avif is null)
+            {
+                return;
+            }
+
+            Assert.Equal(Path.ChangeExtension(jpeg, ".avif"), avif);
+            Assert.EndsWith(".jpg", jpeg, StringComparison.Ordinal);
+        }
+    }
+
     [Fact]
     public void PhotoDatesAreIsoDates()
     {
