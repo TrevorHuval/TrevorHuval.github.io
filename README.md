@@ -10,7 +10,7 @@ single container.
 ## Layout
 
 ```
-personalSite.sln
+personalSite.slnx
 src/
   Api/        .NET 10 minimal API — serves /api/* and, in production, the SPA
   web/        Vite + React + TypeScript + Tailwind frontend
