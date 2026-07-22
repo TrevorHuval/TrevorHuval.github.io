@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+
+/* The real design system — ambient background, frosted-glass surfaces, type
+   scale and light/dark tokens — is built in a later session. */
+@layer base {
+  html {
+    color-scheme: light dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

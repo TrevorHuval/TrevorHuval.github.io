@@ -1,0 +1,10 @@
+# Normalize to LF in the repository so the Linux-based Docker/CI builds and
+# Windows development agree on file contents.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
