@@ -1,7 +1,126 @@
 @import 'tailwindcss';
 
-/* The real design system — ambient background, frosted-glass surfaces, type
-   scale and light/dark tokens — is built in a later session. */
+/* ===========================================================================
+   Design tokens
+
+   The palette is borrowed from a darkroom: cool slate paper stock for every
+   surface, one warm safelight accent. Structure is built entirely from
+   neutrals; the ember is spent only on things you can act on, so it stays
+   scarce enough to mean something.
+
+   Dark mode is a straight token swap under prefers-color-scheme — components
+   never carry `dark:` variants for colour, which is what keeps the two themes
+   from drifting apart.
+   =========================================================================== */
+
+@theme {
+  /* On Apple hardware this resolves to SF Pro, which is the typeface this
+     design language was drawn for. Segoe UI Variable covers Windows. */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI Variable Text', 'Segoe UI', Inter,
+    system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'JetBrains Mono', Menlo, monospace;
+
+  /* Type scale — 16px body stepped by roughly 1.28. */
+  --text-caption: 0.75rem; /* 12 */
+  --text-caption--line-height: 1.4;
+  --text-meta: 0.8125rem; /* 13 */
+  --text-meta--line-height: 1.45;
+  --text-sm: 0.875rem; /* 14 */
+  --text-sm--line-height: 1.5;
+  --text-base: 1rem; /* 16 */
+  --text-base--line-height: 1.65;
+  --text-lg: 1.125rem; /* 18 */
+  --text-lg--line-height: 1.55;
+  --text-xl: 1.3125rem; /* 21 */
+  --text-xl--line-height: 1.35;
+  --text-xl--letter-spacing: -0.01em;
+  --text-2xl: 1.625rem; /* 26 */
+  --text-2xl--line-height: 1.25;
+  --text-2xl--letter-spacing: -0.018em;
+  --text-3xl: 2.125rem; /* 34 */
+  --text-3xl--line-height: 1.15;
+  --text-3xl--letter-spacing: -0.025em;
+  --text-display: 3.5rem; /* 56 */
+  --text-display--line-height: 1.03;
+  --text-display--letter-spacing: -0.035em;
+
+  /* Surfaces. One hue throughout — only lightness moves between levels. */
+  --color-canvas: oklch(0.985 0.004 255);
+  --color-veil: oklch(1 0 0 / 0.62);
+  --color-veil-high: oklch(1 0 0 / 0.78);
+  --color-inset: oklch(0.24 0.015 258 / 0.045);
+
+  /* Text — four levels: default, supporting, metadata, disabled. */
+  --color-ink: oklch(0.24 0.017 258);
+  --color-ink-muted: oklch(0.44 0.013 258);
+  --color-ink-soft: oklch(0.56 0.011 258);
+  --color-ink-faint: oklch(0.68 0.009 258);
+
+  /* Hairlines. Low-alpha so they define an edge without being seen. */
+  --color-hairline: oklch(0.24 0.017 258 / 0.1);
+  --color-hairline-strong: oklch(0.24 0.017 258 / 0.18);
+
+  /* The one accent: darkroom safelight. */
+  --color-ember: oklch(0.52 0.14 48);
+  --color-ember-soft: oklch(0.52 0.14 48 / 0.1);
+  --color-ember-glow: oklch(0.72 0.16 55);
+
+  --radius-card: 1rem;
+  --radius-panel: 1.25rem;
+
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-quint: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* Ambient blob colours and the elevation shadows live outside @theme: they are
+   raw values the utilities below consume, not things worth generating
+   utility classes for. */
+:root {
+  --ambient-a: oklch(0.78 0.11 55 / 0.3);
+  --ambient-b: oklch(0.7 0.11 245 / 0.26);
+  --ambient-c: oklch(0.75 0.08 165 / 0.2);
+
+  --shadow-lift:
+    0 0 0 1px oklch(0.24 0.017 258 / 0.04), 0 1px 2px -1px oklch(0.24 0.017 258 / 0.07),
+    0 10px 28px -14px oklch(0.24 0.017 258 / 0.18);
+  --shadow-lift-high:
+    0 0 0 1px oklch(0.24 0.017 258 / 0.05), 0 2px 4px -2px oklch(0.24 0.017 258 / 0.08),
+    0 18px 44px -18px oklch(0.24 0.017 258 / 0.24);
+  --outline-image: oklch(0 0 0 / 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-canvas: oklch(0.175 0.013 262);
+    --color-veil: oklch(0.96 0.01 262 / 0.06);
+    --color-veil-high: oklch(0.96 0.01 262 / 0.1);
+    --color-inset: oklch(0 0 0 / 0.22);
+
+    --color-ink: oklch(0.965 0.004 262);
+    --color-ink-muted: oklch(0.77 0.011 262);
+    --color-ink-soft: oklch(0.645 0.013 262);
+    --color-ink-faint: oklch(0.51 0.013 262);
+
+    --color-hairline: oklch(1 0 0 / 0.09);
+    --color-hairline-strong: oklch(1 0 0 / 0.16);
+
+    --color-ember: oklch(0.79 0.12 64);
+    --color-ember-soft: oklch(0.79 0.12 64 / 0.14);
+    --color-ember-glow: oklch(0.82 0.13 62);
+
+    --ambient-a: oklch(0.6 0.13 52 / 0.22);
+    --ambient-b: oklch(0.5 0.14 260 / 0.28);
+    --ambient-c: oklch(0.55 0.09 190 / 0.16);
+
+    /* Depth shadows barely read on dark — collapse to a ring and let the
+       hairline do the work. */
+    --shadow-lift: 0 0 0 1px oklch(1 0 0 / 0.06);
+    --shadow-lift-high: 0 0 0 1px oklch(1 0 0 / 0.1), 0 24px 48px -24px oklch(0 0 0 / 0.7);
+    --outline-image: oklch(1 0 0 / 0.1);
+  }
+}
+
 @layer base {
   html {
     color-scheme: light dark;
@@ -9,5 +128,106 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* One focus treatment for the whole site. */
+  :focus-visible {
+    outline: 2px solid var(--color-ember);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  ::selection {
+    background: var(--color-ember-soft);
+  }
+}
+
+/* ===========================================================================
+   Surface utilities
+   =========================================================================== */
+
+/* Level 1: cards and panels resting on the canvas. */
+@utility glass {
+  background-color: var(--color-veil);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--color-hairline);
+  box-shadow: var(--shadow-lift);
+}
+
+/* Level 2: the nav bar, the lightbox chrome — anything that floats above a
+   level-1 surface and would otherwise blend into it. */
+@utility glass-high {
+  background-color: var(--color-veil-high);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid var(--color-hairline);
+  box-shadow: var(--shadow-lift-high);
+}
+
+/* The signature. Frame numbers in a contact-sheet margin: every date on this
+   site — roles, degrees, certifications, repo pushes, photographs — is stamped
+   the same way. */
+@utility gutter-date {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+
+/* Any number that can change under its own label. */
+@utility numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility image-edge {
+  outline: 1px solid var(--outline-image);
+  outline-offset: -1px;
+}
+
+@layer components {
+  /* Photos and thumbnails fade in rather than snapping, which hides the
+     staggered decode of a grid full of images. */
+  .photo-fade {
+    opacity: 0;
+    transition: opacity 400ms var(--ease-out-quint);
+  }
+
+  .photo-fade[data-loaded='true'] {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Keep opacity and colour transitions, drop everything that moves. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

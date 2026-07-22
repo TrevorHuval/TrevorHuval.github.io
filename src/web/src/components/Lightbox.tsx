@@ -1,0 +1,211 @@
+import { useEffect, useRef } from 'react'
+import type { Photo } from '../api/types'
+import { formatDay } from '../lib/dates'
+import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from './Icons'
+import PhotoImage from './PhotoImage'
+
+/**
+ * Built on a native `<dialog>` opened with `showModal()`, which is what gives
+ * us the focus trap, Escape-to-close, focus return to the thumbnail, top-layer
+ * stacking and an inert background — all of it correct, none of it hand-rolled.
+ *
+ * What the platform does not give us and this adds: arrow-key and swipe
+ * navigation, body scroll lock (the backdrop does not stop the page behind it
+ * scrolling), and click-outside-to-close.
+ */
+export default function Lightbox({
+  photos,
+  index,
+  onClose,
+  onNavigate,
+}: {
+  photos: Photo[]
+  /** `null` when closed. */
+  index: number | null
+  onClose: () => void
+  /** `-1` for previous, `1` for next. The caller wraps around. */
+  onNavigate: (delta: number) => void
+}) {
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const touchStartX = useRef<number | null>(null)
+  const isOpen = index !== null
+
+  // Held in a ref so the listener below can stay attached for the component's
+  // whole life instead of being torn down on every parent render.
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
+
+  /**
+   * A modal dialog can be dismissed by the user agent itself — Escape, or the
+   * browser closing the top layer — which fires `close` on the element without
+   * going through any of our handlers. React state has to follow, or the
+   * dialog vanishes while we still believe it is open and `body` is left
+   * scroll-locked.
+   *
+   * Bound natively rather than through `onClose`: `close` does not bubble, so
+   * this sidesteps any question of how the synthetic event system routes it.
+   */
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (!dialog) return
+
+    const handleClose = () => {
+      onCloseRef.current()
+    }
+
+    dialog.addEventListener('close', handleClose)
+    return () => {
+      dialog.removeEventListener('close', handleClose)
+    }
+  }, [])
+
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (!dialog) return
+
+    // showModal() throws if the dialog is already open, and close() on a closed
+    // dialog fires a spurious 'close' event — so both are guarded.
+    if (isOpen && !dialog.open) dialog.showModal()
+    else if (!isOpen && dialog.open) dialog.close()
+  }, [isOpen])
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    const previous = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = previous
+    }
+  }, [isOpen])
+
+  // The dialog element itself always stays mounted so the open/close effect
+  // above has something to act on, but there is nothing to render inside it
+  // until a photo is selected.
+  const photo = index === null ? undefined : photos[index]
+  if (index === null || photo === undefined) {
+    return <dialog ref={dialogRef} className="hidden" />
+  }
+
+  const meta = [photo.location, formatDay(photo.date)].filter(Boolean).join(' · ')
+  const hasSiblings = photos.length > 1
+
+  return (
+    <dialog
+      ref={dialogRef}
+      aria-label={`Photo ${index + 1} of ${photos.length}: ${photo.caption}`}
+      onClick={(event) => {
+        // Only a click on the dialog box itself — the padding around the
+        // figure — counts as clicking out.
+        if (event.target === dialogRef.current) onClose()
+      }}
+      onKeyDown={(event) => {
+        // The user agent also closes the dialog on Escape by itself. Unwinding
+        // our own state here too means the scroll lock lifts even if the
+        // resulting `close` event never reaches the listener above. Running
+        // both paths is harmless — it just sets the same state twice.
+        if (event.key === 'Escape') {
+          onClose()
+          return
+        }
+
+        if (!hasSiblings) return
+
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault()
+          onNavigate(-1)
+        } else if (event.key === 'ArrowRight') {
+          event.preventDefault()
+          onNavigate(1)
+        }
+      }}
+      onTouchStart={(event) => {
+        touchStartX.current = event.changedTouches[0]?.clientX ?? null
+      }}
+      onTouchEnd={(event) => {
+        const start = touchStartX.current
+        touchStartX.current = null
+        if (start === null || !hasSiblings) return
+
+        const delta = (event.changedTouches[0]?.clientX ?? start) - start
+        if (Math.abs(delta) > 50) onNavigate(delta < 0 ? 1 : -1)
+      }}
+      className="m-0 h-dvh max-h-none w-dvw max-w-none bg-transparent p-4 backdrop:bg-black/50 backdrop:backdrop-blur-2xl sm:p-8"
+    >
+      <div className="pointer-events-none flex h-full w-full items-center justify-center">
+        {/* `w-fit` so the frame and the caption bar hug the photo instead of
+            stranding it in a wide slab of glass — a portrait shot and a
+            panorama each get chrome cut to their own shape. */}
+        <figure
+          className="pointer-events-auto flex max-h-full w-fit max-w-full flex-col gap-3"
+          onClick={(event) => {
+            event.stopPropagation()
+          }}
+        >
+          <div className="glass-high overflow-hidden rounded-panel p-2">
+            <PhotoImage
+              key={photo.id}
+              src={photo.src}
+              alt={photo.caption}
+              width={photo.width}
+              height={photo.height}
+              eager
+              className="max-h-[68dvh] w-auto max-w-full rounded-[0.75rem] object-contain"
+            />
+          </div>
+
+          <figcaption className="glass-high flex items-center gap-4 rounded-full py-2.5 pr-2.5 pl-5">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-meta font-medium text-ink">{photo.caption}</p>
+              {meta && <p className="gutter-date mt-0.5 truncate">{meta}</p>}
+            </div>
+
+            {hasSiblings && (
+              <span className="numeric shrink-0 font-mono text-caption text-ink-faint">
+                {index + 1} / {photos.length}
+              </span>
+            )}
+
+            <div className="flex shrink-0 items-center gap-1">
+              {hasSiblings && (
+                <>
+                  <ChromeButton label="Previous photo" onClick={() => onNavigate(-1)}>
+                    <ChevronLeftIcon className="size-[1.15rem]" />
+                  </ChromeButton>
+                  <ChromeButton label="Next photo" onClick={() => onNavigate(1)}>
+                    <ChevronRightIcon className="size-[1.15rem]" />
+                  </ChromeButton>
+                </>
+              )}
+              <ChromeButton label="Close" onClick={onClose}>
+                <CloseIcon className="size-[1.15rem]" />
+              </ChromeButton>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+    </dialog>
+  )
+}
+
+function ChromeButton({
+  label,
+  onClick,
+  children,
+}: {
+  label: string
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      className="flex size-10 items-center justify-center rounded-full text-ink-muted transition-[background-color,color,transform] duration-200 ease-out-quint hover:bg-inset hover:text-ink active:scale-[0.97]"
+    >
+      {children}
+    </button>
+  )
+}

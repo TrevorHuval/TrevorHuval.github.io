@@ -1,0 +1,104 @@
+import { useEffect } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
+import AmbientBackground from './AmbientBackground'
+import Nav from './Nav'
+import { GitHubIcon, LinkedInIcon, MailIcon } from './Icons'
+import { useSiteProfile } from '../api/profile-context'
+
+/**
+ * The shell every route renders into. The measure is capped at 68rem: wide
+ * enough for a three-up project grid, narrow enough that a résumé bullet never
+ * runs past a comfortable line length.
+ *
+ * Top padding clears the floating nav pill; the Photos page overrides the
+ * horizontal padding for its own full-bleed grid.
+ */
+export default function Layout() {
+  useScrollToTopOnNavigate()
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <AmbientBackground />
+      <NavWithProfile />
+
+      <main id="content" className="mx-auto w-full max-w-[68rem] flex-1 px-5 pt-28 pb-24 sm:px-8">
+        <Outlet />
+      </main>
+
+      <SiteFooter />
+    </div>
+  )
+}
+
+/**
+ * A client-side route change does not reset the scroll position the way a real
+ * navigation does, so without this you land halfway down the next page.
+ * `instant` rather than smooth: the browser's own back/forward feel is instant,
+ * and animating it makes navigation feel laggy.
+ */
+function useScrollToTopOnNavigate() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [pathname])
+}
+
+function NavWithProfile() {
+  const { data } = useSiteProfile()
+
+  return <Nav links={data?.links ?? null} />
+}
+
+function SiteFooter() {
+  const { data } = useSiteProfile()
+  const year = new Date().getFullYear()
+
+  return (
+    <footer className="mx-auto w-full max-w-[68rem] px-5 pb-10 sm:px-8">
+      <div className="flex flex-col items-center gap-5 border-t border-hairline pt-8 sm:flex-row sm:justify-between">
+        <p className="numeric text-meta text-ink-soft">
+          © {year} {data?.name ?? 'Trevor Huval'}
+        </p>
+
+        {data && (
+          <ul className="flex items-center gap-1">
+            <FooterLink href={data.links.gitHub} label="GitHub">
+              <GitHubIcon className="size-[1.05rem]" />
+            </FooterLink>
+            <FooterLink href={data.links.linkedIn} label="LinkedIn">
+              <LinkedInIcon className="size-[1.05rem]" />
+            </FooterLink>
+            <FooterLink href={`mailto:${data.links.email}`} label="Email">
+              <MailIcon className="size-[1.05rem]" />
+            </FooterLink>
+          </ul>
+        )}
+      </div>
+    </footer>
+  )
+}
+
+function FooterLink({
+  href,
+  label,
+  children,
+}: {
+  href: string
+  label: string
+  children: React.ReactNode
+}) {
+  return (
+    <li>
+      <a
+        href={href}
+        aria-label={label}
+        target="_blank"
+        rel="me noreferrer"
+        className="flex size-10 items-center justify-center rounded-full text-ink-soft transition-[color,background-color] duration-200 ease-out-quint hover:bg-inset hover:text-ink active:scale-[0.97]"
+      >
+        {children}
+      </a>
+    </li>
+  )
+}

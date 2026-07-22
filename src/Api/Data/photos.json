@@ -1,46 +1,68 @@
 [
   {
-    "id": "photo-001",
-    "src": "/photos/placeholder-01.jpg",
-    "thumbnail": "/photos/thumbs/placeholder-01.jpg",
-    "caption": "TODO: Trevor fills in — a short caption for this photo",
-    "location": "TODO: Trevor fills in — where it was taken",
-    "date": "2024-06-15",
+    "id": "japan-alley",
+    "src": "/photos/japan-alley.jpg",
+    "thumbnail": "/photos/thumbs/japan-alley.jpg",
+    "caption": "A lantern-lit alley, still wet from the rain",
+    "location": "Japan",
+    "date": null,
     "album": "Travel",
-    "width": 1600,
-    "height": 1067
+    "width": 1500,
+    "height": 2000
   },
   {
-    "id": "photo-002",
-    "src": "/photos/placeholder-02.jpg",
-    "thumbnail": "/photos/thumbs/placeholder-02.jpg",
-    "caption": "TODO: Trevor fills in — a short caption for this photo",
-    "location": "TODO: Trevor fills in — where it was taken",
-    "date": "2024-09-02",
+    "id": "grand-canyon",
+    "src": "/photos/grand-canyon.jpg",
+    "thumbnail": "/photos/thumbs/grand-canyon.jpg",
+    "caption": "Storm light coming across the canyon",
+    "location": "Grand Canyon, Arizona",
+    "date": null,
     "album": "Travel",
-    "width": 1067,
-    "height": 1600
+    "width": 2000,
+    "height": 1125
   },
   {
-    "id": "photo-003",
-    "src": "/photos/placeholder-03.jpg",
-    "thumbnail": "/photos/thumbs/placeholder-03.jpg",
-    "caption": "TODO: Trevor fills in — a short caption for this photo",
-    "location": "TODO: Trevor fills in — where it was taken",
-    "date": "2025-01-20",
-    "album": "Life",
-    "width": 1600,
-    "height": 1600
+    "id": "colorado",
+    "src": "/photos/colorado.jpg",
+    "thumbnail": "/photos/thumbs/colorado.jpg",
+    "caption": "Above a snowed-in mountain town",
+    "location": "Colorado",
+    "date": null,
+    "album": "Travel",
+    "width": 1500,
+    "height": 2000
   },
   {
-    "id": "photo-004",
-    "src": "/photos/placeholder-04.jpg",
-    "thumbnail": "/photos/thumbs/placeholder-04.jpg",
-    "caption": "TODO: Trevor fills in — a short caption for this photo",
+    "id": "manhattan",
+    "src": "/photos/manhattan.jpg",
+    "thumbnail": "/photos/thumbs/manhattan.jpg",
+    "caption": "Looking north over Central Park",
+    "location": "New York, New York",
+    "date": null,
+    "album": "Travel",
+    "width": 2000,
+    "height": 1500
+  },
+  {
+    "id": "tiny-planet-steps",
+    "src": "/photos/tiny-planet-steps.jpg",
+    "thumbnail": "/photos/thumbs/tiny-planet-steps.jpg",
+    "caption": "A tiny-planet look back down a long flight of stone steps",
     "location": null,
-    "date": "2025-05-11",
+    "date": null,
+    "album": "Travel",
+    "width": 1500,
+    "height": 2000
+  },
+  {
+    "id": "lsu-graduation",
+    "src": "/photos/lsu-graduation.jpg",
+    "thumbnail": "/photos/thumbs/lsu-graduation.jpg",
+    "caption": "Cap and gown outside Tiger Stadium",
+    "location": "Baton Rouge, Louisiana",
+    "date": null,
     "album": "Life",
-    "width": 1600,
-    "height": 1067
+    "width": 1334,
+    "height": 2000
   }
 ]
