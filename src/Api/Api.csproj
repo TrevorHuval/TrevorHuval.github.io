@@ -6,4 +6,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
+    <!-- Microsoft.AspNetCore.OpenApi still pins Microsoft.OpenApi 2.0.0, which
+         carries GHSA-v5pm-xwqc-g5wc. Referenced directly to pull the fix in. -->
+    <PackageReference Include="Microsoft.OpenApi" Version="2.11.0" />
+  </ItemGroup>
+
+  <!-- The Web SDK already globs Data/*.json in as content; this only pins how
+       it travels, so the files sit next to the app at run time and ship with a
+       publish. -->
+  <ItemGroup>
+    <Content Update="Data\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

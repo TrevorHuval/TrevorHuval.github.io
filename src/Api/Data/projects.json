@@ -1,0 +1,38 @@
+[
+  {
+    "id": "personal-site",
+    "name": "Personal Website",
+    "summary": "This site: a .NET 10 minimal API serving a React + Tailwind frontend from a single container on AWS App Runner.",
+    "description": "TODO: Trevor fills in — the longer story. What problem it solved, what was interesting to build, what you'd do differently.",
+    "tech": [".NET 10", "React", "TypeScript", "Tailwind CSS", "Docker", "AWS App Runner"],
+    "repoSlug": "TODO: Trevor fills in — owner/repo once the GitHub repo exists",
+    "liveUrl": null,
+    "imageUrl": null,
+    "featured": true,
+    "order": 1
+  },
+  {
+    "id": "project-two",
+    "name": "TODO: Trevor fills in — project name",
+    "summary": "TODO: Trevor fills in — one sentence on what it does and who it's for.",
+    "description": "TODO: Trevor fills in — the longer story, or null to show only the summary.",
+    "tech": ["TODO: Trevor fills in — tech tags"],
+    "repoSlug": null,
+    "liveUrl": null,
+    "imageUrl": null,
+    "featured": true,
+    "order": 2
+  },
+  {
+    "id": "project-three",
+    "name": "TODO: Trevor fills in — project name",
+    "summary": "TODO: Trevor fills in — one sentence on what it does and who it's for.",
+    "description": null,
+    "tech": ["TODO: Trevor fills in — tech tags"],
+    "repoSlug": null,
+    "liveUrl": null,
+    "imageUrl": null,
+    "featured": false,
+    "order": 3
+  }
+]

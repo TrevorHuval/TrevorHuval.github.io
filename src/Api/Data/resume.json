@@ -1,0 +1,48 @@
+{
+  "experience": [
+    {
+      "company": "TODO: Trevor fills in — most recent employer",
+      "title": "TODO: Trevor fills in — job title",
+      "location": "TODO: Trevor fills in — City, State (or Remote)",
+      "startDate": "2023-01",
+      "endDate": null,
+      "highlights": [
+        "TODO: Trevor fills in — an accomplishment with a number attached (what you shipped, what changed).",
+        "TODO: Trevor fills in — a second bullet: scope, ownership, or a system you designed.",
+        "TODO: Trevor fills in — a third bullet: collaboration, mentoring, or process you improved."
+      ],
+      "tech": ["C#", ".NET", "React", "AWS"]
+    },
+    {
+      "company": "TODO: Trevor fills in — previous employer",
+      "title": "TODO: Trevor fills in — job title",
+      "location": "TODO: Trevor fills in — City, State",
+      "startDate": "2021-06",
+      "endDate": "2022-12",
+      "highlights": [
+        "TODO: Trevor fills in — what you owned here.",
+        "TODO: Trevor fills in — a measurable result."
+      ],
+      "tech": ["C#", "SQL Server", "TypeScript"]
+    }
+  ],
+  "education": [
+    {
+      "institution": "TODO: Trevor fills in — university",
+      "degree": "TODO: Trevor fills in — e.g. B.S.",
+      "field": "TODO: Trevor fills in — e.g. Computer Science",
+      "startDate": "2017-08",
+      "endDate": "2021-05",
+      "notes": "TODO: Trevor fills in — honors, GPA, relevant coursework, or null to omit this line"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "TODO: Trevor fills in — certification name, or delete this entry if none",
+      "issuer": "TODO: Trevor fills in — issuing body",
+      "issueDate": "2024-03",
+      "expiryDate": null,
+      "credentialUrl": null
+    }
+  ]
+}

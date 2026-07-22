@@ -1,0 +1,46 @@
+[
+  {
+    "id": "photo-001",
+    "src": "/photos/placeholder-01.jpg",
+    "thumbnail": "/photos/thumbs/placeholder-01.jpg",
+    "caption": "TODO: Trevor fills in — a short caption for this photo",
+    "location": "TODO: Trevor fills in — where it was taken",
+    "date": "2024-06-15",
+    "album": "Travel",
+    "width": 1600,
+    "height": 1067
+  },
+  {
+    "id": "photo-002",
+    "src": "/photos/placeholder-02.jpg",
+    "thumbnail": "/photos/thumbs/placeholder-02.jpg",
+    "caption": "TODO: Trevor fills in — a short caption for this photo",
+    "location": "TODO: Trevor fills in — where it was taken",
+    "date": "2024-09-02",
+    "album": "Travel",
+    "width": 1067,
+    "height": 1600
+  },
+  {
+    "id": "photo-003",
+    "src": "/photos/placeholder-03.jpg",
+    "thumbnail": "/photos/thumbs/placeholder-03.jpg",
+    "caption": "TODO: Trevor fills in — a short caption for this photo",
+    "location": "TODO: Trevor fills in — where it was taken",
+    "date": "2025-01-20",
+    "album": "Life",
+    "width": 1600,
+    "height": 1600
+  },
+  {
+    "id": "photo-004",
+    "src": "/photos/placeholder-04.jpg",
+    "thumbnail": "/photos/thumbs/placeholder-04.jpg",
+    "caption": "TODO: Trevor fills in — a short caption for this photo",
+    "location": null,
+    "date": "2025-05-11",
+    "album": "Life",
+    "width": 1600,
+    "height": 1067
+  }
+]

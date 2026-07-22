@@ -1,0 +1,15 @@
+{
+  "name": "Trevor Huval",
+  "headline": "TODO: Trevor fills in — one-line headline, e.g. \"Software Engineer building cloud-native .NET and React\"",
+  "location": "TODO: Trevor fills in — City, State",
+  "bio": [
+    "TODO: Trevor fills in — opening paragraph. Who you are, what you build, and what you're focused on right now. Two or three sentences reads best in the hero.",
+    "TODO: Trevor fills in — second paragraph. Background, the kinds of problems you like, the tools you reach for.",
+    "TODO: Trevor fills in — third paragraph. Life outside work: travel, photography, whatever ties into the gallery."
+  ],
+  "links": {
+    "gitHub": "https://github.com/TrevorHuval",
+    "linkedIn": "TODO: Trevor fills in — https://www.linkedin.com/in/your-handle",
+    "email": "huvaltrevor@gmail.com"
+  }
+}

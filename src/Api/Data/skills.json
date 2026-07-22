@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Languages",
+    "items": [
+      "C#",
+      "TypeScript",
+      "JavaScript",
+      "SQL",
+      "Python",
+      "TODO: Trevor fills in — add or remove languages"
+    ]
+  },
+  {
+    "name": "Frameworks",
+    "items": [
+      ".NET / ASP.NET Core",
+      "React",
+      "Entity Framework Core",
+      "Tailwind CSS",
+      "TODO: Trevor fills in — add or remove frameworks"
+    ]
+  },
+  {
+    "name": "Cloud",
+    "items": [
+      "AWS App Runner",
+      "AWS ECR",
+      "Route 53",
+      "TODO: Trevor fills in — other cloud services you actually use"
+    ]
+  },
+  {
+    "name": "Tools",
+    "items": [
+      "Git",
+      "Docker",
+      "GitHub Actions",
+      "Vite",
+      "TODO: Trevor fills in — add or remove tools"
+    ]
+  }
+]
