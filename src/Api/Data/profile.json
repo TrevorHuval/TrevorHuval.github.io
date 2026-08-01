@@ -3,9 +3,8 @@
   "headline": "Full-stack software engineer building production web applications in .NET, React, and SQL.",
   "location": "Baton Rouge, Louisiana",
   "bio": [
-    "I'm a software engineer at LSU, where most of my work is replacing systems the university has been running on for decades. It's rarely greenfield — there's usually a mainframe, a PHP app, or a vendor product on the other side of it, and thousands of people depending on the thing while it gets swapped out.",
-    "The constraint is what I like about it. Retiring something people use every day means the cutover matters as much as the code: a parallel run to fall back to, a schema that still makes sense in five years, tests that catch the regression before a registrar does. I reach for C# and .NET first, Postgres or SQL Server underneath, and TypeScript wherever a browser is involved.",
-    "Outside of work I build things I actually want to use — a query language for playlists, a finance app I self-host, somewhere to rate albums — and I travel with a camera whenever I get the chance. The gallery is the honest version of that one."
+    "I'm Trevor Huval, a web application developer at Louisiana State University with a B.S. in Computer Science. I specialize in full-stack development and enterprise architecture using C#, .NET, Java, and SQL.",
+    "Outside of work, I love playing guitar (mostly rock and metal \\m/), being a DIY mechanic, and taking any opportunity to travel the world. I'm born and raised in Louisiana, so I also spend plenty of time cooking and eating world-class Cajun food!"
   ],
   "links": {
     "gitHub": "https://github.com/TrevorHuval",

@@ -50,7 +50,8 @@
       "AWS",
       "Azure AD / Entra ID",
       "SAML",
-      "OAuth 2.0"
+      "OAuth 2.0",
+      "AI-assisted dev (Claude)"
     ]
   },
   {
