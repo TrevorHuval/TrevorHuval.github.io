@@ -25,6 +25,42 @@ public sealed class ContentServiceTests
         Assert.True(File.Exists(Path.Combine(DataDirectory, fileName)), $"{fileName} is missing from Data/.");
     }
 
+    /// <summary>
+    /// The site carries real content now, not a scaffold. A leftover placeholder
+    /// would ship straight to a page, a link preview, or a search result, so one
+    /// surviving marker fails the build.
+    /// </summary>
+    [Theory]
+    [InlineData("profile.json")]
+    [InlineData("resume.json")]
+    [InlineData("skills.json")]
+    [InlineData("projects.json")]
+    [InlineData("photos.json")]
+    public void ContentFileHasNoPlaceholders(string fileName)
+    {
+        var text = File.ReadAllText(Path.Combine(DataDirectory, fileName));
+
+        Assert.DoesNotContain("TODO", text, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Trevor's email belongs in the résumé PDF and nowhere else: an address in
+    /// the content is an address in the markup, and the markup is what gets
+    /// scraped. This is the guard on that decision, not a style preference.
+    /// </summary>
+    [Theory]
+    [InlineData("profile.json")]
+    [InlineData("resume.json")]
+    [InlineData("skills.json")]
+    [InlineData("projects.json")]
+    [InlineData("photos.json")]
+    public void ContentFileCarriesNoEmailAddress(string fileName)
+    {
+        var text = File.ReadAllText(Path.Combine(DataDirectory, fileName));
+
+        Assert.DoesNotMatch(@"[\w.+-]+@[\w-]+\.[\w.]+", text);
+    }
+
     [Fact]
     public void ProfileDeserializes()
     {
@@ -37,7 +73,6 @@ public sealed class ContentServiceTests
         Assert.All(profile.Bio, paragraph => Assert.False(string.IsNullOrWhiteSpace(paragraph)));
         Assert.False(string.IsNullOrWhiteSpace(profile.Links.GitHub));
         Assert.False(string.IsNullOrWhiteSpace(profile.Links.LinkedIn));
-        Assert.Contains("@", profile.Links.Email);
     }
 
     [Fact]
@@ -47,7 +82,6 @@ public sealed class ContentServiceTests
 
         Assert.NotEmpty(resume.Experience);
         Assert.NotEmpty(resume.Education);
-        Assert.NotNull(resume.Certifications);
 
         Assert.All(resume.Experience, entry =>
         {

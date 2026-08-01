@@ -22,7 +22,7 @@ interface Profile {
   headline: string
   location: string
   bio: string[]
-  links: { gitHub: string; linkedIn: string; email: string }
+  links: { gitHub: string; linkedIn: string }
 }
 
 /** Pages a crawler should know about, mirroring the routes in `App.tsx`. */

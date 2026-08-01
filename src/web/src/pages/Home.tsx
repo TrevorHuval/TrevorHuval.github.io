@@ -4,7 +4,7 @@ import { useSiteProfile } from '../api/profile-context'
 import PhotoImage from '../components/PhotoImage'
 import SkillsGrid from '../components/SkillsGrid'
 import Timeline from '../components/Timeline'
-import { ArrowUpRightIcon, DownloadIcon, MailIcon } from '../components/Icons'
+import { ArrowUpRightIcon, DownloadIcon } from '../components/Icons'
 import { ErrorPanel, LoadingPanel, Skeleton } from '../components/States'
 import { ActionLink, Section } from '../components/Ui'
 import { usePageMeta } from '../lib/usePageMeta'
@@ -68,9 +68,9 @@ function Hero() {
           <DownloadIcon className="size-4" />
           View resume
         </ActionLink>
-        <ActionLink href={`mailto:${data.links.email}`}>
-          <MailIcon className="size-4" />
-          Get in touch
+        <ActionLink to="/projects">
+          See the work
+          <ArrowUpRightIcon className="size-4 opacity-60" />
         </ActionLink>
       </div>
     </section>

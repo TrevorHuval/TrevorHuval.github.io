@@ -15,7 +15,7 @@ public static class ContentEndpoints
 
         api.MapGet("/resume", (ContentService content) => TypedResults.Ok(content.Resume))
             .WithName("GetResume")
-            .WithSummary("Work experience, education and certifications.");
+            .WithSummary("Work experience and education.");
 
         api.MapGet("/skills", (ContentService content) => TypedResults.Ok(content.Skills))
             .WithName("GetSkills")

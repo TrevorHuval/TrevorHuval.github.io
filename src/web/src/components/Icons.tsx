@@ -51,15 +51,6 @@ export function LinkedInIcon({ className }: IconProps) {
   )
 }
 
-export function MailIcon({ className }: IconProps) {
-  return (
-    <Svg className={className}>
-      <rect {...stroke} x="2.75" y="4.75" width="18.5" height="14.5" rx="2.5" />
-      <path {...stroke} d="m3.5 7.5 7.4 5.2a2 2 0 0 0 2.2 0l7.4-5.2" />
-    </Svg>
-  )
-}
-
 export function ArrowUpRightIcon({ className }: IconProps) {
   return (
     <Svg className={className}>

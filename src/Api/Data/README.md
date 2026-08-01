@@ -5,13 +5,16 @@ in — edit a file, restart the API, and the site changes. `ContentService` read
 all five files once at startup and holds them in memory, so a running instance
 will not pick up edits until it restarts.
 
-Anything still reading **`TODO: Trevor fills in`** is placeholder text waiting on
-real content. Search the folder for `TODO:` to find what's left.
+Every file carries real content. Two rules are enforced by
+`tests/Api.Tests/ContentServiceTests.cs` rather than left to discipline: no file
+may contain the string `TODO`, and **no file may contain an email address**.
+Trevor's email belongs in the résumé PDF and nowhere else — an address in the
+content is an address in the markup, and the markup is what gets scraped.
 
 | File | Shape | Served at |
 | --- | --- | --- |
 | `profile.json` | object | `GET /api/profile` |
-| `resume.json` | object with `experience`, `education`, `certifications` | `GET /api/resume` |
+| `resume.json` | object with `experience`, `education` | `GET /api/resume` |
 | `skills.json` | array of groups | `GET /api/skills` |
 | `projects.json` | array of projects | `GET /api/projects` |
 | `photos.json` | array of photos | `GET /api/photos` |
@@ -19,7 +22,7 @@ real content. Search the folder for `TODO:` to find what's left.
 ## Conventions
 
 - **Dates** are strings, not timestamps: `"2024-06"` for month precision
-  (experience, education, certifications) and `"2024-06-15"` for photos. The
+  (experience, education) and `"2024-06-15"` for photos. The
   frontend decides how to display them. A `null` `endDate` means "present".
 - **Fields typed as nullable in the DTOs** (`description`, `liveUrl`,
   `location`, `notes`, …) can be set to `null` and the UI will drop the

@@ -2,10 +2,10 @@ import { useResume, useSkills } from '../api/hooks'
 import { useSiteProfile } from '../api/profile-context'
 import SkillsGrid from '../components/SkillsGrid'
 import Timeline from '../components/Timeline'
-import { ArrowUpRightIcon, DownloadIcon } from '../components/Icons'
+import { DownloadIcon } from '../components/Icons'
 import { ErrorPanel, LoadingPanel, Skeleton } from '../components/States'
 import { ActionLink, Section } from '../components/Ui'
-import { formatMonth, formatRange } from '../lib/dates'
+import { formatRange } from '../lib/dates'
 import { usePageMeta } from '../lib/usePageMeta'
 
 /**
@@ -16,8 +16,7 @@ import { usePageMeta } from '../lib/usePageMeta'
 export default function ResumePage() {
   usePageMeta({
     title: 'Resume',
-    description:
-      'Work experience, education and certifications, with the printable PDF a click away.',
+    description: 'Work experience, education and skills, with the printable PDF a click away.',
   })
 
   const { data: resume, error, loading, reload } = useResume()
@@ -56,38 +55,6 @@ export default function ResumePage() {
         </Section>
       )}
 
-      {resume && resume.certifications.length > 0 && (
-        <Section eyebrow="Credentials" title="Certifications">
-          <ul className="grid gap-4 sm:grid-cols-2">
-            {resume.certifications.map((certification) => (
-              <li
-                key={`${certification.name}-${certification.issueDate}`}
-                className="glass flex flex-col gap-1 rounded-card p-5"
-              >
-                <h3 className="text-meta font-semibold text-ink">{certification.name}</h3>
-                <p className="text-sm text-ink-muted">{certification.issuer}</p>
-                <p className="gutter-date mt-1.5">
-                  Issued {formatMonth(certification.issueDate)}
-                  {certification.expiryDate &&
-                    ` · Expires ${formatMonth(certification.expiryDate)}`}
-                </p>
-                {certification.credentialUrl && (
-                  <a
-                    href={certification.credentialUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-2 inline-flex items-center gap-1.5 text-meta font-medium text-ink-muted transition-colors duration-200 ease-out-quint hover:text-ember"
-                  >
-                    Verify
-                    <ArrowUpRightIcon className="size-3.5" />
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
-        </Section>
-      )}
-
       <Section eyebrow="Toolkit" title="Skills">
         {skills.loading && <LoadingPanel label="Loading skills" lines={3} />}
         {skills.error !== null && <ErrorPanel message={skills.error} onRetry={skills.reload} />}
@@ -117,13 +84,16 @@ function ResumeHeader() {
       )}
 
       <div className="flex flex-wrap items-center gap-3">
-        {/* Trevor's real PDF, served straight out of the web root. */}
-        <ActionLink href="/resume.pdf" variant="primary" download>
+        {/* Trevor's real PDF, served straight out of the web root. It is also the
+            only place on the site his email and phone number appear. */}
+        <ActionLink href="/trevor_huval_resume.pdf" variant="primary" download>
           <DownloadIcon className="size-4" />
           Download PDF
         </ActionLink>
         {data && (
-          <ActionLink href={`mailto:${data.links.email}`}>{data.links.email}</ActionLink>
+          <ActionLink href={data.links.linkedIn} external>
+            LinkedIn
+          </ActionLink>
         )}
       </div>
     </header>

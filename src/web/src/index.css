@@ -197,8 +197,7 @@
 }
 
 /* The signature. Frame numbers in a contact-sheet margin: every date on this
-   site — roles, degrees, certifications, repo pushes, photographs — is stamped
-   the same way. */
+   site — roles, degrees, repo pushes, photographs — is stamped the same way. */
 @utility gutter-date {
   font-family: var(--font-mono);
   font-size: var(--text-caption);

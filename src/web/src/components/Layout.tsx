@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import AmbientBackground from './AmbientBackground'
 import Nav from './Nav'
-import { GitHubIcon, LinkedInIcon, MailIcon } from './Icons'
+import { GitHubIcon, LinkedInIcon } from './Icons'
 import { useSiteProfile } from '../api/profile-context'
 
 /**
@@ -95,9 +95,6 @@ function SiteFooter() {
             </FooterLink>
             <FooterLink href={data.links.linkedIn} label="LinkedIn">
               <LinkedInIcon className="size-[1.05rem]" />
-            </FooterLink>
-            <FooterLink href={`mailto:${data.links.email}`} label="Email">
-              <MailIcon className="size-[1.05rem]" />
             </FooterLink>
           </ul>
         )}

@@ -1,15 +1,14 @@
 {
   "name": "Trevor Huval",
-  "headline": "TODO: Trevor fills in — one-line headline, e.g. \"Software Engineer building cloud-native .NET and React\"",
-  "location": "TODO: Trevor fills in — City, State",
+  "headline": "Full-stack software engineer building production web applications in .NET, React, and SQL.",
+  "location": "Baton Rouge, Louisiana",
   "bio": [
-    "TODO: Trevor fills in — opening paragraph. Who you are, what you build, and what you're focused on right now. Two or three sentences reads best in the hero.",
-    "TODO: Trevor fills in — second paragraph. Background, the kinds of problems you like, the tools you reach for.",
-    "TODO: Trevor fills in — third paragraph. Life outside work: travel, photography, whatever ties into the gallery."
+    "I'm a software engineer at LSU, where most of my work is replacing systems the university has been running on for decades. It's rarely greenfield — there's usually a mainframe, a PHP app, or a vendor product on the other side of it, and thousands of people depending on the thing while it gets swapped out.",
+    "The constraint is what I like about it. Retiring something people use every day means the cutover matters as much as the code: a parallel run to fall back to, a schema that still makes sense in five years, tests that catch the regression before a registrar does. I reach for C# and .NET first, Postgres or SQL Server underneath, and TypeScript wherever a browser is involved.",
+    "Outside of work I build things I actually want to use — a query language for playlists, a finance app I self-host, somewhere to rate albums — and I travel with a camera whenever I get the chance. The gallery is the honest version of that one."
   ],
   "links": {
     "gitHub": "https://github.com/TrevorHuval",
-    "linkedIn": "TODO: Trevor fills in — https://www.linkedin.com/in/your-handle",
-    "email": "huvaltrevor@gmail.com"
+    "linkedIn": "https://www.linkedin.com/in/trevorhuval"
   }
 }

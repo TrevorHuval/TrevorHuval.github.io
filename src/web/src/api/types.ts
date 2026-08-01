@@ -7,10 +7,13 @@
  * and `LinkedIn` properties, and it is what actually comes down the wire.
  */
 
+/**
+ * Profiles only. There is no email address in the site's content or markup by
+ * design — the résumé PDF is the single place it appears.
+ */
 export interface ProfileLinks {
   gitHub: string
   linkedIn: string
-  email: string
 }
 
 export interface Profile {
@@ -43,18 +46,9 @@ export interface EducationEntry {
   notes: string | null
 }
 
-export interface Certification {
-  name: string
-  issuer: string
-  issueDate: string
-  expiryDate: string | null
-  credentialUrl: string | null
-}
-
 export interface Resume {
   experience: ExperienceEntry[]
   education: EducationEntry[]
-  certifications: Certification[]
 }
 
 export interface SkillGroup {

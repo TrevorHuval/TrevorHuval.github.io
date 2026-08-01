@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { GitHubIcon, LinkedInIcon, MailIcon } from './Icons'
+import { GitHubIcon, LinkedInIcon } from './Icons'
 import type { ProfileLinks } from '../api/types'
 
 const PAGES = [
@@ -58,9 +58,6 @@ export default function Nav({ links }: { links: ProfileLinks | null }) {
               </SocialLink>
               <SocialLink href={links.linkedIn} label="LinkedIn">
                 <LinkedInIcon className="size-[1.05rem]" />
-              </SocialLink>
-              <SocialLink href={`mailto:${links.email}`} label="Email">
-                <MailIcon className="size-[1.05rem]" />
               </SocialLink>
             </ul>
           </>

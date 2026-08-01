@@ -1,42 +1,66 @@
 [
   {
     "name": "Languages",
-    "items": [
-      "C#",
-      "TypeScript",
-      "JavaScript",
-      "SQL",
-      "Python",
-      "TODO: Trevor fills in — add or remove languages"
-    ]
+    "items": ["C#", "TypeScript", "JavaScript", "SQL", "Java", "Python", "PHP", "C", "C++", "HTML", "CSS"]
   },
   {
-    "name": "Frameworks",
+    "name": "Frontend",
     "items": [
-      ".NET / ASP.NET Core",
       "React",
-      "Entity Framework Core",
-      "Tailwind CSS",
-      "TODO: Trevor fills in — add or remove frameworks"
-    ]
-  },
-  {
-    "name": "Cloud",
-    "items": [
-      "AWS App Runner",
-      "AWS ECR",
-      "Route 53",
-      "TODO: Trevor fills in — other cloud services you actually use"
-    ]
-  },
-  {
-    "name": "Tools",
-    "items": [
-      "Git",
-      "Docker",
-      "GitHub Actions",
       "Vite",
-      "TODO: Trevor fills in — add or remove tools"
+      "TypeScript",
+      "HTML",
+      "CSS",
+      "Bootstrap",
+      "webpack",
+      "CKEditor 5",
+      "WCAG accessibility"
+    ]
+  },
+  {
+    "name": "Backend",
+    "items": [
+      ".NET 10 / ASP.NET Core",
+      "Java / Spring Boot",
+      "REST APIs",
+      "Entity Framework Core",
+      "Dapper",
+      "Workday Extend"
+    ]
+  },
+  {
+    "name": "Databases",
+    "items": [
+      "PostgreSQL",
+      "SQL Server",
+      "T-SQL",
+      "DB2",
+      "Schema design",
+      "Indexing & query optimization",
+      "ETL"
+    ]
+  },
+  {
+    "name": "Cloud & DevOps",
+    "items": [
+      "Docker",
+      "CI/CD (GitLab)",
+      "GitHub Actions",
+      "Git",
+      "AWS",
+      "Azure AD / Entra ID",
+      "SAML",
+      "OAuth 2.0"
+    ]
+  },
+  {
+    "name": "Practices",
+    "items": [
+      "Root-cause analysis",
+      "Unit & integration testing",
+      "Code review",
+      "UAT & release management",
+      "Agile/Scrum"
     ]
   }
 ]
