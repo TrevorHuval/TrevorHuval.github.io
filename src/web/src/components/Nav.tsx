@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { GitHubIcon, LinkedInIcon } from './Icons'
-import type { ProfileLinks } from '../api/types'
+import type { ProfileLinks } from '../content/types'
 
 const PAGES = [
   { to: '/', label: 'Home' },
@@ -18,7 +18,7 @@ const PAGES = [
  * below `sm` only the footer carries them, so the pill never has to compete
  * for width on a phone.
  */
-export default function Nav({ links }: { links: ProfileLinks | null }) {
+export default function Nav({ links }: { links: ProfileLinks }) {
   return (
     <header className="fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4">
       <nav
@@ -49,19 +49,15 @@ export default function Nav({ links }: { links: ProfileLinks | null }) {
           ))}
         </ul>
 
-        {links && (
-          <>
-            <span aria-hidden="true" className="mx-1 hidden h-5 w-px bg-hairline sm:block" />
-            <ul className="hidden items-center gap-0.5 sm:flex">
-              <SocialLink href={links.gitHub} label="GitHub">
-                <GitHubIcon className="size-[1.05rem]" />
-              </SocialLink>
-              <SocialLink href={links.linkedIn} label="LinkedIn">
-                <LinkedInIcon className="size-[1.05rem]" />
-              </SocialLink>
-            </ul>
-          </>
-        )}
+        <span aria-hidden="true" className="mx-1 hidden h-5 w-px bg-hairline sm:block" />
+        <ul className="hidden items-center gap-0.5 sm:flex">
+          <SocialLink href={links.gitHub} label="GitHub">
+            <GitHubIcon className="size-[1.05rem]" />
+          </SocialLink>
+          <SocialLink href={links.linkedIn} label="LinkedIn">
+            <LinkedInIcon className="size-[1.05rem]" />
+          </SocialLink>
+        </ul>
       </nav>
     </header>
   )

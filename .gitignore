@@ -6,36 +6,11 @@ CLAUDE.md
 CLAUDE.local.md
 
 # ---------------------------------------------------------------------------
-# .NET
+# Editors
 # ---------------------------------------------------------------------------
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Ll]ogs/
-[Dd]ebug/
-[Rr]elease/
-x64/
-x86/
-artifacts/
-publish/
-*.user
-*.suo
-*.userosscache
-*.sln.docstates
-*.userprefs
-*.pidb
-*.svclog
-*.scc
-project.lock.json
-project.fragment.lock.json
 .vs/
 .vscode/
 .idea/
-*.received.*
-BenchmarkDotNet.Artifacts/
-msbuild.log
-msbuild.err
-msbuild.wrn
 
 # ---------------------------------------------------------------------------
 # Node / Vite
@@ -52,11 +27,6 @@ yarn-error.log*
 pnpm-debug.log*
 .eslintcache
 .npm/
-
-# Generated SPA output copied into the API on publish — keep the folder, drop
-# its contents (an empty wwwroot avoids a static-files warning on dev startup)
-src/Api/wwwroot/*
-!src/Api/wwwroot/.gitkeep
 
 # ---------------------------------------------------------------------------
 # Environment / secrets

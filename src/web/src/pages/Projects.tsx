@@ -1,20 +1,20 @@
 import { useMemo } from 'react'
-import { useGitHubRepos, useProjects } from '../api/hooks'
-import type { GitHubRepo } from '../api/types'
+import { projects } from '../content'
+import type { GitHubRepo } from '../content/types'
 import ProjectCard, { type ProjectWithRepo } from '../components/ProjectCard'
 import { ArrowUpRightIcon, ForkIcon, StarIcon } from '../components/Icons'
-import { EmptyPanel, ErrorPanel, LoadingPanel } from '../components/States'
 import { Section } from '../components/Ui'
 import { formatRelative } from '../lib/dates'
+import { useGitHubRepos } from '../lib/useGitHubRepos'
 import { usePageMeta } from '../lib/usePageMeta'
 
 /**
  * Curated projects first, live GitHub second.
  *
- * The two fetches are independent by design: the curated list is the content
- * Trevor controls and it renders whether or not GitHub answers. Repo stats are
- * an enrichment layer, and the API already returns an empty list rather than an
- * error when GitHub is unreachable.
+ * The curated list is content Trevor controls and is on the page from the first
+ * paint. Repo stats are an enrichment layer fetched from the browser, and
+ * {@link useGitHubRepos} hands back an empty list rather than an error when
+ * GitHub is unreachable or has rate-limited the visitor.
  */
 export default function Projects() {
   usePageMeta({
@@ -22,13 +22,9 @@ export default function Projects() {
     description: 'Selected projects, with live repository stats where the source is public.',
   })
 
-  const projects = useProjects()
   const repos = useGitHubRepos()
 
-  const { curated, remaining } = useMemo(
-    () => mergeProjectsWithRepos(projects.data, repos.data),
-    [projects.data, repos.data],
-  )
+  const { curated, remaining } = useMemo(() => mergeProjectsWithRepos(repos), [repos])
 
   const [lead, ...rest] = curated
 
@@ -43,29 +39,14 @@ export default function Projects() {
         </p>
       </header>
 
-      <section className="flex flex-col gap-6">
-        {projects.loading && <LoadingPanel label="Loading projects" lines={4} />}
-        {projects.error !== null && (
-          <ErrorPanel message={projects.error} onRetry={projects.reload} />
-        )}
-        {projects.data && curated.length === 0 && (
-          <EmptyPanel
-            title="No projects yet"
-            hint="Curated projects live in the site's content files and will appear here once added."
-          />
-        )}
-
-        {curated.length > 0 && (
-          /* The lead card spans both columns and steps its type up a tier, so
-             the grid has a clear entry point instead of reading as a wall. */
-          <div className="grid gap-5 md:grid-cols-2">
-            <ProjectCard key={lead.id} project={lead} lead />
-            {rest.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
-        )}
-      </section>
+      {/* The lead card spans both columns and steps its type up a tier, so the
+          grid has a clear entry point instead of reading as a wall. */}
+      <div className="grid gap-5 md:grid-cols-2">
+        <ProjectCard key={lead.id} project={lead} lead />
+        {rest.map((project) => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
+      </div>
 
       {remaining.length > 0 && (
         <Section eyebrow="Open source" title="More on GitHub">
@@ -126,13 +107,11 @@ export default function Projects() {
  * The comparison is case-insensitive because GitHub treats owner and repo names
  * that way, and a slug typed with different casing should still match.
  */
-function mergeProjectsWithRepos(
-  projects: ReturnType<typeof useProjects>['data'],
-  repos: GitHubRepo[] | null,
-): { curated: ProjectWithRepo[]; remaining: GitHubRepo[] } {
-  if (projects === null) return { curated: [], remaining: [] }
-
-  const bySlug = new Map((repos ?? []).map((repo) => [repo.fullName.toLowerCase(), repo]))
+function mergeProjectsWithRepos(repos: GitHubRepo[]): {
+  curated: ProjectWithRepo[]
+  remaining: GitHubRepo[]
+} {
+  const bySlug = new Map(repos.map((repo) => [repo.fullName.toLowerCase(), repo]))
   const claimed = new Set<string>()
 
   const curated = projects.map((project) => {
@@ -144,7 +123,7 @@ function mergeProjectsWithRepos(
     return { ...project, repo }
   })
 
-  const remaining = (repos ?? []).filter((repo) => !claimed.has(repo.fullName.toLowerCase()))
+  const remaining = repos.filter((repo) => !claimed.has(repo.fullName.toLowerCase()))
 
   return { curated, remaining }
 }

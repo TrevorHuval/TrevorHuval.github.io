@@ -1,5 +1,5 @@
-# Normalize to LF in the repository so the Linux-based Docker/CI builds and
-# Windows development agree on file contents.
+# Normalize to LF in the repository so the Linux CI runner that builds the site
+# and Windows development agree on file contents.
 * text=auto eol=lf
 
 *.png binary

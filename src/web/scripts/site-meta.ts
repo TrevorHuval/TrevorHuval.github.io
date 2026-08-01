@@ -8,8 +8,8 @@ import type { Plugin } from 'vite'
  * `index.html` is the one file no component owns, which makes it the natural
  * place for someone to paste a name and a description and let them rot. So it
  * carries placeholders instead, and this plugin fills them from
- * `src/Api/Data/profile.json` — the same file the rendered page reads from, so
- * the tab title, the link preview and the hero cannot disagree.
+ * `src/content/profile.json` — the same file the rendered page imports, so the
+ * tab title, the link preview and the hero cannot disagree.
  *
  * The absolute site URL is not content, it is deployment: it comes from the
  * `SITE_URL` environment variable. Without it, Open Graph paths stay
@@ -17,6 +17,8 @@ import type { Plugin } from 'vite'
  * build that does not yet know where it will live.
  */
 
+/** Structurally the same as `src/content/types.ts`, declared separately because
+ * this runs in the Vite config's Node context, not the app's. */
 interface Profile {
   name: string
   headline: string

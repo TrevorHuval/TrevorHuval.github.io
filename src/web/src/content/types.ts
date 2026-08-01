@@ -1,10 +1,11 @@
 /**
- * Wire shapes for the API. These mirror the C# records in `src/Api/Models/`
- * one-for-one — if a record changes there, change it here too.
+ * The shape of everything in this folder.
  *
- * Note the camelCase of `gitHub` / `linkedIn` on {@link ProfileLinks}: that is
- * what System.Text.Json's default naming policy produces from the C# `GitHub`
- * and `LinkedIn` properties, and it is what actually comes down the wire.
+ * These are not wire types — there is no API. The JSON files sit next to this
+ * one and are imported directly by `index.ts`, so TypeScript checks them
+ * against these interfaces at build time. A missing field or a renamed key is a
+ * `tsc` error, which is the same guarantee the old .NET `ContentService` gave by
+ * refusing to start.
  */
 
 /**
@@ -89,6 +90,10 @@ export interface Photo {
   height: number
 }
 
+/**
+ * A repository as this app uses it, flattened from what api.github.com returns.
+ * The mapping out of GitHub's snake_case lives in `lib/useGitHubRepos.ts`.
+ */
 export interface GitHubRepo {
   name: string
   fullName: string
@@ -99,9 +104,4 @@ export interface GitHubRepo {
   forks: number
   pushedAt: string | null
   topics: string[]
-}
-
-export interface HealthStatus {
-  status: string
-  timestamp: string
 }

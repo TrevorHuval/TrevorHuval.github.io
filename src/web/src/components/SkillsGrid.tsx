@@ -1,8 +1,8 @@
-import type { SkillGroup } from '../api/types'
+﻿import type { SkillGroup } from '../content/types'
 import { Chip } from './Ui'
 
 /**
- * Skills are a scanning surface, not a reading one — a recruiter is looking for
+ * Skills are a scanning surface, not a reading one â€” a recruiter is looking for
  * one word. So the groups are tight glass cards of chips rather than prose, and
  * the group name is the only thing at full ink.
  */

@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs'
+import { copyFileSync } from 'node:fs'
+import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -8,38 +9,42 @@ import { siteMeta } from './scripts/site-meta.ts'
 const here = (relative: string) => fileURLToPath(new URL(relative, import.meta.url))
 
 /**
- * `src/Api/wwwroot` is build output and gitignored, but the empty directory
- * itself is tracked through a `.gitkeep` — and `emptyOutDir` would take it out
- * with everything else, leaving a deletion staged in git after every build.
- * Read before the build empties the directory, written back after.
+ * GitHub Pages has no rewrite rules: it serves the file at the request path or
+ * it serves `404.html`. A hard load of `/resume` therefore never reaches
+ * `index.html`, and the app never boots.
+ *
+ * The fix Pages is designed around is to make `404.html` a copy of
+ * `index.html`. React Router then reads the address bar and renders the right
+ * page. The response still carries a 404 *status* — that is inherent to doing
+ * client-side routing on Pages, and the alternative is hash URLs.
+ *
+ * Copied in `closeBundle` from what is actually on disk, so it cannot race the
+ * HTML transforms or capture a half-built document.
  */
-const keepOutDirTracked = (outDir: string): Plugin => {
-  let contents = ''
+const pagesSpaFallback = (outDir: string): Plugin => ({
+  name: 'pages-spa-fallback',
+  apply: 'build',
+  closeBundle() {
+    copyFileSync(path.join(outDir, 'index.html'), path.join(outDir, '404.html'))
+  },
+})
 
-  return {
-    name: 'keep-outdir-tracked',
-    configResolved() {
-      contents = readFileSync(`${outDir}/.gitkeep`, 'utf8')
-    },
-    generateBundle() {
-      this.emitFile({ type: 'asset', fileName: '.gitkeep', source: contents })
-    },
-  }
-}
+const OUT_DIR = here('dist')
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    siteMeta({ dataDir: here('../Api/Data'), publicDir: here('public') }),
-    keepOutDirTracked(here('../Api/wwwroot')),
+    siteMeta({ dataDir: here('src/content'), publicDir: here('public') }),
+    pagesSpaFallback(OUT_DIR),
   ],
+  // Trevor's is a GitHub *user* site (TrevorHuval.github.io) served from a
+  // custom domain, so the app lives at the root. A project site would need the
+  // repo name here instead.
+  base: '/',
   build: {
-    // Straight into the API's web root: in production one process serves both
-    // the API and the app, so `dotnet publish` needs to find the built site
-    // already in place. Emptied first, or a renamed chunk leaves an orphan.
-    outDir: here('../Api/wwwroot'),
+    outDir: OUT_DIR,
     emptyOutDir: true,
     // The photographs are the heavy part of this payload by an order of
     // magnitude; a source map per chunk on top of them earns nothing.
@@ -47,14 +52,5 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    // In development the API runs separately on the port from
-    // src/Api/Properties/launchSettings.json. Proxying keeps the app on a
-    // single origin, so fetch('/api/...') works the same in dev and prod.
-    proxy: {
-      '/api': {
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-      },
-    },
   },
 })

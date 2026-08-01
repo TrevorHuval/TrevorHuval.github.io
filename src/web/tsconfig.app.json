@@ -6,6 +6,9 @@
     "module": "esnext",
     "types": ["vite/client"],
     "allowArbitraryExtensions": true,
+    /* The site's content is imported from src/content/*.json, so these files
+       are part of the type-check, not just assets to copy. */
+    "resolveJsonModule": true,
     "skipLibCheck": true,
 
     /* Bundler mode */

@@ -122,12 +122,3 @@ export function ImageIcon({ className }: IconProps) {
     </Svg>
   )
 }
-
-export function AlertIcon({ className }: IconProps) {
-  return (
-    <Svg className={className}>
-      <circle {...stroke} cx="12" cy="12" r="8.75" />
-      <path {...stroke} d="M12 7.75v5m0 3.25v.01" />
-    </Svg>
-  )
-}

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useSiteProfile } from '../api/profile-context'
+import { profile } from '../content'
 
 /**
  * Keeps the tab title and the crawlable meta in step with the route.
@@ -8,12 +8,10 @@ import { useSiteProfile } from '../api/profile-context'
  * page shares one title and one description — which makes browser history,
  * bookmarks and search results all say the same thing.
  *
- * The site name is never written down here. `index.html` gets its `<title>`
- * from `src/Api/Data/profile.json` at build time, and this reads it back off
- * the delivered document until the profile arrives over the API, so the name
- * has exactly one source.
+ * The site name is never written down here: it comes from `profile.json`, the
+ * same file the build-time plugin reads to fill in `index.html`'s `<title>`, so
+ * the delivered document and the rendered app cannot disagree.
  */
-const DELIVERED_TITLE = document.title
 
 export interface PageMeta {
   /** Prefixed to the site name, e.g. `Photos · Trevor Huval`. */
@@ -23,10 +21,7 @@ export interface PageMeta {
 }
 
 export function usePageMeta(page?: PageMeta) {
-  const { data } = useSiteProfile()
-  const site = data?.name ?? DELIVERED_TITLE
-
-  const title = page === undefined ? site : `${page.title} · ${site}`
+  const title = page === undefined ? profile.name : `${page.title} · ${profile.name}`
   const description = page?.description
 
   useEffect(() => {

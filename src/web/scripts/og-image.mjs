@@ -5,9 +5,9 @@
  *
  * The card is a link preview, so it has to be a flat file — no fetch, no
  * runtime. But the words on it are still content: the name is read out of
- * `src/Api/Data/profile.json`, the same file the site itself renders from, so
- * the card cannot drift from the page it points at. Anything still carrying a
- * `TODO:` marker is left off rather than published.
+ * `src/web/src/content/profile.json`, the same file the site itself renders
+ * from, so the card cannot drift from the page it points at. Anything still
+ * carrying a `TODO:` marker is left off rather than published.
  *
  *   npm run og
  */
@@ -19,8 +19,8 @@ import sharp from 'sharp'
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url))
 const webRoot = path.resolve(scriptDir, '..')
-const repoRoot = path.resolve(webRoot, '../..')
 const publicDir = path.join(webRoot, 'public')
+const contentDir = path.join(webRoot, 'src', 'content')
 
 const WIDTH = 1200
 const HEIGHT = 630
@@ -36,9 +36,7 @@ const FONT =
 const MONO = "'Cascadia Mono', 'Consolas', 'SF Mono', monospace"
 
 async function main() {
-  const profile = JSON.parse(
-    await readFile(path.join(repoRoot, 'src', 'Api', 'Data', 'profile.json'), 'utf8'),
-  )
+  const profile = JSON.parse(await readFile(path.join(contentDir, 'profile.json'), 'utf8'))
 
   const name = profile.name
   const headline = real(profile.headline)

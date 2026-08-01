@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import type { Photo } from '../api/types'
+﻿import { useEffect, useRef } from 'react'
+import type { Photo } from '../content/types'
 import { formatDay } from '../lib/dates'
 import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from './Icons'
 import PhotoImage from './PhotoImage'
@@ -7,7 +7,7 @@ import PhotoImage from './PhotoImage'
 /**
  * Built on a native `<dialog>` opened with `showModal()`, which is what gives
  * us the focus trap, Escape-to-close, focus return to the thumbnail, top-layer
- * stacking and an inert background — all of it correct, none of it hand-rolled.
+ * stacking and an inert background â€” all of it correct, none of it hand-rolled.
  *
  * What the platform does not give us and this adds: arrow-key and swipe
  * navigation, body scroll lock (the backdrop does not stop the page behind it
@@ -45,8 +45,8 @@ export default function Lightbox({
   onCloseRef.current = onClose
 
   /**
-   * A modal dialog can be dismissed by the user agent itself — Escape, or the
-   * browser closing the top layer — which fires `close` on the element without
+   * A modal dialog can be dismissed by the user agent itself â€” Escape, or the
+   * browser closing the top layer â€” which fires `close` on the element without
    * going through any of our handlers. React state has to follow, or the
    * dialog vanishes while we still believe it is open and `body` is left
    * scroll-locked.
@@ -73,7 +73,7 @@ export default function Lightbox({
     if (!dialog) return
 
     // showModal() throws if the dialog is already open, and close() on a closed
-    // dialog fires a spurious 'close' event — so both are guarded.
+    // dialog fires a spurious 'close' event â€” so both are guarded.
     if (isOpen && !dialog.open) dialog.showModal()
     else if (!isOpen && dialog.open) dialog.close()
   }, [isOpen])
@@ -97,7 +97,7 @@ export default function Lightbox({
     return <dialog ref={dialogRef} className="hidden" />
   }
 
-  const meta = [photo.location, formatDay(photo.date)].filter(Boolean).join(' · ')
+  const meta = [photo.location, formatDay(photo.date)].filter(Boolean).join(' Â· ')
   const hasSiblings = photos.length > 1
   const frameWidth = `calc(${MAX_HEIGHT} * ${photo.width} / ${photo.height})`
 
@@ -106,15 +106,15 @@ export default function Lightbox({
       ref={dialogRef}
       aria-label={`Photo ${index + 1} of ${photos.length}: ${photo.caption}`}
       onClick={(event) => {
-        // Only a click on the dialog box itself — the padding around the
-        // figure — counts as clicking out.
+        // Only a click on the dialog box itself â€” the padding around the
+        // figure â€” counts as clicking out.
         if (event.target === dialogRef.current) onClose()
       }}
       onKeyDown={(event) => {
         // The user agent also closes the dialog on Escape by itself. Unwinding
         // our own state here too means the scroll lock lifts even if the
         // resulting `close` event never reaches the listener above. Running
-        // both paths is harmless — it just sets the same state twice.
+        // both paths is harmless â€” it just sets the same state twice.
         if (event.key === 'Escape') {
           onClose()
           return
@@ -145,7 +145,7 @@ export default function Lightbox({
     >
       <div className="pointer-events-none flex h-full w-full items-center justify-center">
         {/* The frame and the caption bar hug the photo instead of stranding it
-            in a wide slab of glass — a portrait shot and a panorama each get
+            in a wide slab of glass â€” a portrait shot and a panorama each get
             chrome cut to their own shape.
 
             The width is computed rather than left to `w-fit`, because

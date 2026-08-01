@@ -1,2 +1,0 @@
-# Keeps wwwroot present in the repo. The Vite build output is written here on
-# publish and is not committed — see .gitignore.

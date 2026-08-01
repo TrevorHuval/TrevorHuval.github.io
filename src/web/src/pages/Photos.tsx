@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
-import { usePhotos } from '../api/hooks'
+import { photos } from '../content'
 import Lightbox from '../components/Lightbox'
 import PhotoGrid from '../components/PhotoGrid'
-import { EmptyPanel, ErrorPanel, LoadingPanel } from '../components/States'
 import { usePageMeta } from '../lib/usePageMeta'
 
 const ALL = 'All'
+
+const ALBUMS = [ALL, ...new Set(photos.map((photo) => photo.album))]
 
 export default function Photos() {
   usePageMeta({
@@ -13,19 +14,13 @@ export default function Photos() {
     description: 'A gallery of photographs from travels and from home.',
   })
 
-  const { data, error, loading, reload } = usePhotos()
   const [album, setAlbum] = useState(ALL)
   const [selected, setSelected] = useState<number | null>(null)
 
-  const albums = useMemo(() => {
-    if (data === null) return []
-    return [ALL, ...new Set(data.map((photo) => photo.album))]
-  }, [data])
-
-  const visible = useMemo(() => {
-    if (data === null) return []
-    return album === ALL ? data : data.filter((photo) => photo.album === album)
-  }, [data, album])
+  const visible = useMemo(
+    () => (album === ALL ? photos : photos.filter((photo) => photo.album === album)),
+    [album],
+  )
 
   // The lightbox indexes into the filtered list, so switching albums while it
   // is open would point at the wrong photo. Closing is the honest fix.
@@ -51,9 +46,9 @@ export default function Photos() {
         </p>
       </header>
 
-      {albums.length > 2 && (
+      {ALBUMS.length > 2 && (
         <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by album">
-          {albums.map((name) => {
+          {ALBUMS.map((name) => {
             const isActive = name === album
             return (
               <button
@@ -74,20 +69,7 @@ export default function Photos() {
         </div>
       )}
 
-      {loading && <LoadingPanel label="Loading photos" lines={4} />}
-      {error !== null && <ErrorPanel message={error} onRetry={reload} />}
-      {data && visible.length === 0 && (
-        <EmptyPanel
-          title="No photos here yet"
-          hint={
-            album === ALL
-              ? 'Gallery metadata lives in the site content files; photos will appear here once added.'
-              : `Nothing filed under ${album} yet.`
-          }
-        />
-      )}
-
-      {visible.length > 0 && <PhotoGrid photos={visible} onSelect={setSelected} />}
+      <PhotoGrid photos={visible} onSelect={setSelected} />
 
       <Lightbox
         photos={visible}

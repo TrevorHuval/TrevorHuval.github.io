@@ -11,7 +11,7 @@
  *   public/photos/thumbs/<id>.avif
  *
  * It then writes the produced paths and the true pixel dimensions back into
- * `src/Api/Data/photos.json`, matching on `id`. Dimensions are what let the
+ * `src/web/src/content/photos.json`, matching on `id`. Dimensions are what let the
  * browser reserve layout space before an image arrives, so having a human keep
  * them in step by hand is how a gallery ends up jumping on load. Captions,
  * locations, dates and albums are left exactly as they are — this owns the
@@ -34,13 +34,12 @@ import sharp from 'sharp'
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url))
 const webRoot = path.resolve(scriptDir, '..')
-const repoRoot = path.resolve(webRoot, '../..')
 
 const SOURCE_DIR =
   process.env.PHOTOS_SRC ?? path.join(homedir(), 'Pictures', 'personalSitePics')
 const OUTPUT_DIR = path.join(webRoot, 'public', 'photos')
 const THUMB_DIR = path.join(OUTPUT_DIR, 'thumbs')
-const MANIFEST = path.join(repoRoot, 'src', 'Api', 'Data', 'photos.json')
+const MANIFEST = path.join(webRoot, 'src', 'content', 'photos.json')
 
 /** Long edge, in px. 2000 is a comfortable ceiling for a full-screen lightbox
  *  on a 2x display without shipping a print master. */

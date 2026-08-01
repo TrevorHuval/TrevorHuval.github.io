@@ -1,5 +1,5 @@
 {
-  "$comment": "Maps a gallery id in src/Api/Data/photos.json to its original file inside the source directory. Originals are large and stay out of the repo; see scripts/README.md.",
+  "$comment": "Maps a gallery id in src/content/photos.json to its original file inside the source directory. Originals are large and stay out of the repo; see scripts/README.md.",
   "sources": {
     "japan-alley": "streetsOfJapan.jpg",
     "grand-canyon": "grandCanyonSelfie.jpg",

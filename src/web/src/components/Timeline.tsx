@@ -1,10 +1,10 @@
-import type { ExperienceEntry } from '../api/types'
+﻿import type { ExperienceEntry } from '../content/types'
 import { formatDuration, formatRange } from '../lib/dates'
 import { Chip } from './Ui'
 
 /**
  * The rail. Roles hang off a single hairline with their dates set in the
- * left-hand margin — a contact sheet's frame numbers applied to a career.
+ * left-hand margin â€” a contact sheet's frame numbers applied to a career.
  *
  * These entries are intentionally *not* glass cards. Stacking eight identical
  * panels flattens the page; letting the timeline read as editorial text gives
@@ -24,7 +24,7 @@ export default function Timeline({ entries }: { entries: ExperienceEntry[] }) {
             key={`${entry.company}-${entry.startDate}`}
             className="grid gap-x-6 md:grid-cols-[8.5rem_1fr]"
           >
-            {/* The gutter — margin notes, right-aligned against the rail. */}
+            {/* The gutter â€” margin notes, right-aligned against the rail. */}
             <div className="hidden md:block md:pt-1 md:text-right">
               <p className="gutter-date">{range}</p>
               {duration && <p className="gutter-date mt-1.5 opacity-70">{duration}</p>}
@@ -53,14 +53,14 @@ export default function Timeline({ entries }: { entries: ExperienceEntry[] }) {
 
               <p className="gutter-date mb-2 md:hidden">
                 {range}
-                {duration && ` · ${duration}`}
+                {duration && ` Â· ${duration}`}
               </p>
 
               <h3 className="text-lg font-semibold text-ink">{entry.title}</h3>
               <p className="mt-0.5 text-sm text-ink-muted">
                 {entry.company}
                 <span aria-hidden="true" className="mx-1.5 text-ink-faint">
-                  ·
+                  Â·
                 </span>
                 <span className="text-ink-soft">{entry.location}</span>
               </p>

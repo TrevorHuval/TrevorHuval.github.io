@@ -3,7 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import AmbientBackground from './AmbientBackground'
 import Nav from './Nav'
 import { GitHubIcon, LinkedInIcon } from './Icons'
-import { useSiteProfile } from '../api/profile-context'
+import { profile } from '../content'
 
 /**
  * The shell every route renders into. The measure is capped at 68rem: wide
@@ -20,7 +20,7 @@ export default function Layout() {
     <div className="flex min-h-screen flex-col">
       <AmbientBackground />
       <SkipLink />
-      <NavWithProfile />
+      <Nav links={profile.links} />
 
       {/* tabIndex -1 so the skip link actually lands focus here rather than
           only moving the scroll position. */}
@@ -71,33 +71,24 @@ function SkipLink() {
   )
 }
 
-function NavWithProfile() {
-  const { data } = useSiteProfile()
-
-  return <Nav links={data?.links ?? null} />
-}
-
 function SiteFooter() {
-  const { data } = useSiteProfile()
   const year = new Date().getFullYear()
 
   return (
     <footer className="mx-auto w-full max-w-[68rem] px-5 pb-10 sm:px-8">
       <div className="flex flex-col items-center gap-5 border-t border-hairline pt-8 sm:flex-row sm:justify-between">
         <p className="numeric text-meta text-ink-soft">
-          © {year} {data?.name ?? 'Trevor Huval'}
+          © {year} {profile.name}
         </p>
 
-        {data && (
-          <ul className="flex items-center gap-1">
-            <FooterLink href={data.links.gitHub} label="GitHub">
-              <GitHubIcon className="size-[1.05rem]" />
-            </FooterLink>
-            <FooterLink href={data.links.linkedIn} label="LinkedIn">
-              <LinkedInIcon className="size-[1.05rem]" />
-            </FooterLink>
-          </ul>
-        )}
+        <ul className="flex items-center gap-1">
+          <FooterLink href={profile.links.gitHub} label="GitHub">
+            <GitHubIcon className="size-[1.05rem]" />
+          </FooterLink>
+          <FooterLink href={profile.links.linkedIn} label="LinkedIn">
+            <LinkedInIcon className="size-[1.05rem]" />
+          </FooterLink>
+        </ul>
       </div>
     </footer>
   )

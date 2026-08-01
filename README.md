@@ -3,100 +3,59 @@
 Trevor Huval's personal website: an About Me, resume (HTML + PDF download), a
 projects showcase, a skills/experience timeline, and a photo gallery.
 
-**Stack:** .NET 10 minimal API + React (Vite, TypeScript, Tailwind v4). In
-production the .NET app serves both the API and the built React assets from a
-single container.
+**Stack:** React 19 + TypeScript + Vite + Tailwind v4, built to static files and
+served by GitHub Pages. There is no backend.
 
 ## Layout
 
 ```
-personalSite.slnx
-src/
-  Api/        .NET 10 minimal API — serves /api/* and, in production, the SPA
-    Data/     site content as JSON — see src/Api/Data/README.md
-    Models/   DTO records
-    Services/ ContentService, GitHubService
-    Endpoints/route registrations
-  web/        Vite + React + TypeScript + Tailwind frontend
-tests/
-  Api.Tests/  xUnit tests over the real content files
+src/web/                Vite + React + TypeScript + Tailwind
+  public/               favicon, og image, resume PDF, photos/
+  scripts/              build-time meta plugin + the image/OG authoring scripts
+  src/
+    content/            every word on the site, as JSON — see its README
+    components/
+    pages/
+    lib/
 ```
 
 ## Prerequisites
 
-- [.NET SDK 10](https://dotnet.microsoft.com/download)
-- [Node.js 22+](https://nodejs.org)
+[Node.js 22+](https://nodejs.org). That is the whole list.
 
 ## Running in development
-
-The two servers run separately. Start the API first:
-
-```bash
-dotnet run --project src/Api
-```
-
-It listens on <http://localhost:5000> (see `src/Api/Properties/launchSettings.json`).
-
-Then, in a second terminal, start the frontend:
 
 ```bash
 npm install --prefix src/web && npm run dev --prefix src/web
 ```
 
-Open <http://localhost:5173>. Vite proxies `/api` to the API on port 5000
-(configured in `src/web/vite.config.ts`), so the app talks to a single origin in
-development just as it does in production — always fetch relative `/api/...`
-paths, never an absolute API URL.
-
-Quick check that the plumbing is live:
-
-```bash
-curl http://localhost:5173/api/health
-```
-
-## API
-
-| Endpoint | Returns |
-| --- | --- |
-| `GET /api/health` | Liveness probe |
-| `GET /api/profile` | Name, headline, bio, location, social links |
-| `GET /api/resume` | Experience, education, certifications |
-| `GET /api/skills` | Skill groups |
-| `GET /api/projects` | Curated projects, display-ordered |
-| `GET /api/photos` | Gallery metadata |
-| `GET /api/github/repos` | Public repos, most recently pushed first |
-
-Everything but `/api/github/repos` is served from the JSON files in
-`src/Api/Data/` — see [the content README](src/Api/Data/README.md) for the file
-shapes and editing conventions. The files are read once at startup, so restart
-the API after editing content.
-
-`/api/github/repos` hits GitHub unauthenticated and caches the result in memory
-for an hour, well inside the 60-requests-per-hour rate limit. If GitHub is
-unreachable it returns an empty list rather than an error, so the curated
-projects still render. The account is set by `GitHub:Username` in
-`appsettings.json`.
-
-In development the OpenAPI document is at
-<http://localhost:5000/openapi/v1.json>.
+Open <http://localhost:5173>. Content is imported at build time, so editing a
+file in `src/web/src/content/` hot-reloads the page like any other source
+change.
 
 ## Content
 
-All site copy lives in `src/Api/Data/*.json` — nothing is hardcoded in
-components. Placeholder text is marked `TODO: Trevor fills in`:
+Every piece of copy lives in `src/web/src/content/*.json` — nothing is hardcoded
+in a component. The files are imported by `src/content/index.ts` and type-checked
+against `src/content/types.ts`, so a renamed key or a missing field fails `tsc`
+rather than rendering an empty panel. See
+[the content README](src/web/src/content/README.md) for the shapes and
+conventions.
 
-```bash
-grep -rn "TODO: Trevor fills in" src/Api/Data
-```
+The one thing fetched at runtime is repository stats, which the browser reads
+straight from `api.github.com` (unauthenticated, cached in `sessionStorage` for
+an hour). It has no error state on purpose: a rate-limited visitor sees the
+project cards without a stats row, which is the correct outcome.
 
 ## Testing
 
 ```bash
-dotnet test
+npm run test --prefix src/web
 ```
 
-The tests deserialize the real content files, so a malformed or incomplete one
-fails the build rather than the deployed site.
+A content lint over the real JSON: no placeholder text, no email address, dates
+in the right shape, unique ids, and every AVIF path paired with a real JPEG.
+`tsc` covers the shapes; these are the things a type cannot catch.
 
 ## Media
 
@@ -109,44 +68,28 @@ npm run photos --prefix src/web   # resize originals, refresh photos.json
 npm run og --prefix src/web       # og.png, apple-touch-icon.png, site.webmanifest
 ```
 
-See [the content README](src/Api/Data/README.md) for what `npm run photos`
+See [the content README](src/web/src/content/README.md) for what `npm run photos`
 takes as input and what it writes.
 
 ## Building
 
 ```bash
-dotnet publish src/Api -c Release -o out
+npm run build --prefix src/web    # tsc -b && vite build → src/web/dist
+npm run preview --prefix src/web  # serve dist locally
 ```
 
-That is the whole build: an MSBuild target in `src/Api/Api.csproj` runs
-`npm ci` (when needed) and `npm run build`, which writes the frontend into
-`src/Api/wwwroot`, and the published app then serves the API and the site
-together on one port.
+Set `SITE_URL` to bake absolute Open Graph URLs and emit a `sitemap.xml` plus a
+`Sitemap:` line in `robots.txt`:
 
 ```bash
-dotnet out/Api.dll     # http://localhost:5000 — the whole site
+SITE_URL=https://trevorhuval.com npm run build --prefix src/web
 ```
 
-`/api/*` routes take priority and everything else falls back to `index.html`
-for client-side routing. Hashed assets under `/assets` are cached for a year
-and marked `immutable`; `index.html` always revalidates, so a deploy is picked
-up immediately. Responses are compressed by the app itself, since nothing in
-front of it will be.
+Without it the build still succeeds — Open Graph paths stay root-relative and no
+sitemap is written, which is the honest output for a build that does not know
+where it will live.
 
-Set `SITE_URL` before building to bake absolute Open Graph URLs and emit a
-`sitemap.xml`:
-
-```bash
-SITE_URL=https://example.com dotnet publish src/Api -c Release -o out
-```
-
-Without it the build still succeeds — Open Graph paths stay root-relative and
-no sitemap is written.
-
-To build the frontend alone (for a Docker stage that has node but not the SDK,
-or just to iterate):
-
-```bash
-npm run build --prefix src/web
-dotnet publish src/Api -c Release -o out -p:SkipSpaBuild=true
-```
+The build also writes `404.html` as a byte-for-byte copy of `index.html`. GitHub
+Pages has no rewrite rules, so that copy is the only reason a hard load of
+`/resume` boots the app instead of showing a 404 page. The response still
+carries a 404 status; that is inherent to client-side routing on Pages.

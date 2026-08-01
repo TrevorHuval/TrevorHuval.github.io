@@ -1,4 +1,4 @@
-import type { GitHubRepo, Project } from '../api/types'
+﻿import type { GitHubRepo, Project } from '../content/types'
 import { formatRelative } from '../lib/dates'
 import { ArrowUpRightIcon, ForkIcon, GitHubIcon, StarIcon } from './Icons'
 import { Chip } from './Ui'
