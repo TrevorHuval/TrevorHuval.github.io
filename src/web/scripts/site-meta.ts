@@ -27,6 +27,10 @@ interface Profile {
   links: { gitHub: string; linkedIn: string }
 }
 
+interface Resume {
+  experience: { title: string; endDate: string | null }[]
+}
+
 /** Pages a crawler should know about, mirroring the routes in `App.tsx`. */
 const ROUTES = ['/', '/resume', '/projects', '/photos'] as const
 
@@ -41,13 +45,14 @@ export function siteMeta(options: { dataDir: string; publicDir: string }): Plugi
     },
 
     transformIndexHtml(html) {
-      const profile = readProfile(options.dataDir)
+      const profile = readJson<Profile>(options.dataDir, 'profile.json')
+      const resume = readJson<Resume>(options.dataDir, 'resume.json')
       const description = describe(profile)
 
       return html
         .replace(
           '</head>',
-          `  <script type="application/ld+json">${personSchema(profile, description, siteUrl)}</script>\n  </head>`,
+          `  <script type="application/ld+json">${personSchema(profile, resume, description, siteUrl)}</script>\n  </head>`,
         )
         .replace(/%SITE_([A-Z_]+)%/g, (match, key: string) => {
           switch (key) {
@@ -100,17 +105,27 @@ export function siteMeta(options: { dataDir: string; publicDir: string }): Plugi
  * a placeholder URL in there would be worse than no block at all, so anything
  * still unfilled is dropped.
  */
-function personSchema(profile: Profile, description: string, siteUrl: string): string {
+function personSchema(
+  profile: Profile,
+  resume: Resume,
+  description: string,
+  siteUrl: string,
+): string {
   const sameAs = [profile.links.gitHub, profile.links.linkedIn].filter(
     (link) => link.startsWith('http'),
   )
+
+  // `jobTitle` wants a job title, not a sentence — the headline is prose and
+  // reads as nonsense in a knowledge panel. The current role is the real
+  // answer, and the résumé already knows it.
+  const jobTitle = real(resume.experience.find((role) => role.endDate === null)?.title ?? '')
 
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: profile.name,
     description,
-    ...(real(profile.headline) === null ? {} : { jobTitle: profile.headline }),
+    ...(jobTitle === null ? {} : { jobTitle }),
     ...(real(profile.location) === null ? {} : { address: profile.location }),
     ...(sameAs.length === 0 ? {} : { sameAs }),
     ...(siteUrl === '' ? {} : { url: siteUrl, image: `${siteUrl}/og.png` }),
@@ -122,8 +137,8 @@ function real(value: string): string | null {
   return value !== '' && !value.startsWith('TODO:') ? value : null
 }
 
-function readProfile(dataDir: string): Profile {
-  return JSON.parse(readFileSync(path.join(dataDir, 'profile.json'), 'utf8')) as Profile
+function readJson<T>(dataDir: string, fileName: string): T {
+  return JSON.parse(readFileSync(path.join(dataDir, fileName), 'utf8')) as T
 }
 
 /**

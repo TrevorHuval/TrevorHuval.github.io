@@ -1,0 +1,71 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # So a deploy can be re-run without an empty commit — useful when only the
+  # Pages settings or the custom domain changed.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  # Pages deployment authenticates with a short-lived OIDC token, so there is no
+  # secret and no PAT anywhere in this workflow.
+  id-token: write
+
+# One deploy at a time. In-progress runs are deliberately not cancelled: killing
+# a deploy midway can leave the site half-published.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+defaults:
+  run:
+    working-directory: src/web
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: src/web/package-lock.json
+
+      - run: npm ci
+
+      # The content lint runs before the build, not after: it is the thing that
+      # catches a bad hand-edit to the JSON, and there is no point building a
+      # site that should not ship.
+      #
+      # Note there is no `npm audit` step. It reports an RSC-mode CSRF advisory
+      # against react-router that needs React Server Components and server
+      # actions to exploit — this is a static SPA with no server. Failing every
+      # deploy over something unreachable helps nobody.
+      - run: npm run lint
+      - run: npm run test
+
+      - name: Build
+        env:
+          # The absolute origin is deployment, not content. It is what turns the
+          # Open Graph URLs absolute and emits sitemap.xml.
+          SITE_URL: https://trevorhuval.com
+        run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: src/web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
