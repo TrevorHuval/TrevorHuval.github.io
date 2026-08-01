@@ -65,6 +65,10 @@ the live repository data that `lib/useGitHubRepos.ts` fetches from the browser.
 Set it to pull stars, language, and last-pushed date onto the project card;
 leave it `null` for projects with no public repo.
 
+`order` decides both the position of a card and the frame number printed on it,
+so reordering the projects renumbers them — the numbers are an index, not a
+ranking.
+
 The match is case-insensitive, but the slug still has to name a repo the account
 in `profile.links.gitHub` actually owns and has made public — the request is
 unauthenticated. A slug that matches nothing simply gets no stats row, which is

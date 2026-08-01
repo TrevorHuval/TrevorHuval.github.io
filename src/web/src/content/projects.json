@@ -7,8 +7,6 @@
     "tech": ["React", "TypeScript", "Vite", ".NET 10", "PostgreSQL 17", "Docker"],
     "repoSlug": "TrevorHuval/musiql",
     "liveUrl": null,
-    "imageUrl": null,
-    "featured": false,
     "order": 1
   },
   {
@@ -19,8 +17,6 @@
     "tech": [".NET 10", "ASP.NET Core MVC", "EF Core", "Dapper", "PostgreSQL", "SQLite", "Docker"],
     "repoSlug": "TrevorHuval/Plannit",
     "liveUrl": null,
-    "imageUrl": null,
-    "featured": false,
     "order": 2
   },
   {
@@ -31,8 +27,6 @@
     "tech": ["ASP.NET Core 10", "PostgreSQL", "EF Core", "xUnit", "Docker Compose"],
     "repoSlug": "TrevorHuval/Heardit",
     "liveUrl": null,
-    "imageUrl": null,
-    "featured": false,
     "order": 3
   },
   {
@@ -43,8 +37,6 @@
     "tech": ["React", "TypeScript", "Vite", "Tailwind CSS", "GitHub Actions", "GitHub Pages"],
     "repoSlug": "TrevorHuval/TrevorHuval.github.io",
     "liveUrl": null,
-    "imageUrl": null,
-    "featured": false,
     "order": 4
   }
 ]

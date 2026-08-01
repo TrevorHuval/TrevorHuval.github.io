@@ -63,11 +63,12 @@ export interface Project {
   summary: string
   description: string | null
   tech: string[]
-  /** `"owner/name"`, the join key against {@link GitHubRepo.fullName}. */
+  /** `"owner/name"`, the join key against {@link GitHubRepo.fullName}. Also
+   * what the card's Source link is built from, so it works with GitHub down. */
   repoSlug: string | null
+  /** A deployed instance, if there is one. `null` shows the Source link alone. */
   liveUrl: string | null
-  imageUrl: string | null
-  featured: boolean
+  /** Ascending. Decides the order of the cards and their frame numbers. */
   order: number
 }
 

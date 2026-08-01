@@ -1,4 +1,4 @@
-﻿import type { GitHubRepo, Project } from '../content/types'
+import type { GitHubRepo, Project } from '../content/types'
 import { formatRelative } from '../lib/dates'
 import { ArrowUpRightIcon, ForkIcon, GitHubIcon, StarIcon } from './Icons'
 import { Chip } from './Ui'
@@ -6,46 +6,36 @@ import { Chip } from './Ui'
 export type ProjectWithRepo = Project & { repo: GitHubRepo | null }
 
 /**
- * A curated project, optionally wearing live repo stats.
+ * One project, at the same weight as the other three.
  *
- * `lead` is the first featured project: it spans the grid and steps the type up
- * a tier so the eye lands somewhere on arrival instead of scanning a wall of
- * identical cards.
+ * There is no lead card and no "featured" badge: these four are peers, and a
+ * badge worn by most of them says nothing. Each card owes the reader the same
+ * three things in the same order — what it is, what it is built with, and where
+ * the source lives.
+ *
+ * The frame number is the site's contact-sheet motif applied here, and it is
+ * the only piece of that motif on this page which does not depend on GitHub
+ * answering: a rate-limited visitor loses the pushed-at stamp and would
+ * otherwise see a page with no trace of the signature on it.
  */
 export default function ProjectCard({
   project,
-  lead = false,
+  index,
 }: {
   project: ProjectWithRepo
-  lead?: boolean
+  index: number
 }) {
   const { repo } = project
-  const primaryHref = project.liveUrl ?? repo?.htmlUrl ?? null
 
   return (
-    <article
-      className={`glass group flex flex-col rounded-card transition-[transform,box-shadow] duration-200 ease-out-quint hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift-high)] ${
-        lead ? 'gap-5 p-7 md:col-span-2' : 'gap-4 p-6'
-      }`}
-    >
+    <article className="glass group flex flex-col gap-4 rounded-card p-6 transition-[transform,box-shadow] duration-200 ease-out-quint hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift-high)]">
       <header className="flex flex-col gap-2">
-        <div className="flex items-start justify-between gap-4">
-          <h3 className={`font-semibold text-ink ${lead ? 'text-xl' : 'text-lg'}`}>
-            {project.name}
-          </h3>
-          {project.featured && (
-            <span className="mt-0.5 shrink-0 rounded-full bg-ember-soft px-2.5 py-1 font-mono text-caption tracking-[0.1em] text-ember uppercase">
-              Featured
-            </span>
-          )}
-        </div>
-
-        <p className={`text-ink-muted ${lead ? 'text-base' : 'text-sm'}`}>{project.summary}</p>
+        <p className="gutter-date">{String(index + 1).padStart(2, '0')}</p>
+        <h3 className="text-lg font-semibold text-ink">{project.name}</h3>
+        <p className="text-sm text-ink-muted">{project.summary}</p>
       </header>
 
-      {lead && project.description && (
-        <p className="text-sm text-ink-soft">{project.description}</p>
-      )}
+      {project.description && <p className="text-sm text-ink-soft">{project.description}</p>}
 
       {project.tech.length > 0 && (
         <ul className="flex flex-wrap gap-1.5">
@@ -57,52 +47,56 @@ export default function ProjectCard({
         </ul>
       )}
 
-      {/* Live repo stats, only when a slug actually matched. Absent GitHub data
-          collapses the row rather than showing zeroes. */}
-      {repo && (
-        <dl className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-hairline pt-4">
-          {repo.language && (
+      {/* Pinned to the bottom so all four cards agree on where their links sit,
+          however long the prose above runs. Repo stats appear only when a slug
+          actually matched: absent GitHub data collapses the row rather than
+          showing a line of zeroes. */}
+      <footer className="mt-auto flex flex-col gap-3 border-t border-hairline pt-4">
+        {repo && (
+          <dl className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            {repo.language && (
+              <div className="flex items-center gap-1.5">
+                <dt className="sr-only">Language</dt>
+                <span aria-hidden="true" className="size-2 rounded-full bg-ember" />
+                <dd className="text-meta text-ink-muted">{repo.language}</dd>
+              </div>
+            )}
             <div className="flex items-center gap-1.5">
-              <dt className="sr-only">Language</dt>
-              <span aria-hidden="true" className="size-2 rounded-full bg-ember" />
-              <dd className="text-meta text-ink-muted">{repo.language}</dd>
+              <dt className="sr-only">Stars</dt>
+              <StarIcon className="size-3.5 text-ink-faint" />
+              <dd className="numeric text-meta text-ink-muted">{repo.stars}</dd>
             </div>
-          )}
-          <div className="flex items-center gap-1.5">
-            <dt className="sr-only">Stars</dt>
-            <StarIcon className="size-3.5 text-ink-faint" />
-            <dd className="numeric text-meta text-ink-muted">{repo.stars}</dd>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <dt className="sr-only">Forks</dt>
-            <ForkIcon className="size-3.5 text-ink-faint" />
-            <dd className="numeric text-meta text-ink-muted">{repo.forks}</dd>
-          </div>
-          {repo.pushedAt && (
-            <div className="ml-auto">
-              <dt className="sr-only">Last pushed</dt>
-              <dd className="gutter-date">Pushed {formatRelative(repo.pushedAt)}</dd>
+            <div className="flex items-center gap-1.5">
+              <dt className="sr-only">Forks</dt>
+              <ForkIcon className="size-3.5 text-ink-faint" />
+              <dd className="numeric text-meta text-ink-muted">{repo.forks}</dd>
             </div>
-          )}
-        </dl>
-      )}
+            {repo.pushedAt && (
+              <div className="ml-auto">
+                <dt className="sr-only">Last pushed</dt>
+                <dd className="gutter-date">Pushed {formatRelative(repo.pushedAt)}</dd>
+              </div>
+            )}
+          </dl>
+        )}
 
-      {(primaryHref ?? repo) && (
-        <footer className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-1">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
           {project.liveUrl && (
             <CardLink href={project.liveUrl}>
               <ArrowUpRightIcon className="size-4" />
               Visit site
             </CardLink>
           )}
-          {repo && (
-            <CardLink href={repo.htmlUrl}>
+          {/* Built from the curated slug rather than the fetched repo, so the
+              link survives GitHub being unreachable. */}
+          {project.repoSlug && (
+            <CardLink href={repo?.htmlUrl ?? `https://github.com/${project.repoSlug}`}>
               <GitHubIcon className="size-4" />
               Source
             </CardLink>
           )}
-        </footer>
-      )}
+        </div>
+      </footer>
     </article>
   )
 }

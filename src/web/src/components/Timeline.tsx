@@ -4,13 +4,25 @@ import { Chip } from './Ui'
 
 /**
  * The rail. Roles hang off a single hairline with their dates set in the
- * left-hand margin â€” a contact sheet's frame numbers applied to a career.
+ * left-hand margin — a contact sheet's frame numbers applied to a career.
  *
  * These entries are intentionally *not* glass cards. Stacking eight identical
  * panels flattens the page; letting the timeline read as editorial text gives
  * the surrounding glass sections something to be distinct from.
+ *
+ * `maxHighlights` is what stops the home page from being the résumé. The current
+ * role carries nine bullets, and printing all of them twice — once on the way
+ * down the home page and again on /resume — makes the home page a wall and the
+ * résumé link pointless. Home takes the top few; /resume passes nothing and gets
+ * everything.
  */
-export default function Timeline({ entries }: { entries: ExperienceEntry[] }) {
+export default function Timeline({
+  entries,
+  maxHighlights,
+}: {
+  entries: ExperienceEntry[]
+  maxHighlights?: number
+}) {
   return (
     <ol className="flex flex-col">
       {entries.map((entry, index) => {
@@ -18,13 +30,16 @@ export default function Timeline({ entries }: { entries: ExperienceEntry[] }) {
         const isCurrent = entry.endDate === null
         const range = formatRange(entry.startDate, entry.endDate)
         const duration = formatDuration(entry.startDate, entry.endDate)
+        const highlights =
+          maxHighlights === undefined ? entry.highlights : entry.highlights.slice(0, maxHighlights)
+        const hidden = entry.highlights.length - highlights.length
 
         return (
           <li
             key={`${entry.company}-${entry.startDate}`}
             className="grid gap-x-6 md:grid-cols-[8.5rem_1fr]"
           >
-            {/* The gutter â€” margin notes, right-aligned against the rail. */}
+            {/* The gutter — margin notes, right-aligned against the rail. */}
             <div className="hidden md:block md:pt-1 md:text-right">
               <p className="gutter-date">{range}</p>
               {duration && <p className="gutter-date mt-1.5 opacity-70">{duration}</p>}
@@ -53,21 +68,21 @@ export default function Timeline({ entries }: { entries: ExperienceEntry[] }) {
 
               <p className="gutter-date mb-2 md:hidden">
                 {range}
-                {duration && ` Â· ${duration}`}
+                {duration && ` · ${duration}`}
               </p>
 
               <h3 className="text-lg font-semibold text-ink">{entry.title}</h3>
               <p className="mt-0.5 text-sm text-ink-muted">
                 {entry.company}
                 <span aria-hidden="true" className="mx-1.5 text-ink-faint">
-                  Â·
+                  ·
                 </span>
                 <span className="text-ink-soft">{entry.location}</span>
               </p>
 
-              {entry.highlights.length > 0 && (
+              {highlights.length > 0 && (
                 <ul className="mt-3.5 flex flex-col gap-2">
-                  {entry.highlights.map((highlight) => (
+                  {highlights.map((highlight) => (
                     <li key={highlight} className="flex gap-3 text-sm text-ink-muted">
                       <span
                         aria-hidden="true"
@@ -77,6 +92,14 @@ export default function Timeline({ entries }: { entries: ExperienceEntry[] }) {
                     </li>
                   ))}
                 </ul>
+              )}
+
+              {/* Says the truncation out loud rather than letting a trimmed list
+                  read as the whole role. */}
+              {hidden > 0 && (
+                <p className="gutter-date mt-3">
+                  + {hidden} more on the resume
+                </p>
               )}
 
               {entry.tech.length > 0 && (

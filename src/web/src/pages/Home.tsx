@@ -82,7 +82,7 @@ function Skills() {
 function Experience() {
   return (
     <Section eyebrow="Experience" title="Where I've worked">
-      <Timeline entries={resume.experience} />
+      <Timeline entries={resume.experience} maxHighlights={3} />
       <div>
         <ActionLink to="/resume">
           Full resume
