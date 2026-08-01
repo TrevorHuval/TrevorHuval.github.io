@@ -48,12 +48,18 @@ jobs:
       # deploy over something unreachable helps nobody.
       - run: npm run lint
       - run: npm run test
+      # A résumé PDF is the one file that reliably arrives with a contact block
+      # on it, and no amount of linting the JSON can see inside a binary.
+      - run: npm run check:pdfs
 
       - name: Build
         env:
           # The absolute origin is deployment, not content. It is what turns the
-          # Open Graph URLs absolute and emits sitemap.xml.
-          SITE_URL: https://trevorhuval.com
+          # Open Graph URLs absolute and emits sitemap.xml. Change this and the
+          # Pages custom-domain setting together — an origin here that the site
+          # is not actually served from produces link previews and a sitemap
+          # pointing at a hostname nothing answers on.
+          SITE_URL: https://trevorhuval.github.io
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v5

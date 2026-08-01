@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "test": "vitest run",
+    "check:pdfs": "node scripts/check-pdfs.mjs",
     "preview": "vite preview",
     "photos": "node scripts/photos.mjs",
     "og": "node scripts/og-image.mjs"
