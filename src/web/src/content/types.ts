@@ -17,6 +17,12 @@ export interface ProfileLinks {
   linkedIn: string
 }
 
+/** A live project the nav links straight to, ahead of the projects page. */
+export interface QuickLink {
+  label: string
+  href: string
+}
+
 export interface Profile {
   name: string
   headline: string
@@ -24,6 +30,9 @@ export interface Profile {
   /** Paragraphs, rendered in order. */
   bio: string[]
   links: ProfileLinks
+  /** Shown in the nav pill between the pages and the social icons. Keep it to
+   * two or three: the pill has to fit on a tablet. */
+  quickLinks: QuickLink[]
 }
 
 export interface ExperienceEntry {

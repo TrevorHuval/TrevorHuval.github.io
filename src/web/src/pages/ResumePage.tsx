@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { profile, resume, skills } from '../content'
+import ResumeDialog, { RESUME_PDF } from '../components/ResumeDialog'
 import SkillsGrid from '../components/SkillsGrid'
 import Timeline from '../components/Timeline'
-import { DownloadIcon } from '../components/Icons'
-import { ActionLink, Section } from '../components/Ui'
+import { DocumentIcon, DownloadIcon } from '../components/Icons'
+import { ActionButton, ActionLink, Section } from '../components/Ui'
 import { formatRange } from '../lib/dates'
 import { usePageMeta } from '../lib/usePageMeta'
 
@@ -17,9 +19,12 @@ export default function ResumePage() {
     description: 'Work experience, education and skills, with the printable PDF a click away.',
   })
 
+  const [pdfOpen, setPdfOpen] = useState(false)
+
   return (
     <div className="flex flex-col gap-16">
-      <ResumeHeader />
+      <ResumeHeader onViewPdf={() => setPdfOpen(true)} />
+      <ResumeDialog open={pdfOpen} onClose={() => setPdfOpen(false)} />
 
       <Section eyebrow="Experience" title="Work">
         <Timeline entries={resume.experience} />
@@ -53,7 +58,7 @@ export default function ResumePage() {
   )
 }
 
-function ResumeHeader() {
+function ResumeHeader({ onViewPdf }: { onViewPdf: () => void }) {
   return (
     <header className="flex flex-col gap-6 pt-6">
       <p className="gutter-date">Resume</p>
@@ -64,9 +69,13 @@ function ResumeHeader() {
       <div className="flex flex-wrap items-center gap-3">
         {/* Trevor's real PDF, served straight out of the web root. It is also the
             only place on the site his email and phone number appear. */}
-        <ActionLink href="/trevor_huval_resume.pdf" variant="primary" download>
+        <ActionButton variant="primary" onClick={onViewPdf} aria-haspopup="dialog">
+          <DocumentIcon className="size-4" />
+          View PDF
+        </ActionButton>
+        <ActionLink href={RESUME_PDF} download>
           <DownloadIcon className="size-4" />
-          Download PDF
+          Download
         </ActionLink>
         <ActionLink href={profile.links.linkedIn} external>
           LinkedIn
