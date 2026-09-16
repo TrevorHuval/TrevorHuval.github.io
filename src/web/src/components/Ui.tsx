@@ -69,6 +69,25 @@ const ACTION_VARIANTS = {
   quiet: 'border border-hairline-strong text-ink hover:bg-inset',
 } as const
 
+/** The same shape as `ActionLink`, for an action that stays on the page
+ * (opening a dialog) rather than going somewhere. */
+export function ActionButton({
+  children,
+  variant = 'quiet',
+  className = '',
+  ...rest
+}: {
+  children: React.ReactNode
+  variant?: 'primary' | 'quiet'
+  className?: string
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'children'>) {
+  return (
+    <button type="button" className={`${ACTION_BASE} ${ACTION_VARIANTS[variant]} ${className}`} {...rest}>
+      {children}
+    </button>
+  )
+}
+
 /**
  * The site's only button shape: 40px tall, 16px side padding, full radius.
  * Pass `to` for an in-app route (client-side navigation) or `href` for anything

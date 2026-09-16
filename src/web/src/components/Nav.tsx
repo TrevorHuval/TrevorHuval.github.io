@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
-import { GitHubIcon, LinkedInIcon } from './Icons'
-import type { ProfileLinks } from '../content/types'
+import { ArrowUpRightIcon, GitHubIcon, LinkedInIcon } from './Icons'
+import type { ProfileLinks, QuickLink } from '../content/types'
 
 const PAGES = [
   { to: '/', label: 'Home' },
@@ -14,11 +14,14 @@ const PAGES = [
  * labels, no icons on the page links, and the accent spent only on marking
  * where you are.
  *
- * The social links live here for reach and in the footer for completeness;
- * below `sm` only the footer carries them, so the pill never has to compete
- * for width on a phone.
+ * The pill is three groups separated by hairlines: the pages, the live apps,
+ * and the social links. The apps are the point of the site — a recruiter should
+ * be one click from running software from anywhere on it. The social links live
+ * here for reach and in the footer for completeness; below `md` the pill keeps
+ * only the pages so it never has to compete for width on a phone (the apps stay
+ * reachable from the projects page and the footer carries the socials).
  */
-export default function Nav({ links }: { links: ProfileLinks }) {
+export default function Nav({ links, quickLinks }: { links: ProfileLinks; quickLinks: QuickLink[] }) {
   return (
     <header className="fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4">
       <nav
@@ -48,6 +51,25 @@ export default function Nav({ links }: { links: ProfileLinks }) {
             </li>
           ))}
         </ul>
+
+        {quickLinks.length > 0 && (
+          <>
+            <span aria-hidden="true" className="mx-1 hidden h-5 w-px bg-hairline md:block" />
+            <ul className="hidden items-center gap-0.5 md:flex" aria-label="Live projects">
+              {quickLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="flex h-10 items-center gap-1 rounded-full px-3.5 text-meta font-medium text-ink-muted transition-[color,background-color] duration-200 ease-out-quint hover:bg-inset hover:text-ink"
+                  >
+                    {link.label}
+                    <ArrowUpRightIcon className="size-3.5 opacity-50" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
 
         <span aria-hidden="true" className="mx-1 hidden h-5 w-px bg-hairline sm:block" />
         <ul className="hidden items-center gap-0.5 sm:flex">

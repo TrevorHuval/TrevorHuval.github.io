@@ -9,5 +9,15 @@
   "links": {
     "gitHub": "https://github.com/TrevorHuval",
     "linkedIn": "https://www.linkedin.com/in/trevorhuval"
-  }
+  },
+  "quickLinks": [
+    {
+      "label": "Plannit",
+      "href": "https://trevorhuval.com/plannit"
+    },
+    {
+      "label": "MusiQL",
+      "href": "https://trevorhuval.com/musiql"
+    }
+  ]
 }

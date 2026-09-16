@@ -61,6 +61,10 @@ describe('profile', () => {
   it('links out with absolute URLs', () => {
     expect(profile.links.gitHub).toMatch(/^https:\/\//)
     expect(profile.links.linkedIn).toMatch(/^https:\/\//)
+    for (const link of profile.quickLinks) {
+      expect(link.label.trim()).not.toBe('')
+      expect(link.href).toMatch(/^https:\/\//)
+    }
   })
 })
 

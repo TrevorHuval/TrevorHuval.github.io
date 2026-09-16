@@ -1,35 +1,41 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { photos, profile, resume, skills } from '../content'
 import PhotoImage from '../components/PhotoImage'
+import ResumeDialog from '../components/ResumeDialog'
 import SkillsGrid from '../components/SkillsGrid'
 import Timeline from '../components/Timeline'
-import { ArrowUpRightIcon, DownloadIcon } from '../components/Icons'
-import { ActionLink, Section } from '../components/Ui'
+import { ArrowUpRightIcon, DocumentIcon } from '../components/Icons'
+import { ActionButton, ActionLink, Section } from '../components/Ui'
 import { usePageMeta } from '../lib/usePageMeta'
 
 /**
  * The one page most visitors will read all of, so it carries the whole story in
- * order: who, then what he can do, then what he has done, then the life around
- * it. Every section reads from imported content, so the whole page arrives in
- * the first paint — there is nothing here to wait for.
+ * order: who, then a glimpse of the life around it to earn the scroll, then
+ * what he can do and what he has done. Every section reads from imported
+ * content, so the whole page arrives in the first paint — there is nothing
+ * here to wait for.
  */
 export default function Home() {
   // No override: the home page is what index.html's build-time title and
   // description were written for.
   usePageMeta()
 
+  const [resumeOpen, setResumeOpen] = useState(false)
+
   return (
     <div className="flex flex-col gap-20 sm:gap-24">
-      <Hero />
+      <Hero onViewResume={() => setResumeOpen(true)} />
+      <PhotoTeaser />
       <About />
       <Skills />
       <Experience />
-      <PhotoTeaser />
+      <ResumeDialog open={resumeOpen} onClose={() => setResumeOpen(false)} />
     </div>
   )
 }
 
-function Hero() {
+function Hero({ onViewResume }: { onViewResume: () => void }) {
   return (
     /* Left-aligned and editorial rather than a centred card: the name is the
        focal point of the whole site and wins on sheer scale, with nothing
@@ -42,10 +48,10 @@ function Hero() {
       <p className="max-w-[36ch] text-lg text-ink-muted sm:text-xl">{profile.headline}</p>
 
       <div className="mt-2 flex flex-wrap items-center gap-3">
-        <ActionLink to="/resume" variant="primary">
-          <DownloadIcon className="size-4" />
+        <ActionButton variant="primary" onClick={onViewResume} aria-haspopup="dialog">
+          <DocumentIcon className="size-4" />
           View resume
-        </ActionLink>
+        </ActionButton>
         <ActionLink to="/projects">
           See the work
           <ArrowUpRightIcon className="size-4 opacity-60" />
@@ -93,14 +99,19 @@ function Experience() {
   )
 }
 
-/** A four-frame teaser. Enough to show the gallery exists and is worth a click;
- * the page itself does the actual work. */
+/** A teaser strip right under the hero: the photographs are the most
+ * immediately interesting thing on the page, so they do the work of earning
+ * the scroll before the reader reaches the résumé material. Enough frames to
+ * show the gallery exists and is worth a click; the page itself does the rest.
+ *
+ * Six frames at `sm` and above, four below: an odd-shaped remainder row on a
+ * phone reads as a mistake, not a rhythm. */
 function PhotoTeaser() {
   return (
     <Section eyebrow="Elsewhere" title="Life and travels">
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {photos.slice(0, 4).map((photo) => (
-          <li key={photo.id}>
+      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {photos.slice(0, 6).map((photo, index) => (
+          <li key={photo.id} className={index >= 4 ? 'hidden sm:block' : undefined}>
             <Link
               to="/photos"
               aria-label={`Photo gallery: ${photo.caption}`}
@@ -114,7 +125,7 @@ function PhotoTeaser() {
                 alt={photo.caption}
                 width={photo.width}
                 height={photo.height}
-                sizes="(min-width: 640px) 16rem, 45vw"
+                sizes="(min-width: 1024px) 11rem, (min-width: 640px) 30vw, 45vw"
                 crop
                 className="aspect-square w-full rounded-card object-cover"
               />

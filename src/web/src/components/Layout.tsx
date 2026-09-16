@@ -20,7 +20,7 @@ export default function Layout() {
     <div className="flex min-h-screen flex-col">
       <AmbientBackground />
       <SkipLink />
-      <Nav links={profile.links} />
+      <Nav links={profile.links} quickLinks={profile.quickLinks} />
 
       {/* tabIndex -1 so the skip link actually lands focus here rather than
           only moving the scroll position. */}
