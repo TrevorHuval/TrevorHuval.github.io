@@ -33,7 +33,7 @@
     "id": "personal-site",
     "name": "Personal Site",
     "summary": "This site — a React and TypeScript static site, built and published straight from GitHub.",
-    "description": "Frosted-glass surfaces over an ambient gradient, with light and dark handled as a single token override so the two themes cannot drift apart. Every word on the site is structured JSON checked into the repo and type-checked at build time, and the text contrast was measured against WCAG rather than eyeballed. GitHub Actions builds it and publishes to Pages.",
+    "description": "A photo-led portfolio with rounded glass surfaces, a charcoal canvas, and a light theme. Shared design tokens keep the typography, spacing, and surfaces consistent. Content is structured JSON checked into the repo and type-checked at build time.",
     "tech": ["React", "TypeScript", "Vite", "Tailwind CSS", "GitHub Actions", "GitHub Pages"],
     "repoSlug": "TrevorHuval/TrevorHuval.github.io",
     "liveUrl": null,

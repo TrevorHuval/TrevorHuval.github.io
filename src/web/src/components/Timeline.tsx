@@ -42,7 +42,7 @@ export default function Timeline({
             {/* The gutter — margin notes, right-aligned against the rail. */}
             <div className="hidden md:block md:pt-1 md:text-right">
               <p className="gutter-date">{range}</p>
-              {duration && <p className="gutter-date mt-1.5 opacity-70">{duration}</p>}
+              {duration && <p className="gutter-date mt-1.5">{duration}</p>}
             </div>
 
             <div
@@ -62,7 +62,7 @@ export default function Timeline({
               <span
                 aria-hidden="true"
                 className={`absolute top-[0.45rem] -left-[4.5px] size-2.5 rounded-full ring-4 ring-canvas ${
-                  isCurrent ? 'bg-ember' : 'border border-hairline-strong bg-canvas'
+                  isCurrent ? 'bg-accent' : 'border border-hairline-strong bg-canvas'
                 }`}
               />
 

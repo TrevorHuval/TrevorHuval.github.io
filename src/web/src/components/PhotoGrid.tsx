@@ -19,14 +19,15 @@ export default function PhotoGrid({
   onSelect: (index: number) => void
 }) {
   return (
-    <ul className="columns-1 gap-4 sm:columns-2 lg:columns-3 [&>li]:mb-4">
+    <ul className="gallery-grid">
       {photos.map((photo, index) => (
         <li key={photo.id} className="break-inside-avoid">
           <button
             type="button"
+            aria-label={`View photo: ${photo.caption}`}
             aria-haspopup="dialog"
             onClick={() => onSelect(index)}
-            className="group relative block w-full overflow-hidden rounded-card transition-[transform,box-shadow] duration-200 ease-out-quint hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift-high)]"
+            className="gallery-photo"
           >
             <PhotoImage
               src={photo.thumbnail}
@@ -34,16 +35,16 @@ export default function PhotoGrid({
               alt={photo.caption}
               width={photo.width}
               height={photo.height}
-              sizes="(min-width: 1024px) 21rem, (min-width: 640px) 45vw, 90vw"
-              className="w-full rounded-card"
+              sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
+              className="w-full"
+              eager={index < 3}
             />
 
-            {/* Metadata rides in on hover on a pointer device; on touch it is
-                always visible, since there is no hover to reveal it. */}
-            <span className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col gap-0.5 rounded-b-card bg-gradient-to-t from-black/70 via-black/35 to-transparent p-4 pt-10 text-left opacity-100 transition-opacity duration-200 ease-out-quint sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-visible:opacity-100">
-              <span className="line-clamp-2 text-meta font-medium text-white">{photo.caption}</span>
-              <span className="font-mono text-caption tracking-[0.06em] text-white/70 uppercase">
-                {[photo.location, formatDay(photo.date)].filter(Boolean).join(' · ')}
+            <span className="gallery-caption">
+              <span className="gutter-date">{String(index + 1).padStart(2, '0')}</span>
+              <span className="gallery-caption-copy">
+                <span className="gallery-caption-title">{photo.caption}</span>
+                <span className="gutter-date">{[photo.location, formatDay(photo.date)].filter(Boolean).join(' · ')}</span>
               </span>
             </span>
           </button>

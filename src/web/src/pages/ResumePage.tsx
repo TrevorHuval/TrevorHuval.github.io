@@ -21,11 +21,11 @@ export default function ResumePage() {
     <div className="flex flex-col gap-16">
       <ResumeHeader />
 
-      <Section eyebrow="Experience" title="Work">
+      <Section eyebrow="Experience" title="Work" className="editorial-section">
         <Timeline entries={resume.experience} />
       </Section>
 
-      <Section eyebrow="Education" title="Study">
+      <Section eyebrow="Education" title="Study" className="editorial-section">
         <ul className="flex flex-col gap-4">
           {resume.education.map((entry) => (
             <li
@@ -46,7 +46,7 @@ export default function ResumePage() {
         </ul>
       </Section>
 
-      <Section eyebrow="Toolkit" title="Skills">
+      <Section eyebrow="Toolkit" title="Skills" className="editorial-section">
         <SkillsGrid groups={skills} />
       </Section>
     </div>
@@ -55,10 +55,10 @@ export default function ResumePage() {
 
 function ResumeHeader() {
   return (
-    <header className="flex flex-col gap-6 pt-6">
+    <header className="page-heading">
       <p className="gutter-date">Resume</p>
 
-      <h1 className="text-3xl font-semibold text-ink">{profile.name}</h1>
+      <h1>{profile.name}</h1>
       <p className="max-w-[48ch] text-lg text-ink-muted">{profile.headline}</p>
 
       <div className="flex flex-wrap items-center gap-3">

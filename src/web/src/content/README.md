@@ -1,6 +1,6 @@
 # Site content
 
-Every piece of copy on the site lives in this folder. `index.ts` imports all five
+Every piece of copy on the site lives in this folder. `index.ts` imports all six
 files at build time and annotates them with the interfaces in `types.ts`, so a
 renamed key or a missing field is a `tsc` error rather than a blank panel on a
 live page. Editing a file hot-reloads the app like any other source change.
@@ -18,6 +18,13 @@ scraped.
 | `skills.json` | array of groups | `skills` |
 | `projects.json` | array of projects | `projects`, sorted by `order` |
 | `photos.json` | array of photos | `photos` |
+| `presentation.json` | navigation, page headings, home photo selection | `presentation` |
+
+`presentation.home.photoIds` selects the home masthead photos by their IDs in
+`photos.json`. Navigation and editorial headings live alongside that selection.
+Colors, typography, spacing, radii, and glass surfaces are centralized in
+`../index.css`. Dark is the default; the navigation toggle selects the light
+token overrides and remembers the preference when browser storage is available.
 
 ## Conventions
 

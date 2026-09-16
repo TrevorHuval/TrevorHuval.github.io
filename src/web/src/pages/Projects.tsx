@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { projects } from '../content'
+import { presentation, projects } from '../content'
 import type { GitHubRepo } from '../content/types'
 import ProjectCard, { type ProjectWithRepo } from '../components/ProjectCard'
 import { useGitHubRepos } from '../lib/useGitHubRepos'
@@ -30,12 +30,11 @@ export default function Projects() {
 
   return (
     <div className="flex flex-col gap-12">
-      <header className="flex flex-col gap-4 pt-6">
-        <p className="gutter-date">Projects</p>
-        <h1 className="text-3xl font-semibold text-ink">Things I've built</h1>
+      <header className="page-heading">
+        <p className="gutter-date">{presentation.projects.eyebrow}</p>
+        <h1>{presentation.projects.title}</h1>
         <p className="max-w-[60ch] text-lg text-ink-muted">
-          Side projects, built end to end — each one an excuse to take an idea further than a
-          tutorial would.
+          {presentation.projects.description}
         </p>
       </header>
 
