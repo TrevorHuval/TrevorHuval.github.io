@@ -26,6 +26,11 @@ Colors, typography, spacing, radii, and glass surfaces are centralized in
 `../index.css`. Dark is the default; the navigation toggle selects the light
 token overrides and remembers the preference when browser storage is available.
 
+To change the accent, edit `--olive-light` (dark theme) and `--olive-dark`
+(light theme) in `index.css`. Buttons, selected navigation, focus outlines, and
+timeline markers follow those tokens. `npm run test` includes contrast checks
+against the actual palette, including translucent surfaces over photos.
+
 ## Conventions
 
 - **Dates** are strings, not timestamps: `"2024-06"` for month precision

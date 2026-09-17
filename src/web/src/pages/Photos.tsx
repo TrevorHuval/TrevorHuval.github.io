@@ -55,17 +55,19 @@ export default function Photos() {
                 key={name}
                 type="button"
                 aria-pressed={isActive}
+                aria-label={`${name}: ${name === ALL ? photos.length : photos.filter((photo) => photo.album === name).length} photos`}
                 onClick={() => selectAlbum(name)}
                 className="album-filter"
               >
                 {name}
-                <span className="ml-2 numeric opacity-70">{name === ALL ? photos.length : photos.filter((photo) => photo.album === name).length}</span>
+                <span className="ml-2 numeric">{name === ALL ? photos.length : photos.filter((photo) => photo.album === name).length}</span>
               </button>
             )
           })}
         </div>
       )}
 
+      <p className="sr-only" role="status">{visible.length} {visible.length === 1 ? 'photo' : 'photos'} shown</p>
       <PhotoGrid photos={visible} onSelect={setSelected} />
 
       <Lightbox

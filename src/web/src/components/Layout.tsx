@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Nav from './Nav'
 import { GitHubIcon, LinkedInIcon } from './Icons'
@@ -39,8 +39,13 @@ export default function Layout() {
  */
 function useScrollToTopOnNavigate() {
   const { pathname } = useLocation()
+  const previousPath = useRef(pathname)
 
   useEffect(() => {
+    if (previousPath.current !== pathname) {
+      document.getElementById('content')?.focus({ preventScroll: true })
+      previousPath.current = pathname
+    }
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [pathname])
 }
@@ -104,7 +109,7 @@ function FooterLink({
         aria-label={label}
         target="_blank"
         rel="me noreferrer"
-        className="flex size-10 items-center justify-center rounded-full text-ink-soft transition-[color,background-color] duration-200 ease-out-quint hover:bg-inset hover:text-ink active:scale-[0.97]"
+        className="icon-button"
       >
         {children}
       </a>
