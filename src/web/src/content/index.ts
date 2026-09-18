@@ -1,7 +1,7 @@
 /**
  * The site's content, resolved at build time.
  *
- * Every word on this site is one of the five JSON files in this folder. They
+ * Every word on this site is in one of the JSON files in this folder. They
  * are imported rather than fetched, which is the whole point: the content is
  * already in the repository at build time, so making the browser ask for it
  * again would only buy a loading spinner. It also means TypeScript checks the
@@ -17,12 +17,14 @@ import profileJson from './profile.json'
 import projectsJson from './projects.json'
 import resumeJson from './resume.json'
 import skillsJson from './skills.json'
-import type { Photo, Profile, Project, Resume, SkillGroup } from './types'
+import presentationJson from './presentation.json'
+import type { Photo, Presentation, Profile, Project, Resume, SkillGroup } from './types'
 
 export const profile: Profile = profileJson
 export const resume: Resume = resumeJson
 export const skills: SkillGroup[] = skillsJson
 export const photos: Photo[] = photosJson
+export const presentation: Presentation = presentationJson
 
 /**
  * Display order is content, not code — `order` in the JSON decides it, the way

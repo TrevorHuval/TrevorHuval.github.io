@@ -15,7 +15,7 @@ import PhotoImage from './PhotoImage'
  */
 /** How much of the viewport a photo may take, leaving room for the caption bar
  *  and the dialog's own padding. */
-const MAX_HEIGHT = '68dvh'
+const MAX_HEIGHT = 'var(--lightbox-photo-height)'
 
 /** Below this the caption has nowhere to go, so a very tall photo in a very
  *  short window gets a caption bar wider than itself rather than an unreadable
@@ -111,6 +111,21 @@ export default function Lightbox({
         if (event.target === dialogRef.current) onClose()
       }}
       onKeyDown={(event) => {
+        // Keep Tab on the viewer controls at both ends of the sequence;
+        // some embedded browsers otherwise move focus into their own chrome.
+        if (event.key === 'Tab') {
+          const controls = event.currentTarget.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')
+          const first = controls[0]
+          const last = controls[controls.length - 1]
+          if (first && last && event.shiftKey && document.activeElement === first) {
+            event.preventDefault()
+            last.focus()
+          } else if (first && last && !event.shiftKey && document.activeElement === last) {
+            event.preventDefault()
+            first.focus()
+          }
+        }
+
         // The user agent also closes the dialog on Escape by itself. Unwinding
         // our own state here too means the scroll lock lifts even if the
         // resulting `close` event never reaches the listener above. Running
@@ -173,14 +188,14 @@ export default function Lightbox({
               width={photo.width}
               height={photo.height}
               eager
-              className="w-full rounded-[0.75rem]"
+              className="w-full rounded-card"
             />
           </div>
 
-          <figcaption className="glass-high flex w-full items-center gap-4 rounded-full py-2.5 pr-2.5 pl-5">
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-meta font-medium text-ink">{photo.caption}</p>
-              {meta && <p className="gutter-date mt-0.5 truncate">{meta}</p>}
+          <figcaption className="glass-high lightbox-caption">
+            <div className="lightbox-caption-copy">
+              <p className="text-meta font-medium text-ink">{photo.caption}</p>
+              {meta && <p className="gutter-date mt-0.5">{meta}</p>}
             </div>
 
             {hasSiblings && (
@@ -225,7 +240,7 @@ function ChromeButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="flex size-10 items-center justify-center rounded-full text-ink-muted transition-[background-color,color,transform] duration-200 ease-out-quint hover:bg-inset hover:text-ink active:scale-[0.97]"
+      className="icon-button"
     >
       {children}
     </button>

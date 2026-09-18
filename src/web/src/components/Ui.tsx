@@ -23,7 +23,7 @@ export function Section({
   className?: string
 }) {
   return (
-    <section id={id} className={`flex flex-col gap-6 ${className}`}>
+    <section id={id} className={`content-section ${className}`}>
       {(eyebrow ?? title) && (
         <header className="flex flex-col gap-1.5">
           {eyebrow && (
@@ -61,12 +61,11 @@ type ActionProps = {
   | { href: string; to?: never; external?: boolean; download?: boolean }
 )
 
-const ACTION_BASE =
-  'inline-flex h-10 items-center gap-2 rounded-full px-4 text-sm font-medium transition-[background-color,color,box-shadow,transform] duration-200 ease-out-quint active:scale-[0.97]'
+const ACTION_BASE = 'action'
 
 const ACTION_VARIANTS = {
-  primary: 'bg-ember text-canvas hover:brightness-110 shadow-[0_2px_12px_-4px_var(--color-ember)]',
-  quiet: 'border border-hairline-strong text-ink hover:bg-inset',
+  primary: 'action-primary',
+  quiet: 'action-quiet',
 } as const
 
 /** The same shape as `ActionLink`, for an action that stays on the page
@@ -89,7 +88,7 @@ export function ActionButton({
 }
 
 /**
- * The site's only button shape: 40px tall, 16px side padding, full radius.
+ * Shared action geometry is defined by the control tokens in index.css.
  * Pass `to` for an in-app route (client-side navigation) or `href` for anything
  * that leaves the app.
  */

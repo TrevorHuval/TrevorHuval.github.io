@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import { profile, resume, skills } from '../content'
-import ResumeDialog, { RESUME_PDF } from '../components/ResumeDialog'
+import ResumeAction from '../components/ResumeAction'
+import { RESUME_PDF } from '../components/ResumeDialog'
 import SkillsGrid from '../components/SkillsGrid'
 import Timeline from '../components/Timeline'
-import { DocumentIcon, DownloadIcon } from '../components/Icons'
-import { ActionButton, ActionLink, Section } from '../components/Ui'
+import { DownloadIcon } from '../components/Icons'
+import { ActionLink, Section } from '../components/Ui'
 import { formatRange } from '../lib/dates'
 import { usePageMeta } from '../lib/usePageMeta'
 
@@ -19,18 +19,15 @@ export default function ResumePage() {
     description: 'Work experience, education and skills, with the printable PDF a click away.',
   })
 
-  const [pdfOpen, setPdfOpen] = useState(false)
-
   return (
     <div className="flex flex-col gap-16">
-      <ResumeHeader onViewPdf={() => setPdfOpen(true)} />
-      <ResumeDialog open={pdfOpen} onClose={() => setPdfOpen(false)} />
+      <ResumeHeader />
 
-      <Section eyebrow="Experience" title="Work">
+      <Section eyebrow="Experience" title="Work" className="editorial-section">
         <Timeline entries={resume.experience} />
       </Section>
 
-      <Section eyebrow="Education" title="Study">
+      <Section eyebrow="Education" title="Study" className="editorial-section">
         <ul className="flex flex-col gap-4">
           {resume.education.map((entry) => (
             <li
@@ -51,28 +48,25 @@ export default function ResumePage() {
         </ul>
       </Section>
 
-      <Section eyebrow="Toolkit" title="Skills">
+      <Section eyebrow="Toolkit" title="Skills" className="editorial-section">
         <SkillsGrid groups={skills} />
       </Section>
     </div>
   )
 }
 
-function ResumeHeader({ onViewPdf }: { onViewPdf: () => void }) {
+function ResumeHeader() {
   return (
-    <header className="flex flex-col gap-6 pt-6">
+    <header className="page-heading">
       <p className="gutter-date">Resume</p>
 
-      <h1 className="text-3xl font-semibold text-ink">{profile.name}</h1>
+      <h1>{profile.name}</h1>
       <p className="max-w-[48ch] text-lg text-ink-muted">{profile.headline}</p>
 
       <div className="flex flex-wrap items-center gap-3">
         {/* Trevor's real PDF, served straight out of the web root. It is also the
             only place on the site his email and phone number appear. */}
-        <ActionButton variant="primary" onClick={onViewPdf} aria-haspopup="dialog">
-          <DocumentIcon className="size-4" />
-          View PDF
-        </ActionButton>
+        <ResumeAction variant="primary">View PDF</ResumeAction>
         <ActionLink href={RESUME_PDF} download>
           <DownloadIcon className="size-4" />
           Download

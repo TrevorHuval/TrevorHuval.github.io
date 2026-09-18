@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { photos } from '../content'
+import { photos, presentation } from '../content'
 import Lightbox from '../components/Lightbox'
 import PhotoGrid from '../components/PhotoGrid'
 import { usePageMeta } from '../lib/usePageMeta'
@@ -38,16 +38,16 @@ export default function Photos() {
 
   return (
     <div className="flex flex-col gap-10">
-      <header className="flex flex-col gap-4 pt-6">
-        <p className="gutter-date">Gallery</p>
-        <h1 className="text-3xl font-semibold text-ink">Life and travels</h1>
+      <header className="page-heading">
+        <p className="gutter-date">{presentation.photos.eyebrow}</p>
+        <h1>{presentation.photos.title}</h1>
         <p className="max-w-[60ch] text-lg text-ink-muted">
-          Photographs from the road and from home. Pick one to see it full size.
+          {presentation.photos.description}
         </p>
       </header>
 
       {ALBUMS.length > 2 && (
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by album">
+        <div className="album-filters" role="group" aria-label="Filter by album">
           {ALBUMS.map((name) => {
             const isActive = name === album
             return (
@@ -55,20 +55,19 @@ export default function Photos() {
                 key={name}
                 type="button"
                 aria-pressed={isActive}
+                aria-label={`${name}: ${name === ALL ? photos.length : photos.filter((photo) => photo.album === name).length} photos`}
                 onClick={() => selectAlbum(name)}
-                className={`flex h-9 items-center rounded-full px-4 text-meta font-medium transition-[background-color,color,border-color] duration-200 ease-out-quint ${
-                  isActive
-                    ? 'bg-ember-soft text-ember'
-                    : 'border border-hairline-strong text-ink-muted hover:bg-inset hover:text-ink'
-                }`}
+                className="album-filter"
               >
                 {name}
+                <span className="ml-2 numeric">{name === ALL ? photos.length : photos.filter((photo) => photo.album === name).length}</span>
               </button>
             )
           })}
         </div>
       )}
 
+      <p className="sr-only" role="status">{visible.length} {visible.length === 1 ? 'photo' : 'photos'} shown</p>
       <PhotoGrid photos={visible} onSelect={setSelected} />
 
       <Lightbox

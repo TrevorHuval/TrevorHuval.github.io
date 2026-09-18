@@ -1,0 +1,30 @@
+{
+  "navigation": [
+    { "to": "/", "label": "Home" },
+    { "to": "/projects", "label": "Projects" },
+    { "to": "/photos", "label": "Photos" },
+    { "to": "/resume", "label": "Resume" }
+  ],
+  "home": {
+    "eyebrow": "Software engineer · Louisiana",
+    "photoIds": ["grand-canyon", "japan-alley"],
+    "galleryEyebrow": "Outside the editor",
+    "galleryTitle": "Life and travels",
+    "aboutEyebrow": "A little background",
+    "aboutTitle": "At work. And outside it.",
+    "skillsEyebrow": "The toolkit",
+    "skillsTitle": "What I work with",
+    "experienceEyebrow": "Experience",
+    "experienceTitle": "Where I've worked"
+  },
+  "projects": {
+    "eyebrow": "Selected work",
+    "title": "Things I've built.",
+    "description": "Side projects, built end to end — each one an excuse to take an idea further than a tutorial would."
+  },
+  "photos": {
+    "eyebrow": "The photo journal",
+    "title": "Life and travels.",
+    "description": "Photographs from the road and from home. Pick one to see it full size."
+  }
+}

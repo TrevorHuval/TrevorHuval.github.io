@@ -23,6 +23,30 @@ export interface QuickLink {
   href: string
 }
 
+export interface PagePresentation {
+  eyebrow: string
+  title: string
+  description: string
+}
+
+export interface Presentation {
+  navigation: { to: string; label: string }[]
+  home: {
+    eyebrow: string
+    photoIds: string[]
+    galleryEyebrow: string
+    galleryTitle: string
+    aboutEyebrow: string
+    aboutTitle: string
+    skillsEyebrow: string
+    skillsTitle: string
+    experienceEyebrow: string
+    experienceTitle: string
+  }
+  projects: PagePresentation
+  photos: PagePresentation
+}
+
 export interface Profile {
   name: string
   headline: string

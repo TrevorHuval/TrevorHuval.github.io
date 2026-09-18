@@ -1,110 +1,64 @@
-import { NavLink } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import { ArrowUpRightIcon, GitHubIcon, LinkedInIcon } from './Icons'
+import { presentation, profile } from '../content'
 import type { ProfileLinks, QuickLink } from '../content/types'
 
-const PAGES = [
-  { to: '/', label: 'Home' },
-  { to: '/resume', label: 'Resume' },
-  { to: '/projects', label: 'Projects' },
-  { to: '/photos', label: 'Photos' },
-] as const
-
 /**
- * A floating glass pill. It is chrome, so it is deliberately quiet: 13px
- * labels, no icons on the page links, and the accent spent only on marking
- * where you are.
- *
- * The pill is three groups separated by hairlines: the pages, the live apps,
- * and the social links. The apps are the point of the site — a recruiter should
- * be one click from running software from anywhere on it. The social links live
- * here for reach and in the footer for completeness; below `md` the pill keeps
- * only the pages so it never has to compete for width on a phone (the apps stay
- * reachable from the projects page and the footer carries the socials).
+ * Wordmark, pages, then two hairline-separated groups: the live apps and the
+ * tools. The apps are what the site exists to show, so they are one click away
+ * from every page; below 1024px they yield to the pages (the projects page
+ * still links to them) so the bar fits a tablet or phone.
  */
 export default function Nav({ links, quickLinks }: { links: ProfileLinks; quickLinks: QuickLink[] }) {
+  const [light, setLight] = useState(() => document.documentElement.dataset.theme === 'light')
+
+  function toggleTheme() {
+    const next = !light
+    setLight(next)
+    document.documentElement.dataset.theme = next ? 'light' : 'dark'
+    try {
+      localStorage.setItem('site-theme', next ? 'light' : 'dark')
+    } catch { /* Storage is optional. */ }
+  }
+
   return (
-    <header className="fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4">
-      <nav
-        aria-label="Primary"
-        className="glass-high flex items-center gap-1 rounded-full p-1.5 pl-2"
-      >
-        <ul className="flex items-center gap-0.5">
-          {PAGES.map((page) => (
+    <header className="site-header">
+      <nav className="site-nav glass-high" aria-label="Primary">
+        <Link to="/" className="wordmark" aria-label={`${profile.name}, home`}>
+          {profile.name.split(' ').map((part) => part[0]).join('')}<span aria-hidden="true">.</span>
+        </Link>
+        <ul className="nav-pages">
+          {presentation.navigation.map((page) => (
             <li key={page.to}>
-              <NavLink
-                to={page.to}
-                end={page.to === '/'}
-                className={({ isActive }) =>
-                  [
-                    // 40px, the same height as the site's buttons — the pill is
-                    // quiet, but it is still the primary control on a phone.
-                    'flex h-10 items-center rounded-full px-3.5 text-meta font-medium',
-                    'transition-[color,background-color] duration-200 ease-out-quint',
-                    isActive
-                      ? 'bg-ember-soft text-ember'
-                      : 'text-ink-muted hover:bg-inset hover:text-ink',
-                  ].join(' ')
-                }
-              >
+              <NavLink to={page.to} end={page.to === '/'} className={({ isActive }) => `nav-link ${isActive ? 'is-active' : ''}`}>
                 {page.label}
               </NavLink>
             </li>
           ))}
         </ul>
-
         {quickLinks.length > 0 && (
-          <>
-            <span aria-hidden="true" className="mx-1 hidden h-5 w-px bg-hairline md:block" />
-            <ul className="hidden items-center gap-0.5 md:flex" aria-label="Live projects">
-              {quickLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="flex h-10 items-center gap-1 rounded-full px-3.5 text-meta font-medium text-ink-muted transition-[color,background-color] duration-200 ease-out-quint hover:bg-inset hover:text-ink"
-                  >
-                    {link.label}
-                    <ArrowUpRightIcon className="size-3.5 opacity-50" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </>
+          <ul className="nav-apps" aria-label="Live projects">
+            {quickLinks.map((link) => (
+              <li key={link.href}>
+                <a href={link.href} className="nav-link nav-app">
+                  {link.label}
+                  <ArrowUpRightIcon className="size-3.5 opacity-60" />
+                </a>
+              </li>
+            ))}
+          </ul>
         )}
-
-        <span aria-hidden="true" className="mx-1 hidden h-5 w-px bg-hairline sm:block" />
-        <ul className="hidden items-center gap-0.5 sm:flex">
-          <SocialLink href={links.gitHub} label="GitHub">
-            <GitHubIcon className="size-[1.05rem]" />
-          </SocialLink>
-          <SocialLink href={links.linkedIn} label="LinkedIn">
-            <LinkedInIcon className="size-[1.05rem]" />
-          </SocialLink>
-        </ul>
+        <div className="nav-tools">
+          <a href={links.gitHub} target="_blank" rel="me noreferrer" className="icon-button nav-social" aria-label="GitHub"><GitHubIcon className="size-4" /></a>
+          <a href={links.linkedIn} target="_blank" rel="me noreferrer" className="icon-button nav-social" aria-label="LinkedIn"><LinkedInIcon className="size-4" /></a>
+          <button type="button" className="icon-button" onClick={toggleTheme} aria-label={light ? 'Use dark theme' : 'Use light theme'}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true" className="size-4">
+              {light ? <path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z" /> : <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" /></>}
+            </svg>
+          </button>
+        </div>
       </nav>
     </header>
-  )
-}
-
-function SocialLink({
-  href,
-  label,
-  children,
-}: {
-  href: string
-  label: string
-  children: React.ReactNode
-}) {
-  return (
-    <li>
-      <a
-        href={href}
-        aria-label={label}
-        target="_blank"
-        rel="me noreferrer"
-        className="flex size-10 items-center justify-center rounded-full text-ink-soft transition-[color,background-color] duration-200 ease-out-quint hover:bg-inset hover:text-ink active:scale-[0.97]"
-      >
-        {children}
-      </a>
-    </li>
   )
 }

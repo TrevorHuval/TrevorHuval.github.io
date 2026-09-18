@@ -1,246 +1,273 @@
 @import 'tailwindcss';
 
-/* ===========================================================================
-   Design tokens
-
-   The palette is borrowed from a darkroom: cool slate paper stock for every
-   surface, one warm safelight accent. Structure is built entirely from
-   neutrals; the ember is spent only on things you can act on, so it stays
-   scarce enough to mean something.
-
-   Dark mode is a straight token swap under prefers-color-scheme — components
-   never carry `dark:` variants for colour, which is what keeps the two themes
-   from drifting apart.
-   =========================================================================== */
-
+/* Dark photographic canvas. Change the semantic tokens here to retune every page. */
 @theme {
-  /* On Apple hardware this resolves to SF Pro, which is the typeface this
-     design language was drawn for. Segoe UI Variable covers Windows. */
-  --font-sans:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI Variable Text', 'Segoe UI', Inter,
-    system-ui, sans-serif;
-  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'JetBrains Mono', Menlo, monospace;
+  --font-sans: 'Helvetica Neue', 'Arial', sans-serif;
+  --font-mono: 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.5;
+  --text-meta: 0.8125rem;
+  --text-meta--line-height: 1.5;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.65;
+  --text-base: 1rem;
+  --text-base--line-height: 1.75;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.5rem;
+  --text-xl--line-height: 1.3;
+  --text-2xl: 2rem;
+  --text-2xl--line-height: 1.15;
+  --text-3xl: 3rem;
+  --text-3xl--line-height: 1.05;
+  --text-display: 5.5rem;
+  --text-display--line-height: 0.94;
 
-  /* Type scale — 16px body stepped by roughly 1.28. */
-  --text-caption: 0.75rem; /* 12 */
-  --text-caption--line-height: 1.4;
-  --text-meta: 0.8125rem; /* 13 */
-  --text-meta--line-height: 1.45;
-  --text-sm: 0.875rem; /* 14 */
-  --text-sm--line-height: 1.5;
-  --text-base: 1rem; /* 16 */
-  --text-base--line-height: 1.65;
-  --text-lg: 1.125rem; /* 18 */
-  --text-lg--line-height: 1.55;
-  --text-xl: 1.3125rem; /* 21 */
-  --text-xl--line-height: 1.35;
-  --text-xl--letter-spacing: -0.01em;
-  --text-2xl: 1.625rem; /* 26 */
-  --text-2xl--line-height: 1.25;
-  --text-2xl--letter-spacing: -0.018em;
-  --text-3xl: 2.125rem; /* 34 */
-  --text-3xl--line-height: 1.15;
-  --text-3xl--letter-spacing: -0.025em;
-  --text-display: 3.5rem; /* 56 */
-  --text-display--line-height: 1.03;
-  --text-display--letter-spacing: -0.035em;
-
-  /* Surfaces. One hue throughout — only lightness moves between levels. */
-  --color-canvas: oklch(0.985 0.004 255);
-  --color-veil: oklch(1 0 0 / 0.62);
-  --color-veil-high: oklch(1 0 0 / 0.78);
-  --color-inset: oklch(0.24 0.015 258 / 0.045);
-
-  /* What the lightbox lays over the page. It is not decoration: the caption
-     bar's backdrop-filter samples straight through it, and on dark mode the
-     veil is only 10% white — so without a strong scrim the chrome takes its
-     colour from whatever photograph happens to be behind it and a lantern-lit
-     alley turns the caption orange. Dark mode needs more of it because its
-     text is light and the veil hides less. */
-  --color-scrim: oklch(0 0 0 / 0.5);
-
-  /* Text — four levels: default, supporting, metadata, quietest.
-     The bottom of the ladder still carries real content (every date on the
-     site is a gutter-date in ink-faint), so all four are held above 4.5:1
-     against the canvas *and* against both glass levels, which sit lighter than
-     the canvas in dark mode and so are the binding case there. Measured:
-     15.8 / 8.8 / 6.5 / 4.9 light, 13.5 / 8.0 / 6.0 / 4.6 on dark glass-high. */
-  --color-ink: oklch(0.24 0.017 258);
-  --color-ink-muted: oklch(0.4 0.014 258);
-  --color-ink-soft: oklch(0.47 0.013 258);
-  --color-ink-faint: oklch(0.538 0.012 258);
-
-  /* Hairlines. Low-alpha so they define an edge without being seen. */
-  --color-hairline: oklch(0.24 0.017 258 / 0.1);
-  --color-hairline-strong: oklch(0.24 0.017 258 / 0.18);
-
-  /* The one accent: darkroom safelight. */
-  --color-ember: oklch(0.52 0.14 48);
-  --color-ember-soft: oklch(0.52 0.14 48 / 0.1);
-  --color-ember-glow: oklch(0.72 0.16 55);
-
-  --radius-card: 1rem;
-  --radius-panel: 1.25rem;
-
+  --color-canvas: #171819;
+  --color-veil: rgb(255 255 255 / 0.035);
+  --color-veil-high: rgb(34 35 37 / 0.92);
+  --color-inset: rgb(255 255 255 / 0.065);
+  --color-scrim: rgb(0 0 0 / 0.8);
+  --color-ink: #f3f2ee;
+  --color-ink-muted: #c3c4c5;
+  --color-ink-soft: #b0b2b4;
+  --color-ink-faint: #a3a6a9;
+  --color-hairline: rgb(255 255 255 / 0.1);
+  --color-hairline-strong: rgb(255 255 255 / 0.19);
+  --color-accent: var(--olive-light);
+  --color-accent-soft: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  --color-action: var(--color-accent);
+  --color-action-ink: #171819;
+  --radius-control: 0.875rem;
+  --radius-card: 1.5rem;
+  --radius-panel: 2rem;
+  --radius-pill: 999px;
   --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out-quint: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-/* Ambient blob colours and the elevation shadows live outside @theme: they are
-   raw values the utilities below consume, not things worth generating
-   utility classes for. */
 :root {
-  --ambient-a: oklch(0.78 0.11 55 / 0.3);
-  --ambient-b: oklch(0.7 0.11 245 / 0.26);
-  --ambient-c: oklch(0.75 0.08 165 / 0.2);
-
-  --shadow-lift:
-    0 0 0 1px oklch(0.24 0.017 258 / 0.04), 0 1px 2px -1px oklch(0.24 0.017 258 / 0.07),
-    0 10px 28px -14px oklch(0.24 0.017 258 / 0.18);
-  --shadow-lift-high:
-    0 0 0 1px oklch(0.24 0.017 258 / 0.05), 0 2px 4px -2px oklch(0.24 0.017 258 / 0.08),
-    0 18px 44px -18px oklch(0.24 0.017 258 / 0.24);
-  --outline-image: oklch(0 0 0 / 0.1);
+  /* Olive palette: tune these two values; semantic accents and actions follow. */
+  --olive-light: #b6c77a;
+  --olive-dark: #52612b;
+  --lightbox-photo-height: max(4rem, min(68dvh, calc(100dvh - 12rem)));
+  color-scheme: dark;
+  --space-unit: 0.25rem;
+  --space-xs: calc(var(--space-unit) * 2);
+  --space-sm: calc(var(--space-unit) * 3);
+  --space-md: calc(var(--space-unit) * 4);
+  --space-lg: calc(var(--space-unit) * 6);
+  --space-xl: calc(var(--space-unit) * 8);
+  --space-2xl: calc(var(--space-unit) * 12);
+  --space-section: clamp(4rem, 8vw, 7rem);
+  --page-gutter: clamp(1rem, 3.5vw, 3.5rem);
+  --page-width: 90rem;
+  --control-height: 2.75rem;
+  --glass-blur: 24px;
+  --glass-blur-high: 32px;
+  --glass-saturation: 120%;
+  --glass-edge: rgb(255 255 255 / 0.12);
+  --shadow-lift: inset 0 1px 0 var(--glass-edge), 0 8px 24px rgb(0 0 0 / 0.08);
+  --shadow-lift-high: inset 0 1px 0 var(--glass-edge), 0 8px 32px rgb(0 0 0 / 0.2);
+  --outline-image: rgb(255 255 255 / 0.08);
+  --motion-fast: 160ms;
+  --motion-standard: 220ms;
+  --tracking-tight: -0.065em;
+  --tracking-heading: -0.045em;
+  --tracking-label: 0.1em;
+  --press-scale: 0.97;
+  --hover-rise: -0.25rem;
+  --photo-hover-scale: 1.025;
+  --hero-primary-height: 30rem;
+  --hero-secondary-height: 23rem;
+  --text-hero: clamp(4.5rem, 7.8vw, 7.5rem);
+  --text-page-title: clamp(3rem, 6vw, 5.5rem);
+  --hero-line-height: 0.91;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-canvas: oklch(0.175 0.013 262);
-    --color-veil: oklch(0.96 0.01 262 / 0.06);
-    --color-veil-high: oklch(0.96 0.01 262 / 0.1);
-    --color-inset: oklch(0 0 0 / 0.22);
-    --color-scrim: oklch(0 0 0 / 0.74);
-
-    --color-ink: oklch(0.965 0.004 262);
-    --color-ink-muted: oklch(0.8 0.012 262);
-    --color-ink-soft: oklch(0.72 0.013 262);
-    --color-ink-faint: oklch(0.648 0.013 262);
-
-    --color-hairline: oklch(1 0 0 / 0.09);
-    --color-hairline-strong: oklch(1 0 0 / 0.16);
-
-    --color-ember: oklch(0.79 0.12 64);
-    --color-ember-soft: oklch(0.79 0.12 64 / 0.14);
-    --color-ember-glow: oklch(0.82 0.13 62);
-
-    --ambient-a: oklch(0.6 0.13 52 / 0.22);
-    --ambient-b: oklch(0.5 0.14 260 / 0.28);
-    --ambient-c: oklch(0.55 0.09 190 / 0.16);
-
-    /* Depth shadows barely read on dark — collapse to a ring and let the
-       hairline do the work. */
-    --shadow-lift: 0 0 0 1px oklch(1 0 0 / 0.06);
-    --shadow-lift-high: 0 0 0 1px oklch(1 0 0 / 0.1), 0 24px 48px -24px oklch(0 0 0 / 0.7);
-    --outline-image: oklch(1 0 0 / 0.1);
-  }
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-canvas: #f2f1ed;
+  --color-veil: rgb(255 255 255 / 0.42);
+  --color-veil-high: rgb(249 248 245 / 0.94);
+  --color-inset: rgb(25 27 30 / 0.05);
+  --color-ink: #202123;
+  --color-ink-muted: #4e5155;
+  --color-ink-soft: #5d6166;
+  --color-ink-faint: #62666b;
+  --color-hairline: rgb(25 27 30 / 0.1);
+  --color-hairline-strong: rgb(25 27 30 / 0.2);
+  --color-accent: var(--olive-dark);
+  --color-action: var(--color-accent);
+  --color-action-ink: #fff;
+  --glass-edge: rgb(255 255 255 / 0.8);
+  --shadow-lift: inset 0 1px 0 var(--glass-edge), 0 8px 24px rgb(25 27 30 / 0.04);
+  --shadow-lift-high: inset 0 1px 0 var(--glass-edge), 0 8px 32px rgb(25 27 30 / 0.1);
+  --outline-image: rgb(0 0 0 / 0.1);
 }
 
 @layer base {
-  html {
-    color-scheme: light dark;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    scroll-behavior: smooth;
-  }
-
-  body {
-    background-color: var(--color-canvas);
-    color: var(--color-ink);
-    font-family: var(--font-sans);
-  }
-
-  h1,
-  h2,
-  h3 {
-    text-wrap: balance;
-  }
-
-  p {
-    text-wrap: pretty;
-  }
-
-  /* One focus treatment for the whole site. */
-  :focus-visible {
-    outline: 2px solid var(--color-ember);
-    outline-offset: 2px;
-    border-radius: 0.25rem;
-  }
-
-  ::selection {
-    background: var(--color-ember-soft);
-  }
+  html { font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; scroll-padding-top: 7rem; }
+  body { background: var(--color-canvas); color: var(--color-ink); font-family: var(--font-sans); }
+  h1, h2, h3 { text-wrap: balance; letter-spacing: var(--tracking-heading); }
+  p { text-wrap: pretty; }
+  main { overflow-wrap: anywhere; }
+  main :focus-visible { scroll-margin-block: 7rem 2rem; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+  ::selection { background: var(--color-accent); color: var(--color-canvas); }
 }
 
-/* ===========================================================================
-   Surface utilities
-   =========================================================================== */
-
-/* Level 1: cards and panels resting on the canvas. */
 @utility glass {
-  background-color: var(--color-veil);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  backdrop-filter: blur(20px) saturate(180%);
+  background: var(--color-veil);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
   border: 1px solid var(--color-hairline);
   box-shadow: var(--shadow-lift);
 }
-
-/* Level 2: the nav bar, the lightbox chrome — anything that floats above a
-   level-1 surface and would otherwise blend into it. */
 @utility glass-high {
-  background-color: var(--color-veil-high);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid var(--color-hairline);
+  background: var(--color-veil-high);
+  -webkit-backdrop-filter: blur(var(--glass-blur-high)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur-high)) saturate(var(--glass-saturation));
+  border: 1px solid var(--color-hairline-strong);
   box-shadow: var(--shadow-lift-high);
 }
-
-/* The signature. Frame numbers in a contact-sheet margin: every date on this
-   site — roles, degrees, repo pushes, photographs — is stamped the same way. */
 @utility gutter-date {
   font-family: var(--font-mono);
   font-size: var(--text-caption);
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--color-ink-faint);
 }
-
-/* Any number that can change under its own label. */
-@utility numeric {
-  font-variant-numeric: tabular-nums;
-}
-
-@utility image-edge {
-  outline: 1px solid var(--outline-image);
-  outline-offset: -1px;
-}
+@utility numeric { font-variant-numeric: tabular-nums; }
+@utility image-edge { outline: 1px solid var(--outline-image); outline-offset: -1px; }
 
 @layer components {
-  /* Photos and thumbnails fade in rather than snapping, which hides the
-     staggered decode of a grid full of images. */
-  .photo-fade {
-    opacity: 0;
-    transition: opacity 400ms var(--ease-out-quint);
-  }
-
-  .photo-fade[data-loaded='true'] {
-    opacity: 1;
-  }
+  .content-section { display: flex; flex-direction: column; gap: var(--space-lg); }
+  .site-width { width: 100%; max-width: var(--page-width); margin-inline: auto; padding-inline: var(--page-gutter); }
+  .site-main { flex: 1; padding-top: var(--space-2xl); padding-bottom: var(--space-section); }
+  .site-header { position: sticky; top: var(--space-md); margin: var(--space-md) var(--page-gutter) 0; z-index: 40; display: flex; justify-content: center; pointer-events: none; }
+  .site-nav { flex-wrap: wrap; width: 100%; max-width: calc(var(--page-width) - 2 * var(--page-gutter)); display: flex; align-items: center; gap: var(--space-lg); padding: var(--space-xs) var(--space-md); border-radius: var(--radius-panel); pointer-events: auto; }
+  .wordmark { display: inline-flex; align-items: center; min-height: var(--control-height); min-width: var(--control-height); font-size: var(--text-xl); font-weight: 800; letter-spacing: var(--tracking-tight); padding-inline: var(--space-xs); }
+  .wordmark span { color: var(--color-accent); }
+  .nav-pages, .nav-tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-unit); }
+  .nav-tools { margin-left: auto; border-left: 1px solid var(--color-hairline); padding-left: var(--space-xs); }
+  .nav-apps { display: flex; align-items: center; gap: var(--space-unit); border-left: 1px solid var(--color-hairline); padding-left: var(--space-xs); }
+  .nav-app { gap: var(--space-unit); }
+  .nav-link { min-width: var(--control-height); min-height: var(--control-height); display: flex; align-items: center; justify-content: center; gap: var(--space-xs); padding-inline: var(--space-md); border-radius: var(--radius-pill); color: var(--color-ink-muted); font-size: var(--text-sm); font-weight: 500; transition: color var(--motion-fast), background-color var(--motion-fast); }
+  .nav-link:hover { color: var(--color-ink); background: var(--color-inset); }
+  .nav-link.is-active { background: var(--color-accent-soft); color: var(--color-accent); font-weight: 700; box-shadow: inset 0 1px 0 var(--glass-edge); }
+  .icon-button { display: inline-flex; align-items: center; justify-content: center; min-width: var(--control-height); height: var(--control-height); border-radius: var(--radius-pill); color: var(--color-ink-muted); transition: transform var(--motion-fast), background-color var(--motion-fast); }
+  .icon-button:hover { background: var(--color-inset); color: var(--color-ink); }
+  .icon-button:active { transform: scale(var(--press-scale)); }
+  .action { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); min-height: var(--control-height); padding: var(--space-xs) var(--space-lg); border-radius: var(--radius-pill); font-size: var(--text-sm); font-weight: 600; transition: transform var(--motion-fast) var(--ease-out-quint), background-color var(--motion-fast); }
+  .action:active { transform: scale(var(--press-scale)); }
+  .action-primary { background: var(--color-action); color: var(--color-action-ink); }
+  .action-primary:hover { box-shadow: inset 0 0 0 2px var(--color-action-ink); }
+  .action-quiet { background: var(--color-veil); border: 1px solid var(--color-hairline-strong); color: var(--color-ink); box-shadow: inset 0 1px 0 var(--glass-edge); }
+  .action-quiet:hover { background: var(--color-inset); }
+  .home-sections { display: flex; flex-direction: column; gap: var(--space-section); }
+  .home-hero { display: grid; grid-template-columns: 0.92fr 1.08fr; align-items: center; gap: var(--space-2xl); padding-block: var(--space-lg); }
+  .hero-intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-lg); }
+  .hero-name { max-width: 6ch; font-size: var(--text-hero); line-height: var(--hero-line-height); letter-spacing: var(--tracking-tight); font-weight: 750; }
+  .hero-description { max-width: 34ch; font-size: var(--text-lg); color: var(--color-ink-muted); }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+  .hero-location { margin-top: var(--space-lg); }
+  .hero-photos { display: grid; grid-template-columns: 1.3fr 0.8fr; gap: var(--space-sm); align-items: center; }
+  .hero-photo { position: relative; overflow: hidden; border-radius: var(--radius-panel); background: var(--color-inset); }
+  .hero-photo-1 { height: var(--hero-primary-height); }
+  .hero-photo-2 { height: var(--hero-secondary-height); }
+  .hero-photo img { transition: transform var(--motion-standard) var(--ease-out-quint), opacity var(--motion-standard); }
+  .hero-photo:hover img { transform: scale(var(--photo-hover-scale)); }
+  .photo-label { position: absolute; inset: auto var(--space-sm) var(--space-sm); display: flex; align-items: center; gap: var(--space-xs); border-radius: var(--radius-control); padding: var(--space-sm); font-size: var(--text-caption); color: var(--color-ink); }
+  .photo-label > span:nth-child(2) { flex: 1; }
+  .section-heading-row { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: var(--space-lg); margin-bottom: var(--space-xl); }
+  .section-title { font-size: var(--text-2xl); font-weight: 600; margin-top: var(--space-xs); }
+  .contact-sheet { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-md); }
+  .contact-frame { display: block; }
+  .contact-image { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: var(--radius-card); transition: transform var(--motion-standard) var(--ease-out-quint), opacity var(--motion-standard); }
+  .contact-frame:hover .contact-image { transform: translateY(var(--hover-rise)); }
+  .contact-caption { display: flex; gap: var(--space-xs); margin-top: var(--space-sm); font-size: var(--text-caption); color: var(--color-ink-soft); }
+  .contact-caption > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .editorial-section { display: grid; grid-template-columns: minmax(12rem, 0.8fr) minmax(0, 1.8fr); gap: var(--space-2xl); border-top: 1px solid var(--color-hairline); padding-top: var(--space-2xl); }
+  .editorial-section > header { align-self: start; }
+  .bio-copy { display: flex; flex-direction: column; gap: var(--space-lg); max-width: 65ch; font-size: var(--text-lg); color: var(--color-ink-muted); }
+  .page-heading { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-lg); padding-block: var(--space-xl) var(--space-2xl); border-bottom: 1px solid var(--color-hairline); }
+  .page-heading h1 { font-size: var(--text-page-title); line-height: 1; font-weight: 650; letter-spacing: var(--tracking-tight); }
+  .project-card { padding: var(--space-xl); gap: var(--space-lg); }
+  .project-title { font-size: var(--text-2xl); }
+  .project-card header > .gutter-date { padding-bottom: var(--space-xl); }
+  .project-card footer a { min-height: var(--control-height); }
+  .album-filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); }
+  .album-filter { min-height: var(--control-height); padding-inline: var(--space-lg); border-radius: var(--radius-pill); color: var(--color-ink-muted); border: 1px solid var(--color-hairline-strong); font-size: var(--text-sm); transition: background-color var(--motion-fast), transform var(--motion-fast); }
+  .album-filter:hover { background: var(--color-inset); }
+  .album-filter[aria-pressed='true'] { background: var(--color-action); color: var(--color-action-ink); }
+  .album-filter:active { transform: scale(var(--press-scale)); }
+  .gallery-grid { columns: 3; column-gap: var(--space-lg); }
+  .gallery-grid > li { break-inside: avoid; margin-bottom: var(--space-lg); }
+  .gallery-photo { display: block; width: 100%; text-align: left; border-radius: var(--radius-card); overflow: hidden; background: var(--color-veil); border: 1px solid var(--color-hairline); transition: transform var(--motion-standard) var(--ease-out-quint); }
+  .gallery-photo:hover { transform: translateY(var(--hover-rise)); }
+  .gallery-caption { display: flex; align-items: flex-start; gap: var(--space-sm); padding: var(--space-md); }
+  .gallery-caption-copy { display: flex; flex-direction: column; gap: var(--space-xs); }
+  .gallery-caption-title { font-size: var(--text-sm); color: var(--color-ink); }
+  .lightbox-caption { display: flex; width: 100%; align-items: center; gap: var(--space-md); border-radius: var(--radius-card); padding: var(--space-sm) var(--space-md); }
+  .lightbox-caption-copy { min-width: 0; flex: 1; }
+  .photo-fade { opacity: 0; transition: opacity var(--motion-standard) var(--ease-out-quint); }
+  .photo-fade[data-loaded='true'] { opacity: 1; }
 }
 
+@media (min-width: 1440px) { .hero-photo-1 { height: 34rem; } .hero-photo-2 { height: 26rem; } }
+@media (max-width: 1023px) {
+  .nav-tools { margin-left: auto; }
+  .nav-apps { display: none; }
+  .home-hero { gap: var(--space-lg); }
+  .hero-name { font-size: clamp(4rem, 9vw, 6rem); }
+  .hero-photos { grid-template-columns: 1fr; }
+  .hero-photo-1 { height: 29rem; }
+  .hero-photo-2 { display: none; }
+  .contact-sheet { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .contact-image { aspect-ratio: 1; }
+  .gallery-grid { columns: 2; }
+  .editorial-section { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+@media (max-width: 639px) {
+  .site-header { top: var(--space-xs); margin: var(--space-xs) var(--space-sm) 0; }
+  .site-nav { gap: var(--space-unit); padding: var(--space-unit); border-radius: var(--radius-panel); }
+  .wordmark { font-size: var(--text-lg); padding-inline: var(--space-xs); }
+  .nav-pages { flex: 1; justify-content: center; gap: 0; }
+  .nav-link { padding-inline: calc(var(--space-unit) * 1.5); font-size: var(--text-caption); }
+  .nav-tools { border: 0; padding: 0; margin: 0; }
+  .nav-social { display: none; }
+  .site-main { padding-top: var(--space-xl); }
+  .home-hero { grid-template-columns: 1fr; gap: var(--space-xl); padding-top: var(--space-md); }
+  .hero-name { max-width: none; font-size: clamp(4rem, 16vw, 6rem); }
+  .hero-intro { gap: var(--space-lg); }
+  .hero-location { display: none; }
+  .hero-photos { grid-template-columns: 1.35fr 0.8fr; gap: var(--space-sm); }
+  .hero-photo-1 { height: 20rem; }
+  .hero-photo-2 { display: block; height: 16rem; }
+  .hero-photo { border-radius: var(--radius-card); }
+  .photo-label { inset: auto var(--space-xs) var(--space-xs); padding: var(--space-xs); gap: var(--space-unit); }
+  .photo-label > .gutter-date, .photo-label > svg { display: none; }
+  .contact-sheet { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .contact-image { aspect-ratio: 4 / 5; }
+  .gallery-grid { columns: 1; }
+  .project-card { padding: var(--space-lg); }
+  .page-heading { padding-top: var(--space-md); }
+  .lightbox-caption { flex-wrap: wrap; gap: var(--space-xs); }
+  .lightbox-caption-copy { flex-basis: 100%; }
+  .lightbox-caption > div:last-child { margin-left: auto; }
+}
+@media (max-width: 399px) {
+  .wordmark { display: none; }
+}
+@media (max-width: 359px) {
+  .hero-photos { grid-template-columns: 1fr; }
+  .hero-photo-2 { display: none; }
+}
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  /* Keep opacity and colour transitions, drop everything that moves. */
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .hero-photo:hover img, .contact-frame:hover .contact-image, .gallery-photo:hover, .action:active, .icon-button:active, .album-filter:active { transform: none; }
 }

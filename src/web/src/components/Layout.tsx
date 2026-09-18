@@ -1,24 +1,18 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
-import AmbientBackground from './AmbientBackground'
 import Nav from './Nav'
 import { GitHubIcon, LinkedInIcon } from './Icons'
 import { profile } from '../content'
 
 /**
- * The shell every route renders into. The measure is capped at 68rem: wide
- * enough for a three-up project grid, narrow enough that a résumé bullet never
- * runs past a comfortable line length.
- *
- * Top padding clears the floating nav pill; the Photos page overrides the
- * horizontal padding for its own full-bleed grid.
+ * Shared page width and navigation clearance come from the layout tokens.
+ * Editorial sections keep long-form content to a narrower reading column.
  */
 export default function Layout() {
   useScrollToTopOnNavigate()
 
   return (
     <div className="flex min-h-screen flex-col">
-      <AmbientBackground />
       <SkipLink />
       <Nav links={profile.links} quickLinks={profile.quickLinks} />
 
@@ -27,7 +21,7 @@ export default function Layout() {
       <main
         id="content"
         tabIndex={-1}
-        className="mx-auto w-full max-w-[68rem] flex-1 px-5 pt-28 pb-24 sm:px-8"
+        className="site-main site-width"
       >
         <Outlet />
       </main>
@@ -45,8 +39,13 @@ export default function Layout() {
  */
 function useScrollToTopOnNavigate() {
   const { pathname } = useLocation()
+  const previousPath = useRef(pathname)
 
   useEffect(() => {
+    if (previousPath.current !== pathname) {
+      document.getElementById('content')?.focus({ preventScroll: true })
+      previousPath.current = pathname
+    }
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [pathname])
 }
@@ -75,7 +74,7 @@ function SiteFooter() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="mx-auto w-full max-w-[68rem] px-5 pb-10 sm:px-8">
+    <footer className="site-width pb-10">
       <div className="flex flex-col items-center gap-5 border-t border-hairline pt-8 sm:flex-row sm:justify-between">
         <p className="numeric text-meta text-ink-soft">
           © {year} {profile.name}
@@ -110,7 +109,7 @@ function FooterLink({
         aria-label={label}
         target="_blank"
         rel="me noreferrer"
-        className="flex size-10 items-center justify-center rounded-full text-ink-soft transition-[color,background-color] duration-200 ease-out-quint hover:bg-inset hover:text-ink active:scale-[0.97]"
+        className="icon-button"
       >
         {children}
       </a>

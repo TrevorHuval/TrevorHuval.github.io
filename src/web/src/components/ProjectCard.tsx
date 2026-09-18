@@ -28,10 +28,10 @@ export default function ProjectCard({
   const { repo } = project
 
   return (
-    <article className="glass group flex flex-col gap-4 rounded-card p-6 transition-[transform,box-shadow] duration-200 ease-out-quint hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift-high)]">
+    <article className="glass project-card group flex flex-col rounded-card transition-[transform,box-shadow] duration-200 ease-out-quint hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift-high)]">
       <header className="flex flex-col gap-2">
         <p className="gutter-date">{String(index + 1).padStart(2, '0')}</p>
-        <h3 className="text-lg font-semibold text-ink">{project.name}</h3>
+        <h2 className="project-title font-semibold text-ink">{project.name}</h2>
         <p className="text-sm text-ink-muted">{project.summary}</p>
       </header>
 
@@ -57,7 +57,7 @@ export default function ProjectCard({
             {repo.language && (
               <div className="flex items-center gap-1.5">
                 <dt className="sr-only">Language</dt>
-                <span aria-hidden="true" className="size-2 rounded-full bg-ember" />
+                <span aria-hidden="true" className="size-2 rounded-full bg-accent" />
                 <dd className="text-meta text-ink-muted">{repo.language}</dd>
               </div>
             )}
@@ -107,7 +107,7 @@ function CardLink({ href, children }: { href: string; children: React.ReactNode 
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex items-center gap-1.5 text-meta font-medium text-ink-muted transition-colors duration-200 ease-out-quint hover:text-ember"
+      className="inline-flex items-center gap-1.5 text-meta font-medium text-ink-muted transition-colors duration-200 ease-out-quint hover:text-accent"
     >
       {children}
     </a>

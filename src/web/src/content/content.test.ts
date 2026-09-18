@@ -4,7 +4,8 @@ import profileRaw from './profile.json?raw'
 import projectsRaw from './projects.json?raw'
 import resumeRaw from './resume.json?raw'
 import skillsRaw from './skills.json?raw'
-import { photos, profile, projects, resume, skills } from './index'
+import presentationRaw from './presentation.json?raw'
+import { photos, presentation, profile, projects, resume, skills } from './index'
 
 /**
  * The content lint. This is the port of the xUnit suite that used to run against
@@ -26,6 +27,7 @@ const FILES = [
   ['skills.json', skillsRaw],
   ['projects.json', projectsRaw],
   ['photos.json', photosRaw],
+  ['presentation.json', presentationRaw],
 ] as const
 
 describe.each(FILES)('%s', (_name, raw) => {
@@ -141,6 +143,13 @@ describe('projects', () => {
 })
 
 describe('photos', () => {
+  it('selects existing, distinct photos for the home masthead', () => {
+    const ids = presentation.home.photoIds
+    expect(ids.length).toBeGreaterThan(0)
+    expect(new Set(ids).size).toBe(ids.length)
+    expect(ids.every((id) => photos.some((photo) => photo.id === id))).toBe(true)
+  })
+
   it('has unique ids and the fields the grid needs', () => {
     expect(photos.length).toBeGreaterThan(0)
 
