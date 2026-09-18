@@ -39,9 +39,7 @@ export default defineConfig({
     siteMeta({ dataDir: here('src/content'), publicDir: here('public') }),
     pagesSpaFallback(OUT_DIR),
   ],
-  // Trevor's is a GitHub *user* site (TrevorHuval.github.io) served from a
-  // custom domain, so the app lives at the root. A project site would need the
-  // repo name here instead.
+  // Served at the root of trevorhuval.com.
   base: '/',
   build: {
     outDir: OUT_DIR,
