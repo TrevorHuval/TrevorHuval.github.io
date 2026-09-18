@@ -8,6 +8,7 @@ import type { ProfileLinks, QuickLink } from '../content/types'
 export default function Nav({ links, quickLinks }: { links: ProfileLinks; quickLinks: QuickLink[] }) {
   const [light, setLight] = useState(() => document.documentElement.dataset.theme === 'light')
   const [open, setOpen] = useState(false)
+  const [mobile, setMobile] = useState(() => window.matchMedia('(max-width: 1199px)').matches)
   const nav = useRef<HTMLElement>(null)
   const toggle = useRef<HTMLButtonElement>(null)
   const location = useLocation()
@@ -16,7 +17,10 @@ export default function Nav({ links, quickLinks }: { links: ProfileLinks; quickL
 
   useEffect(() => {
     const desktop = window.matchMedia('(min-width: 1200px)')
-    const close = () => setOpen(false)
+    const close = () => {
+      setMobile(!desktop.matches)
+      setOpen(false)
+    }
     desktop.addEventListener('change', close)
     return () => desktop.removeEventListener('change', close)
   }, [])
@@ -59,10 +63,12 @@ export default function Nav({ links, quickLinks }: { links: ProfileLinks; quickL
         </Link>
         <button ref={toggle} type="button" className="icon-button nav-toggle" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="navigation-links" onClick={() => setOpen(!open)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true" className="size-5">
-            <path d={open ? 'M6 6l12 12M6 18L18 6' : 'M4 7h16M4 12h16M4 17h16'} />
+            <path className="menu-line menu-line-top" d="M4 7h16" />
+            <path className="menu-line menu-line-middle" d="M4 12h16" />
+            <path className="menu-line menu-line-bottom" d="M4 17h16" />
           </svg>
         </button>
-        <div id="navigation-links" className="nav-content" data-open={open} onClick={(event) => {
+        <div id="navigation-links" className="nav-content" data-open={open} inert={mobile && !open} aria-hidden={mobile && !open ? true : undefined} onClick={(event) => {
           if ((event.target as Element).closest('a')) setOpen(false)
         }}>
           <ul className="nav-pages">

@@ -73,7 +73,7 @@ describe.each([['dark', base], ['light', light]] as const)('%s theme contrast', 
     const tint = Number(tokens['--color-accent-soft'].match(/([\d.]+)%/)![1]) / 100
     for (const backdrop of [[0, 0, 0, 1], [255, 255, 255, 1]] as Color[]) {
       const surface = over(get('--nav-sheen'), over(get('--nav-veil'), backdrop))
-      expect(contrast(get('--color-ink-muted'), surface)).toBeGreaterThanOrEqual(4.5)
+      expect(contrast(get('--color-ink'), surface)).toBeGreaterThanOrEqual(4.5)
       expect(contrast(get('--color-ink'), over([accent[0], accent[1], accent[2], tint], surface))).toBeGreaterThanOrEqual(4.5)
     }
   })

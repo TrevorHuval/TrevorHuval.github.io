@@ -9,8 +9,8 @@ const INTERVAL_MS = 5000
 
 /**
  * One frame in the hero that cycles through the gallery. Every slide is
- * rendered and stacked, and only the opacity changes, so the cross-fade is a
- * compositor-only transition and the frame never resizes between photos.
+ * rendered and stacked, with a cross-fade and a barely perceptible scale settle.
+ * Only opacity and transform animate; the frame never resizes between photos.
  *
  * Auto-advance pauses while the pointer or keyboard focus is on it, and is
  * off entirely under `prefers-reduced-motion`; the arrows and dots always
@@ -20,19 +20,26 @@ const INTERVAL_MS = 5000
 export default function HeroCarousel({ photos }: { photos: Photo[] }) {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   const count = photos.length
+
+  useEffect(() => {
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReducedMotion(preference.matches)
+    preference.addEventListener('change', update)
+    return () => preference.removeEventListener('change', update)
+  }, [])
 
   const go = (delta: number) => setIndex((current) => (current + delta + count) % count)
 
   useEffect(() => {
-    if (count < 2 || paused) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (count < 2 || paused || reducedMotion) return
     const timer = window.setInterval(() => go(1), INTERVAL_MS)
     return () => window.clearInterval(timer)
     // `go` is stable in behaviour; re-arming on index keeps the dwell even after
     // a manual step so a click does not cut the next slide short.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count, paused, index])
+  }, [count, paused, index, reducedMotion])
 
   if (count === 0) return null
   const current = photos[index]!
@@ -62,7 +69,7 @@ export default function HeroCarousel({ photos }: { photos: Photo[] }) {
           />
         ))}
         <span className="photo-label glass-high">
-          <span>{current.location ?? current.album}</span>
+          <span key={current.id} className="carousel-caption">{current.location ?? current.album}</span>
           <ArrowUpRightIcon className="size-4" />
         </span>
       </Link>
