@@ -7,8 +7,8 @@ import type { ProfileLinks, QuickLink } from '../content/types'
 /**
  * Wordmark, pages, then two hairline-separated groups: the live apps and the
  * tools. The apps are what the site exists to show, so they are one click away
- * from every page; below 1024px they yield to the pages (the projects page
- * still links to them) so the bar fits a tablet or phone.
+ * from every page; below 1024px they move onto their own row so the links
+ * remain available on a tablet or phone.
  */
 export default function Nav({ links, quickLinks }: { links: ProfileLinks; quickLinks: QuickLink[] }) {
   const [light, setLight] = useState(() => document.documentElement.dataset.theme === 'light')

@@ -12,6 +12,10 @@
   },
   "quickLinks": [
     {
+      "label": "Heardit",
+      "href": "https://trevorhuval.com/heardit"
+    },
+    {
       "label": "Plannit",
       "href": "https://trevorhuval.com/plannit"
     },

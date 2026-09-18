@@ -219,7 +219,7 @@
 @media (min-width: 1440px) { .hero-carousel-frame { height: 34rem; } }
 @media (max-width: 1023px) {
   .nav-tools { margin-left: auto; }
-  .nav-apps { display: none; }
+  .nav-apps { order: 3; width: 100%; justify-content: center; border-left: 0; border-top: 1px solid var(--color-hairline); padding-left: 0; padding-top: var(--space-unit); }
   .home-hero { gap: var(--space-lg); }
   .hero-name { font-size: clamp(4rem, 9vw, 6rem); }
   .hero-carousel-frame { height: 29rem; }
