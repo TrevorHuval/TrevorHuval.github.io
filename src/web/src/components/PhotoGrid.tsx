@@ -41,10 +41,9 @@ export default function PhotoGrid({
             />
 
             <span className="gallery-caption">
-              <span className="gutter-date">{String(index + 1).padStart(2, '0')}</span>
               <span className="gallery-caption-copy">
-                <span className="gallery-caption-title">{photo.caption}</span>
-                <span className="gutter-date">{[photo.location, formatDay(photo.date)].filter(Boolean).join(' · ')}</span>
+                <span className="gallery-caption-title">{photo.location ?? photo.album}</span>
+                {photo.date && <span className="gutter-date">{formatDay(photo.date)}</span>}
               </span>
             </span>
           </button>

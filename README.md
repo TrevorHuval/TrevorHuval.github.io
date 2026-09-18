@@ -4,7 +4,7 @@ Trevor Huval's personal website: an About Me, resume (HTML + PDF download), a
 projects showcase, a skills/experience timeline, and a photo gallery.
 
 **Stack:** React 19 + TypeScript + Vite + Tailwind v4, built to static files and
-served by GitHub Pages. There is no backend.
+served by nginx in a Docker container on trevorhuval.com. There is no backend.
 
 ## Layout
 

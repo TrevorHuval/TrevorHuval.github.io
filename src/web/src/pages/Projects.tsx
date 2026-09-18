@@ -33,16 +33,16 @@ export default function Projects() {
       <header className="page-heading">
         <p className="gutter-date">{presentation.projects.eyebrow}</p>
         <h1>{presentation.projects.title}</h1>
-        <p className="max-w-[60ch] text-lg text-ink-muted">
-          {presentation.projects.description}
-        </p>
+        {presentation.projects.description && (
+          <p className="max-w-[60ch] text-lg text-ink-muted">{presentation.projects.description}</p>
+        )}
       </header>
 
       {/* An even two-up: the four are peers, and a card that spanned the grid
           would leave the fourth stranded at half width on a row of its own. */}
       <div className="grid gap-5 md:grid-cols-2">
-        {curated.map((project, index) => (
-          <ProjectCard key={project.id} project={project} index={index} />
+        {curated.map((project) => (
+          <ProjectCard key={project.id} project={project} />
         ))}
       </div>
     </div>

@@ -174,22 +174,21 @@
   .hero-description { max-width: 34ch; font-size: var(--text-lg); color: var(--color-ink-muted); }
   .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
   .hero-location { margin-top: var(--space-lg); }
-  .hero-photos { display: grid; grid-template-columns: 1.3fr 0.8fr; gap: var(--space-sm); align-items: center; }
-  .hero-photo { position: relative; overflow: hidden; border-radius: var(--radius-panel); background: var(--color-inset); }
-  .hero-photo-1 { height: var(--hero-primary-height); }
-  .hero-photo-2 { height: var(--hero-secondary-height); }
-  .hero-photo img { transition: transform var(--motion-standard) var(--ease-out-quint), opacity var(--motion-standard); }
-  .hero-photo:hover img { transform: scale(var(--photo-hover-scale)); }
+  .hero-carousel { display: flex; flex-direction: column; gap: var(--space-sm); }
+  .hero-carousel-frame { position: relative; display: block; height: var(--hero-primary-height); overflow: hidden; border-radius: var(--radius-panel); background: var(--color-inset); }
+  /* Wins over .photo-fade[data-loaded] so a loaded slide still hides until it is current. */
+  .hero-carousel-frame .hero-slide, .hero-carousel-frame .hero-slide[data-loaded='true'] { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 600ms var(--ease-out-quint), transform var(--motion-standard) var(--ease-out-quint); }
+  .hero-carousel-frame .hero-slide.is-current[data-loaded='true'] { opacity: 1; }
+  .hero-carousel-frame:hover .hero-slide.is-current { transform: scale(var(--photo-hover-scale)); }
+  .hero-carousel-controls { display: flex; align-items: center; justify-content: center; gap: var(--space-sm); }
+  .hero-carousel-dots { display: flex; align-items: center; gap: var(--space-xs); }
+  .hero-carousel-dot { width: 0.5rem; height: 0.5rem; border-radius: var(--radius-pill); background: var(--color-hairline-strong); transition: background-color var(--motion-fast), transform var(--motion-fast); }
+  .hero-carousel-dot:hover { background: var(--color-ink-faint); }
+  .hero-carousel-dot.is-current { background: var(--color-accent); transform: scale(1.25); }
+  .hero-carousel-dot::before { content: ''; position: absolute; inset: -0.75rem; }
+  .hero-carousel-dot { position: relative; }
   .photo-label { position: absolute; inset: auto var(--space-sm) var(--space-sm); display: flex; align-items: center; gap: var(--space-xs); border-radius: var(--radius-control); padding: var(--space-sm); font-size: var(--text-caption); color: var(--color-ink); }
   .photo-label > span:nth-child(2) { flex: 1; }
-  .section-heading-row { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: var(--space-lg); margin-bottom: var(--space-xl); }
-  .section-title { font-size: var(--text-2xl); font-weight: 600; margin-top: var(--space-xs); }
-  .contact-sheet { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-md); }
-  .contact-frame { display: block; }
-  .contact-image { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: var(--radius-card); transition: transform var(--motion-standard) var(--ease-out-quint), opacity var(--motion-standard); }
-  .contact-frame:hover .contact-image { transform: translateY(var(--hover-rise)); }
-  .contact-caption { display: flex; gap: var(--space-xs); margin-top: var(--space-sm); font-size: var(--text-caption); color: var(--color-ink-soft); }
-  .contact-caption > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .editorial-section { display: grid; grid-template-columns: minmax(12rem, 0.8fr) minmax(0, 1.8fr); gap: var(--space-2xl); border-top: 1px solid var(--color-hairline); padding-top: var(--space-2xl); }
   .editorial-section > header { align-self: start; }
   .bio-copy { display: flex; flex-direction: column; gap: var(--space-lg); max-width: 65ch; font-size: var(--text-lg); color: var(--color-ink-muted); }
@@ -217,17 +216,13 @@
   .photo-fade[data-loaded='true'] { opacity: 1; }
 }
 
-@media (min-width: 1440px) { .hero-photo-1 { height: 34rem; } .hero-photo-2 { height: 26rem; } }
+@media (min-width: 1440px) { .hero-carousel-frame { height: 34rem; } }
 @media (max-width: 1023px) {
   .nav-tools { margin-left: auto; }
   .nav-apps { display: none; }
   .home-hero { gap: var(--space-lg); }
   .hero-name { font-size: clamp(4rem, 9vw, 6rem); }
-  .hero-photos { grid-template-columns: 1fr; }
-  .hero-photo-1 { height: 29rem; }
-  .hero-photo-2 { display: none; }
-  .contact-sheet { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .contact-image { aspect-ratio: 1; }
+  .hero-carousel-frame { height: 29rem; }
   .gallery-grid { columns: 2; }
   .editorial-section { grid-template-columns: 1fr; gap: var(--space-xl); }
 }
@@ -244,14 +239,9 @@
   .hero-name { max-width: none; font-size: clamp(4rem, 16vw, 6rem); }
   .hero-intro { gap: var(--space-lg); }
   .hero-location { display: none; }
-  .hero-photos { grid-template-columns: 1.35fr 0.8fr; gap: var(--space-sm); }
-  .hero-photo-1 { height: 20rem; }
-  .hero-photo-2 { display: block; height: 16rem; }
-  .hero-photo { border-radius: var(--radius-card); }
+  .hero-carousel-frame { height: 22rem; border-radius: var(--radius-card); }
   .photo-label { inset: auto var(--space-xs) var(--space-xs); padding: var(--space-xs); gap: var(--space-unit); }
   .photo-label > .gutter-date, .photo-label > svg { display: none; }
-  .contact-sheet { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .contact-image { aspect-ratio: 4 / 5; }
   .gallery-grid { columns: 1; }
   .project-card { padding: var(--space-lg); }
   .page-heading { padding-top: var(--space-md); }
@@ -263,11 +253,9 @@
   .wordmark { display: none; }
 }
 @media (max-width: 359px) {
-  .hero-photos { grid-template-columns: 1fr; }
-  .hero-photo-2 { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .hero-photo:hover img, .contact-frame:hover .contact-image, .gallery-photo:hover, .action:active, .icon-button:active, .album-filter:active { transform: none; }
+  .hero-carousel-frame:hover .hero-slide.is-current, .hero-slide, .gallery-photo:hover, .action:active, .icon-button:active, .album-filter:active { transform: none; }
 }

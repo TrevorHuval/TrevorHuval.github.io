@@ -20,17 +20,14 @@ export type ProjectWithRepo = Project & { repo: GitHubRepo | null }
  */
 export default function ProjectCard({
   project,
-  index,
 }: {
   project: ProjectWithRepo
-  index: number
 }) {
   const { repo } = project
 
   return (
     <article className="glass project-card group flex flex-col rounded-card transition-[transform,box-shadow] duration-200 ease-out-quint hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift-high)]">
       <header className="flex flex-col gap-2">
-        <p className="gutter-date">{String(index + 1).padStart(2, '0')}</p>
         <h2 className="project-title font-semibold text-ink">{project.name}</h2>
         <p className="text-sm text-ink-muted">{project.summary}</p>
       </header>

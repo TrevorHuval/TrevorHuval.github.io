@@ -26,21 +26,18 @@ export interface QuickLink {
 export interface PagePresentation {
   eyebrow: string
   title: string
-  description: string
+  /** Optional standfirst under the title; omit it and the heading stands alone. */
+  description?: string
 }
 
 export interface Presentation {
   navigation: { to: string; label: string }[]
   home: {
+    /** Small mono line above the name. */
     eyebrow: string
-    photoIds: string[]
-    galleryEyebrow: string
-    galleryTitle: string
-    aboutEyebrow: string
+    /** Section headings, in page order. One plain heading each, no eyebrows. */
     aboutTitle: string
-    skillsEyebrow: string
     skillsTitle: string
-    experienceEyebrow: string
     experienceTitle: string
   }
   projects: PagePresentation

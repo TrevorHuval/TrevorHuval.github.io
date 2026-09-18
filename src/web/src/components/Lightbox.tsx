@@ -97,7 +97,6 @@ export default function Lightbox({
     return <dialog ref={dialogRef} className="hidden" />
   }
 
-  const meta = [photo.location, formatDay(photo.date)].filter(Boolean).join(' · ')
   const hasSiblings = photos.length > 1
   const frameWidth = `calc(${MAX_HEIGHT} * ${photo.width} / ${photo.height})`
 
@@ -194,8 +193,8 @@ export default function Lightbox({
 
           <figcaption className="glass-high lightbox-caption">
             <div className="lightbox-caption-copy">
-              <p className="text-meta font-medium text-ink">{photo.caption}</p>
-              {meta && <p className="gutter-date mt-0.5">{meta}</p>}
+              <p className="text-meta font-medium text-ink">{photo.location ?? photo.album}</p>
+              {photo.date && <p className="gutter-date mt-0.5">{formatDay(photo.date)}</p>}
             </div>
 
             {hasSiblings && (

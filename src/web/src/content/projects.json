@@ -4,9 +4,16 @@
     "name": "MusiQL",
     "summary": "A full-stack music app where a playlist is a saved query instead of a fixed list.",
     "description": "MQL is a small query language I designed for the job: it parses to an AST, gets checked against a whitelisted schema, and compiles down to parameterized SQL — so a playlist stays a live question about the catalog rather than a snapshot of it. A catalog ETL rebuilds millions of rows with no downtime, and Spotify OAuth exports any playlist straight to a user's own account.",
-    "tech": ["React", "TypeScript", "Vite", ".NET 10", "PostgreSQL 17", "Docker"],
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      ".NET 10",
+      "PostgreSQL 17",
+      "Docker"
+    ],
     "repoSlug": "TrevorHuval/musiql",
-    "liveUrl": null,
+    "liveUrl": "https://trevorhuval.com/musiql",
     "order": 1
   },
   {
@@ -14,9 +21,17 @@
     "name": "Plannit",
     "summary": "A self-hosted personal finance app, so the numbers never leave a machine you control.",
     "description": "Every query is owner-scoped at the data-access layer, bank-statement imports are duplicate-safe on re-upload, and a projection engine models retirement against real balances. 230+ automated tests back it, and CodeQL is at zero alerts because the XSS, ReDoS, and path-traversal findings were fixed rather than suppressed.",
-    "tech": [".NET 10", "ASP.NET Core MVC", "EF Core", "Dapper", "PostgreSQL", "SQLite", "Docker"],
+    "tech": [
+      ".NET 10",
+      "ASP.NET Core MVC",
+      "EF Core",
+      "Dapper",
+      "PostgreSQL",
+      "SQLite",
+      "Docker"
+    ],
     "repoSlug": "TrevorHuval/Plannit",
-    "liveUrl": null,
+    "liveUrl": "https://trevorhuval.com/plannit",
     "order": 2
   },
   {
@@ -24,7 +39,13 @@
     "name": "Heardit",
     "summary": "Letterboxd for music — rate what you listen to, follow people, and keep a listen-later queue.",
     "description": "Ratings, follows, and a queue over a PostgreSQL catalog. The social feed is the interesting part: its queries are batched to avoid the N+1 reads that make this kind of app fall over the moment someone follows more than a handful of people.",
-    "tech": ["ASP.NET Core 10", "PostgreSQL", "EF Core", "xUnit", "Docker Compose"],
+    "tech": [
+      "ASP.NET Core 10",
+      "PostgreSQL",
+      "EF Core",
+      "xUnit",
+      "Docker Compose"
+    ],
     "repoSlug": "TrevorHuval/Heardit",
     "liveUrl": null,
     "order": 3
@@ -32,11 +53,19 @@
   {
     "id": "personal-site",
     "name": "Personal Site",
-    "summary": "This site — a React and TypeScript static site, built and published straight from GitHub.",
-    "description": "A photo-led portfolio with rounded glass surfaces, a charcoal canvas, and a light theme. Shared design tokens keep the typography, spacing, and surfaces consistent. Content is structured JSON checked into the repo and type-checked at build time.",
-    "tech": ["React", "TypeScript", "Vite", "Tailwind CSS", "GitHub Actions", "GitHub Pages"],
+    "summary": "This site. My resume, my projects, a slice of my life, and where to find me on GitHub and LinkedIn.",
+    "description": null,
+    "tech": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "Docker",
+      "GitHub Actions",
+      "AWS EC2"
+    ],
     "repoSlug": "TrevorHuval/TrevorHuval.github.io",
-    "liveUrl": null,
+    "liveUrl": "https://trevorhuval.com",
     "order": 4
   }
 ]
